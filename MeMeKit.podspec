@@ -70,7 +70,7 @@ Pod::Spec.new do |spec|
       base.dependency 'Result'
       base.dependency 'QNNetDiag'
       base.dependency 'MeMeKit/Device'
-      
+      base.dependency 'Cartography'
 
       # base.library   = "iconv"
       base.libraries = "resolv"
