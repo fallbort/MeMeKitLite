@@ -48,7 +48,7 @@ open class LineBreakBaseView: TranslateHitView,LineBreakViewable {
     //实体的布局回调,view表示可重复利用的view
     public var itemLayoutClosure:((_ frame:CGRect,_ index:Int,_ view:UIView?,_ extra:[String:Any]?)->UIView?)!
     
-    init() {
+    public init() {
         super.init(frame: CGRect())
         self.setupUI()
     }
