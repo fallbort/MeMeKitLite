@@ -13,10 +13,10 @@ import Foundation
 ///   - message: 内容
 ///   - filePath: 文件名
 ///   - rowCount: 所在文件位置
-public func gLog<content>(_ message: content, filePath: String = #file, rowCount: Int = #line) {
+public func gLog<content>(key:String? = "info",_ message: content, filePath: String = #file, rowCount: Int = #line) {
     #if DEBUG
     let fieldName = (filePath as NSString).lastPathComponent.replacingOccurrences(of:".swift", with:"")
-    print("MeMe Log--" + getLogTimeNow())
+    print("MeMe Log--" + "\(key)," + getLogTimeNow())
     print("MeMe Log--" + "["+fieldName+":"+"(\(rowCount))" + "]")
     print("MeMe Log--" + "\(message)"+"\n")
     #endif
