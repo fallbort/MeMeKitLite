@@ -16,9 +16,11 @@ import Foundation
 public func gLog<content>(key:String? = "info",_ message: content, filePath: String = #file, rowCount: Int = #line) {
     #if DEBUG
     let fieldName = (filePath as NSString).lastPathComponent.replacingOccurrences(of:".swift", with:"")
-    print("MeMe Log--" + "\(key)," + getLogTimeNow())
-    print("MeMe Log--" + "["+fieldName+":"+"(\(rowCount))" + "]")
-    print("MeMe Log--" + "\(message)"+"\n")
+    let fileLog:String = getLogTimeNow() + "["+fieldName+":"+"(\(rowCount))" + "]"
+    print("MeMe Log--" + fileLog + "\(key ?? "")")
+    if "\(message)".count > 0 {
+        print("MeMe Log--" + "\(message)")
+    }
     #endif
 }
 
