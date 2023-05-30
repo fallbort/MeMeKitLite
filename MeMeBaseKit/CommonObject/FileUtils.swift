@@ -159,11 +159,25 @@ public class FileUtils {
 		}
 	}
 
-    public class func unzip(_ filepath: String, toDestination destination: String) -> Bool {
-        return SSZipArchive.unzipFile(atPath: filepath, toDestination: destination)
+    public class func unzip(_ filepath: String, toDestination destination: String,delegate:SSZipArchiveDelegate? = nil,progress:((_ progress:Double?,_ done:Bool)->())? = nil) -> Bool {
+        SSZipArchive.unzipFile(atPath: filepath, toDestination: destination, preserveAttributes: true, overwrite: true, nestedZipLevel: 0, password: nil, error: nil, delegate: delegate) { _, _, num, total in
+            if total > 0 {
+                progress?((Double)(num / total),false)
+            }else{
+                progress?(nil,false)
+            }
+            
+        } completionHandler: { _, success, _ in
+            if success == true {
+                progress?(1.0,true)
+            }else{
+                progress?(nil,true)
+            }
+        }
+
     }
 
-	public class func zip(src srcFilePath: String, to targetFilePath: String) -> Bool {
+	public class func zip(src srcFilePath: String, to targetFilePath: String,progress:((_ progress:CGFloat?,_ done:Bool)->())? = nil) -> Bool {
 		return SSZipArchive.createZipFile(atPath: targetFilePath, withFilesAtPaths: [srcFilePath])
 	}
 }
