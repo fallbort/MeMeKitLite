@@ -6,8 +6,6 @@
 //  Copyright © 2016年 sip. All rights reserved.
 //
 
-import SSZipArchive
-
 public class FileUtils {
     public static var _libraryDirectory: URL?
     public class var libraryDirectory: URL {
@@ -160,9 +158,14 @@ public class FileUtils {
 	}
 
     public class func unzip(_ filepath: String, toDestination destination: String,delegate:SSZipArchiveDelegate? = nil,progress:((_ progress:Double?,_ done:Bool)->())? = nil) -> Bool {
-        SSZipArchive.unzipFile(atPath: filepath, toDestination: destination, preserveAttributes: true, overwrite: true, nestedZipLevel: 0, password: nil, error: nil, delegate: delegate) { _, _, num, total in
+        SSZipArchive.unzipFile(atPath: filepath, toDestination: destination, preserveAttributes: true, overwrite: true, nestedZipLevel: 0, password: nil, error: nil, delegate: delegate) { _, zipInfo, num, total,size in
             if total > 0 {
-                progress?((Double)(num / total),false)
+                let totalSize = zipInfo.uncompressed_size
+                let oneFileProgress:Double = 1.0 / (Double)(total)
+                var curProgress = Double(num) * oneFileProgress
+                curProgress += ((Double)(size) / (Double)(totalSize) * oneFileProgress)
+                
+                progress?(curProgress,false)
             }else{
                 progress?(nil,false)
             }

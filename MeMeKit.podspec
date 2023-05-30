@@ -35,12 +35,21 @@ Pod::Spec.new do |spec|
   spec.swift_version = '5.0'
 
   spec.default_subspec = 'MeMeBaseKit'
-  
+
   spec.subspec 'Device' do |device|
       device.requires_arc            = true
       device.source_files            = "MeMeBaseKit/Device/Source/*.swift"
       device.ios.source_files        = "MeMeBaseKit/Device/Source/iOS/*.swift"
       device.osx.source_files        = "MeMeBaseKit/Device/Source/macOS/*.swift"
+  end
+  
+  spec.subspec 'SSZipArchive' do |base|
+      base.source_files = 'SSZipArchive_2.4.3/SSZipArchive/*.{m,h}', 'SSZipArchive_2.4.3/SSZipArchive/include/*.{m,h}', 'SSZipArchive_2.4.3/SSZipArchive/minizip/*.{c,h}'
+      base.public_header_files = 'SSZipArchive_2.4.3/SSZipArchive/*.h'
+      base.libraries = 'z', 'iconv'
+      base.framework = 'Security'
+      base.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES',
+    'GCC_PREPROCESSOR_DEFINITIONS' => 'HAVE_INTTYPES_H HAVE_PKCRYPT HAVE_STDINT_H HAVE_WZAES HAVE_ZLIB' }
   end
 
   spec.subspec 'MeMeBaseKit' do |base|
@@ -60,7 +69,6 @@ Pod::Spec.new do |spec|
       base.dependency 'SwiftyUserDefaults'
       base.dependency 'KeychainAccess'
       base.dependency 'RxSwift'
-      base.dependency 'SSZipArchive'
       base.dependency 'ObjectMapper'
       base.dependency 'YYImage'
       base.dependency 'YYText'
@@ -70,6 +78,7 @@ Pod::Spec.new do |spec|
       base.dependency 'Result'
       base.dependency 'QNNetDiag'
       base.dependency 'MeMeKit/Device'
+      base.dependency 'MeMeKit/SSZipArchive'
       base.dependency 'Cartography'
 
       # base.library   = "iconv"
