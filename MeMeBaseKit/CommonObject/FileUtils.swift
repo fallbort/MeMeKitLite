@@ -157,7 +157,7 @@ public class FileUtils {
 		}
 	}
 
-    public class func unzip(_ filepath: String, toDestination destination: String,delegate:SSZipArchiveDelegate? = nil,progress:((_ progress:Double?,_ done:Bool)->())? = nil) -> Bool {
+    public class func unzip(_ filepath: String, toDestination destination: String,delegate:SSZipArchiveDelegate? = nil,progress:((_ progress:Double?,_ success:Bool?)->())? = nil) -> Bool {
         SSZipArchive.unzipFile(atPath: filepath, toDestination: destination, preserveAttributes: true, overwrite: true, nestedZipLevel: 0, password: nil, error: nil, delegate: delegate) { _, zipInfo, num, total,size in
             if total > 0 {
                 let totalSize = zipInfo.uncompressed_size
@@ -165,16 +165,16 @@ public class FileUtils {
                 var curProgress = Double(num) * oneFileProgress
                 curProgress += ((Double)(size) / (Double)(totalSize) * oneFileProgress)
                 
-                progress?(curProgress,false)
+                progress?(curProgress,nil)
             }else{
-                progress?(nil,false)
+                progress?(nil,nil)
             }
             
         } completionHandler: { _, success, _ in
             if success == true {
-                progress?(1.0,true)
+                progress?(1.0,success)
             }else{
-                progress?(nil,true)
+                progress?(nil,success)
             }
         }
 
