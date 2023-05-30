@@ -164,6 +164,7 @@ public class FileUtils {
                 let oneFileProgress:Double = 1.0 / (Double)(total)
                 var curProgress = Double(num) * oneFileProgress
                 curProgress += ((Double)(size) / (Double)(totalSize) * oneFileProgress)
+                curProgress = curProgress > 1.0 ? 1.0 : curProgress
                 
                 progress?(curProgress,nil)
             }else{
