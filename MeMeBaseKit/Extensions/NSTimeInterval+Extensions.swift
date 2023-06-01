@@ -285,3 +285,52 @@ extension TimeInterval {
         return leftTime + offset
     }
 }
+
+extension TimeInterval {
+    //根据时间走了多少，预估走了多少百分数
+    //minPercent 一开始已使用的百分数 0.0...1.0区间内
+    //maxPercent 无穷条线段爬完后最大能到的Y,0.0...1.0区间内
+    //minTime 不算进计算的初始时间
+    //lineTimeLen 每条线段最大的时间长度
+    //firstPercent 第一条线段爬总共需要爬升的多少,0.01...0.99区间内
+    //maxLines 不多爬，只爬maxLines条线段，后面就使用默认值maxY,节省算力,1...999区间内
+    //在一个x为时间，y为百分数的坐标系,做一个随时间增长百分数不断上升的线条，最大不会超过maxY;先以(y - minPercent) = k(t - minPercent)直线上升,直线的最大x坐标t为lineTimeLen+minTime,最大y坐标%为(maxY - minPercent)/2+minPercent;不断的做直线，每隔lineTimeLen时间，斜率降一半,极致情况连续做maxLines条直线
+    public func getPercent(minPercent:Double = 0.0,maxPercent:Double,minTime:TimeInterval = 0.0,lineTimeLen:TimeInterval,maxLines:Int = 20,firstRate:Double = 0.5) -> Double {
+        var minPercent = minPercent > 1.0 ? 1.0 : minPercent
+        minPercent = minPercent < 0.0 ? 0.0 : minPercent
+        var maxPercent = maxPercent > 1.0 ? 1.0 : maxPercent
+        maxPercent = maxPercent < 0.0 ? 0.0 : maxPercent
+        var maxLines = maxLines > 999 ? 999 : maxLines
+        maxLines = maxLines < 1 ? 1 : maxLines
+        var firstRate = firstRate > 0.99 ? 0.99 : firstRate
+        firstRate = firstRate < 0.01 ? 0.01 : firstRate
+        
+        var usedY:Double = minPercent //已爬升的y
+        var extraY:Double = maxPercent - minPercent  //剩余y
+        var usedX:Double = minTime //已使用的时间
+        
+        var time:Double = self
+        var leftRate = firstRate  //这一段直线总爬升剩余y的多少
+        var oneRate:Double = Double(maxLines) / (1.0 - leftRate)
+        for _ in 0..<maxLines {
+            let k:Double = (extraY * leftRate) / lineTimeLen
+            leftRate += oneRate
+            
+            if time <= lineTimeLen {
+                usedY += k * (time)
+                usedX += time
+                time = 0
+                break
+            }else{
+                usedY += k * (lineTimeLen)
+                usedX += lineTimeLen
+                time -= lineTimeLen
+            }
+        }
+        if time > 5 {
+            return maxPercent
+        }else {
+            return usedY
+        }
+    }
+}

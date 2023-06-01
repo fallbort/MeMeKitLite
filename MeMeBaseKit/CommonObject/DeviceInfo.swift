@@ -68,9 +68,13 @@ public class DeviceInfo {
     
     /// App version or "1.0.0".
     static public let appVersion: String = {
+#if os(macOS)
+        return NSApplication.appVersion
+#elseif os(iOS)
         let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "0.0.0"
         let build = Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "0"
         return "\(version) build \(build)"
+#endif
     }()
     
     static public let appBuild: Int = {
