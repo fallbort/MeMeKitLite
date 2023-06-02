@@ -97,5 +97,10 @@ Pod::Spec.new do |spec|
       base.framework    = "UIKit"
   end
 
+  spec.subspec 'Photo' do |base|
+      base.source_files = 'MeMeBaseKit/Access/Photo/**/*.swift'
+      base.dependency 'MeMeKit/MeMeBaseKit'
+      base.frameworks    = "Foundation", "Photos"
+  end
 
 end
