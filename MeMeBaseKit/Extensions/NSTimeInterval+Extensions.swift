@@ -311,19 +311,23 @@ extension TimeInterval {
         
         var time:Double = self
         var leftRate = firstRate  //这一段直线总爬升剩余y的多少
-        var oneRate:Double = Double(maxLines) / (1.0 - leftRate)
+        var oneRate:Double =  (1.0 - leftRate) / Double(maxLines)
         for _ in 0..<maxLines {
             let k:Double = (extraY * leftRate) / lineTimeLen
             leftRate += oneRate
-            
+
             if time <= lineTimeLen {
-                usedY += k * (time)
+                let curUserY = k * (time)
+                usedY += curUserY
                 usedX += time
+                extraY -= curUserY
                 time = 0
                 break
             }else{
-                usedY += k * (lineTimeLen)
+                let curUserY = k * (lineTimeLen)
+                usedY += curUserY
                 usedX += lineTimeLen
+                extraY -= curUserY
                 time -= lineTimeLen
             }
         }
