@@ -534,28 +534,6 @@ extension UIView {
 }
 
 extension UIView {
-    public override func setRealMultiHidden(_ hidden:Bool) {
-        self.isHidden = hidden
-    }
-    
-    public override func getRealMultiHidden() -> Bool {
-        return self.isHidden
-    }
-    
-    
-}
-
-extension UIControl {
-    @objc public override func setRealMultiDisable(_ hidden:Bool) {
-        self.isEnabled = !hidden
-    }
-    
-    @objc public override func getRealMultiDisable() -> Bool {
-        return !self.isEnabled
-    }
-}
-
-extension UIView {
     private struct AssociatedSpinnerKeys {
         static var AssociatedName = "AssociatedName"
     }
