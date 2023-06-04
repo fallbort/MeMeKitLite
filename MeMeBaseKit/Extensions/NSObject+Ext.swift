@@ -61,3 +61,23 @@ extension MultiSetProtocol {
 extension NSObject : MultiSetProtocol {
     
 }
+
+
+extension NSObject
+{
+    // MARK:返回className
+    public var className:String{
+        get{
+          let name =  type(of: self).description()
+            if(name.contains(".")){
+                let names = name.components(separatedBy: ".")
+                guard names.count > 0 else  { return "" }
+                return names[1];
+            }else{
+                return name;
+            }
+
+        }
+    }
+
+}
