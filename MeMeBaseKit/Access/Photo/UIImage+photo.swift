@@ -9,7 +9,7 @@ import Foundation
 import Photos
 
 extension UIImage {
-    @objc public func saveToCameraAlbum(complete:((Bool)->())? = nil) {
+    @objc public func saveToCameraAlbum(complete:((_ success:Bool,_ needAuth:Bool)->())? = nil) {
         PHPhotoLibrary.requestAuthorization() { authorizationStatus in
             switch authorizationStatus {
             case .authorized:
@@ -17,13 +17,13 @@ extension UIImage {
                 UIImageWriteToSavedPhotosAlbum(self, self, #selector(UIImage.image(_:didFinishSavingWithError:contextInfo:)), nil)
             default:
                 DispatchQueue.main.async {
-                    complete?(false)
+                    complete?(false,true)
                 }
             }
         }
     }
     
-    @objc public func saveToAlbum(folder: String,complete:((Bool)->())? = nil) {
+    @objc public func saveToAlbum(folder: String,complete:((_ success:Bool,_ needAuth:Bool)->())? = nil) {
         PHPhotoLibrary.requestAuthorization() { authorizationStatus in
             switch authorizationStatus {
             case .authorized:
@@ -56,23 +56,23 @@ extension UIImage {
                                 }
                             }, completionHandler: { (success, error) in
                                 DispatchQueue.main.async {
-                                    complete?(success)
+                                    complete?(success,false)
                                 }
                             })
                         }else{
                             DispatchQueue.main.async {
-                                complete?(false)
+                                complete?(false,false)
                             }
                         }
                     }else{
                         DispatchQueue.main.async {
-                            complete?(false)
+                            complete?(false,false)
                         }
                     }
                 }
             default:
                 DispatchQueue.main.async {
-                    complete?(false)
+                    complete?(false,true)
                 }
             }
         }
@@ -107,7 +107,7 @@ extension UIImage {
         let complete = self.saveToCameraAlbumComplete
         self.saveToCameraAlbumComplete = nil
         DispatchQueue.main.async {
-            complete?(error == nil)
+            complete?(error == nil,false)
         }
     }
 }
@@ -116,9 +116,9 @@ private var saveToCameraAlbumBlock = "saveToCameraAlbum"
 private var saveToAlbumBlock = "saveToAlbum"
 
 extension UIImage {
-    fileprivate var saveToCameraAlbumComplete: ((Bool)->())? {
+    fileprivate var saveToCameraAlbumComplete: ((_ success:Bool,_ needAuth:Bool)->())? {
         get {
-            let timer = objc_getAssociatedObject(self, &saveToCameraAlbumBlock) as? ((Bool)->())
+            let timer = objc_getAssociatedObject(self, &saveToCameraAlbumBlock) as? ((_ success:Bool,_ needAuth:Bool)->())
             return timer
         }
         
@@ -127,9 +127,9 @@ extension UIImage {
         }
     }
     
-    fileprivate var saveToAlbumComplete: ((Bool)->())? {
+    fileprivate var saveToAlbumComplete: ((_ success:Bool,_ needAuth:Bool)->())? {
         get {
-            let timer = objc_getAssociatedObject(self, &saveToAlbumBlock) as? ((Bool)->())
+            let timer = objc_getAssociatedObject(self, &saveToAlbumBlock) as? ((_ success:Bool,_ needAuth:Bool)->())
             return timer
         }
         
