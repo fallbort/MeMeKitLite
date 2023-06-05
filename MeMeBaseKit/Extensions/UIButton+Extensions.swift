@@ -43,7 +43,7 @@ extension UIButton {
         self.contentEdgeInsets = UIEdgeInsets(top: vertical, left: insetAmount + horizontal, bottom: vertical, right: insetAmount + horizontal)
 	}
     
-    public func setShadowTitle(title: String, titleColor: UIColor = .white, shadowColor: UIColor = .black, shadowOffset: CGSize = CGSize(width: 0, height: 1), for: UIControl.State) {
+    @objc public func setShadowTitle(title: String, titleColor: UIColor = .white, shadowColor: UIColor = .black, shadowOffset: CGSize = CGSize(width: 0, height: 1), for: UIControl.State) {
         let contentAttrString = NSMutableAttributedString(string: title)
         let shadow = NSShadow()
         shadow.shadowColor = shadowColor
