@@ -42,7 +42,20 @@ import Cartography
     
     //MARK: <>功能性方法
     @objc public func reloadData() {
-        
+        self.rightTableView.reloadData()
+        self.leftTableView.reloadData()
+        constrain(self.leftTableView) {
+            $0.left == $0.superview!.left
+            $0.top == $0.superview!.top
+            $0.bottom == $0.superview!.bottom
+            $0.width == 80
+        }
+        constrain(self.rightTableView,self.leftTableView) {
+            $0.left == $1.right
+            $0.right == $0.superview!.right
+            $0.top == $0.superview!.top
+            $0.bottom == $0.superview!.bottom
+        }
     }
     
     @objc public func registerRight(_ cellClass: AnyClass?, forCellReuseIdentifier identifier: String) {
