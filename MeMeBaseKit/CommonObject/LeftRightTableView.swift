@@ -101,6 +101,10 @@ import Cartography
 
 
 extension LeftRightTableView : UITableViewDataSource, UITableViewDelegate {
+    public func numberOfSections(in tableView: UITableView) -> Int {
+        self.dataSource?.numberOfSections?(in: tableView) ?? 0
+        
+    }
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if self.leftTableView == tableView {
             return 1

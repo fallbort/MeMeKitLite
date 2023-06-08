@@ -26,3 +26,10 @@
 }
 
 @end
+
+@implementation NSString (Locale)
+-(NSComparisonResult)compare:(NSString *)string locale:(NSLocale*)locale {
+    NSRange stringRange1 = NSMakeRange(0, self.length);
+    return [self compare:string options:0 range:stringRange1 locale:locale];
+}
+@end

@@ -15,3 +15,8 @@
 
 @end
 
+
+@interface NSString (Locale)
+-(NSComparisonResult)compare:(NSString *)string locale:(NSLocale*)locale;
+
+@end
