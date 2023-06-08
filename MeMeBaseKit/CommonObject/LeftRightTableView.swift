@@ -41,11 +41,11 @@ import Cartography
     }
     
     //MARK: <>功能性方法
-    public func reloadData() {
+    @objc public func reloadData() {
         
     }
     
-    public func registerRight(_ cellClass: AnyClass?, forCellReuseIdentifier identifier: String) {
+    @objc public func registerRight(_ cellClass: AnyClass?, forCellReuseIdentifier identifier: String) {
         self.rightTableView.register(cellClass, forCellReuseIdentifier: identifier)
     }
     //MARK: <>内部View
@@ -72,7 +72,7 @@ import Cartography
         return tableView
     }()
     
-    lazy var rightTableView: UITableView = {
+    @objc public lazy var rightTableView: UITableView = {
         let tableView = UITableView()
         tableView.allowsSelection = true
         tableView.clipsToBounds = true
