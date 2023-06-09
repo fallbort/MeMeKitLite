@@ -75,7 +75,7 @@ import Cartography
             $0.centerX == $0.superview!.centerX
             $0.top == $0.superview!.top
             $0.bottom == $0.superview!.bottom
-            textContainerWidth = $0.width == 0 ~ UILayoutPriority.init(700)
+            textContainerWidth = $0.width == 0 ~ UILayoutPriority.init(760)
         }
         
         constrain(textLabel) {
@@ -133,8 +133,15 @@ import Cartography
                 }else if sender == self.rightBtn {
                     self.plusOne(curOneStep)
                 }
-                self.nextLeftTime = self.lastFisrtLeftTime - 0.4
-                self.nextLeftTime = self.nextLeftTime <= 0.2 ? 0.2 : self.nextLeftTime
+                if self.lastFisrtLeftTime >= 0.5 {
+                    self.nextLeftTime = self.lastFisrtLeftTime - 0.4
+                }else if self.lastFisrtLeftTime >= 0.3 {
+                    self.nextLeftTime = self.lastFisrtLeftTime - 0.2
+                }else{
+                    self.nextLeftTime = self.lastFisrtLeftTime - 0.1
+                }
+                
+                self.nextLeftTime = self.nextLeftTime <= 0.1 ? 0.1 : self.nextLeftTime
                 let lastFisrtLeftTime = self.lastFisrtLeftTime
                 self.lastFisrtLeftTime = self.nextLeftTime
                 if lastFisrtLeftTime == self.lastFisrtLeftTime,self.curOneStep < 10 {
@@ -250,7 +257,7 @@ import Cartography
         view.addTarget(self, action: #selector(touchCancelled(_:)), for: .touchCancel)
         view.addTarget(self, action: #selector(touchUpInside(_:)), for: .touchUpInside)
         view.addTarget(self, action: #selector(touchUpOutside(_:)), for: .touchUpOutside)
-        view.contentEdgeInsets = UIEdgeInsets.init(top: 0, left: 2, bottom: 0, right: -2)
+        view.contentEdgeInsets = UIEdgeInsets.init(top: -1, left: 2, bottom: 1, right: -2)
         view.setEnlargeEdge(5)
         return view
     }()
@@ -265,7 +272,7 @@ import Cartography
         view.addTarget(self, action: #selector(touchCancelled(_:)), for: .touchCancel)
         view.addTarget(self, action: #selector(touchUpInside(_:)), for: .touchUpInside)
         view.addTarget(self, action: #selector(touchUpOutside(_:)), for: .touchUpOutside)
-        view.contentEdgeInsets = UIEdgeInsets.init(top: 0, left: -2, bottom: 0, right: 2)
+        view.contentEdgeInsets = UIEdgeInsets.init(top: -1, left: -2, bottom: 1, right: 2)
         view.setEnlargeEdge(5)
         return view
     }()

@@ -64,7 +64,7 @@ extension UIView {
         }
     }
     
-    public func showBadge(_ count: Int = 0,maxCount:Int = 99, color: UIColor = .red, frame: CGRect =  CGRect(origin: .zero, size: CGSize(width: badgePointWidth, height: badgePointWidth)), font:UIFont, format: String = "") {
+    @objc public func showBadge(_ count: Int = 0,maxCount:Int = 99, color: UIColor = .red, frame: CGRect =  CGRect(origin: .zero, size: CGSize(width: badgePointWidth, height: badgePointWidth)), font:UIFont, format: String = "") {
         if self.badge == nil {
             let badgeView = UILabel(frame: frame)
             if frame.origin == .zero {
