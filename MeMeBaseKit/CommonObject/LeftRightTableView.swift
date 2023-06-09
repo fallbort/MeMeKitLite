@@ -252,7 +252,10 @@ extension LeftRightTableView : UITableViewDataSource, UITableViewDelegate {
             if scrollView.isDragging || scrollView.isTracking || scrollView.isDecelerating {
                 if let topIndexPath = self.rightTableView.indexPathsForVisibleRows?.first {
                     let moveToIndexPath = IndexPath(row: 0, section: topIndexPath.section)
-                    self.leftTableView.selectRow(at: moveToIndexPath, animated: true, scrollPosition: .middle)
+                    let selectedRow = self.leftTableView.indexPathForSelectedRow
+                    if selectedRow != moveToIndexPath {
+                        self.leftTableView.selectRow(at: moveToIndexPath, animated: true, scrollPosition: .middle)
+                    }
                 }
             }
         }
