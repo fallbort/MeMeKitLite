@@ -11,9 +11,13 @@ import Photos
 
 
 extension UIViewController {
-    @objc public func addTo(_ parent:UIViewController,rect:CGRect) {
+    @objc public func addTo(_ parent:UIViewController,view:UIView? = nil,rect:CGRect) {
         parent.addChild(self)
-        parent.view.addSubview(self.view)
+        if let view = view {
+            view.addSubview(self.view)
+        }else{
+            parent.view.addSubview(self.view)
+        }
         self.view.frame = rect
         self.didMove(toParent: parent)
     }

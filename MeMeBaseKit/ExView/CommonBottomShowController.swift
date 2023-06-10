@@ -1,16 +1,14 @@
 //
-//  CommonShowController.swift
+//  CommonBottomShowController.swift
 //  MeMeKit
 //
-//  Created by xfb on 2023/4/11.
+//  Created by xfb on 2023/6/10.
 //
-
-import Foundation
 
 import Foundation
 import Cartography
 
-class CommonShowController : UIViewController,MeMeShowProtocol {
+class CommonBottomShowController : UIViewController,BottomCardProtocol {
     
     //MARK: <>外部变量
     var outVC:UIViewController? {

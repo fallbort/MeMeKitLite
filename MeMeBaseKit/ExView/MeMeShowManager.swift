@@ -21,16 +21,27 @@ import Cartography
         super.init()
     }
     //MARK: <>功能性方法
-    @objc public static func commonShow(superController:UIViewController,rootVC:UIViewController,size:CGSize = CGSize(),offset:CGPoint = CGPoint(),cornerRadius:CGFloat = -1, clips:Bool = true,isTranslateView:Bool = false,tapDismiss:Bool = true) {
+    @objc public static func commonCenterShow(superController:UIViewController,rootVC:UIViewController,size:CGSize = CGSize(),offset:CGPoint = CGPoint(),cornerRadius:CGFloat = -1, clips:Bool = true,isTranslateView:Bool = false,tapDismiss:Bool = true) {
         let size:CGSize? = size != CGSize() ? size : nil
         let cornerRadius:CGFloat? = cornerRadius >= 0 ? cornerRadius : nil
-        CommonShowController.commonShow(superController: superController,size: size, offset:offset, cornerRadius: cornerRadius,clips:clips,isTranslateView: isTranslateView,tapDismiss: tapDismiss) { controller in
+        CommonCenterShowController.commonShow(superController: superController,size: size, offset:offset, cornerRadius: cornerRadius,clips:clips,isTranslateView: isTranslateView,tapDismiss: tapDismiss) { controller in
             controller.outVC = rootVC
             if size == nil {
                 controller.contentSizeInPopup = rootVC.contentSizeInPopup
             }
             rootVC.meme_closeBlock = { [weak controller] animate in
                 controller?.close(animate)
+            }
+        }
+    }
+    
+    @objc public static func commonBottomShow(superController:UIViewController,rootVC:UIViewController,isCornerLandscape:Bool = false,topRadius:CGFloat = -1,needClip:Bool = true) {
+        let topRadius:CGFloat = topRadius >= 0 ? topRadius : 8
+        CommonBottomShowController.commonShowCard(superController: superController,isCornerLandscape:isCornerLandscape,topRadius: topRadius,needClip: needClip) { controller in
+            controller?.outVC = rootVC
+            controller?.contentSizeInPopup = rootVC.contentSizeInPopup
+            rootVC.meme_closeBlock = { [weak controller] animate in
+                controller?.closeRoot(animate: animate)
             }
         }
     }
