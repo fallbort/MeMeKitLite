@@ -129,9 +129,9 @@ import Cartography
             guard let `self` = self else {return}
             if self.timePassed > 0, self.nextLeftTime <= 0 {
                 if sender == self.leftBtn {
-                    self.minusOne(curOneStep)
+                    self.minusOne(self.curOneStep)
                 }else if sender == self.rightBtn {
-                    self.plusOne(curOneStep)
+                    self.plusOne(self.curOneStep)
                 }
                 if self.lastFisrtLeftTime >= 0.5 {
                     self.nextLeftTime = self.lastFisrtLeftTime - 0.4
