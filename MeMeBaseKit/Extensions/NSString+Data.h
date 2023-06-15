@@ -20,3 +20,8 @@
 -(NSComparisonResult)compare:(NSString *)string locale:(NSLocale*)locale;
 
 @end
+
+@interface NSString (data)
+-(NSString*)urlEncode;
+
+@end

@@ -33,3 +33,13 @@
     return [self compare:string options:0 range:stringRange1 locale:locale];
 }
 @end
+
+
+@implementation NSString (data)
+-(NSString*)urlEncode {
+    NSCharacterSet *set = [NSCharacterSet URLQueryAllowedCharacterSet];
+        NSString *encodedString = [self stringByAddingPercentEncodingWithAllowedCharacters:set];
+        return encodedString;
+}
+
+@end
