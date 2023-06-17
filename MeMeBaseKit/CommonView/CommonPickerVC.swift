@@ -171,7 +171,7 @@ internal class CommonPickerHelper :NSObject, UIPickerViewDelegate, UIPickerViewD
     
     internal func pickerView(_ pickerView: UIPickerView, widthForComponent component: Int) -> CGFloat {
         if datas.count > 0 {
-            let count = datas.count >= 3 ? datas.count : 3
+            let count = datas.count >= 1 ? datas.count : 1
             return floor(UIScreen.main.bounds.width / CGFloat(count))
         }
         return 0
