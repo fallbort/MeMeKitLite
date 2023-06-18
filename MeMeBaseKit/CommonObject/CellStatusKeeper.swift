@@ -8,14 +8,14 @@
 import Foundation
 import RxSwift
 
-public class CellStatusKeeper<IdValue:Hashable,StatusValue> {
+public class CellStatusKeeper<IdValue:Hashable&Comparable,StatusValue> {
     
     //MARK: <>外部变量
     
     //MARK: <>外部block
-    public var changedObser = PublishSubject<IdValue?>()
-    public var changedBehaviorObser = BehaviorSubject<IdValue?>(value: nil)
-    public var changingObser = PublishSubject<IdValue?>()
+    public var changedObser = PublishSubject<[IdValue]>()
+    public var changedBehaviorObser = BehaviorSubject<[IdValue]>(value: [])
+    public var changingObser = PublishSubject<[IdValue]>()
     
     
     //MARK: <>生命周期开始
@@ -31,60 +31,103 @@ public class CellStatusKeeper<IdValue:Hashable,StatusValue> {
     }
     
     //ret为是否设置成功
-    public func resetAll(status:[IdValue:StatusValue],skipObser:Bool = true) {
+    public func resetAll(status:[IdValue:StatusValue],skipObser:Bool = false) {
         statusChangingLock.lock()
+        let newDict = self.status.merged(with: status)
+        let newAllKeys:[IdValue] = (Array<IdValue>)(newDict.keys)
         self.status = status
         statusChangingLock.unlock()
         
         if skipObser == false {
-            changedObser.onNext(nil)
-            changedBehaviorObser.onNext(nil)
+            if newAllKeys.count > 0 {
+                changedObser.onNext(newAllKeys)
+                changedBehaviorObser.onNext(newAllKeys)
+            }
         }
     }
     
     public func setStatus(id:IdValue,value:StatusValue) {
+        self.setStatus(status: [id:value])
+    }
+    
+    public func setStatus(status:[IdValue:StatusValue]) {
         statusChangingLock.lock()
-        self.status[id] = value
+        let newAllKeys:[IdValue] = (Array<IdValue>)(status.keys)
+        self.status.merge(with: status)
         statusChangingLock.unlock()
         
-        changedObser.onNext(id)
-        changedBehaviorObser.onNext(id)
+        if newAllKeys.count > 0 {
+            changedObser.onNext(newAllKeys)
+            changedBehaviorObser.onNext(newAllKeys)
+        }
     }
     
     public func getStatus(id:IdValue) -> StatusValue? {
-        statusChangingLock.lock()
-        let res = self.status[id]
-        statusChangingLock.unlock()
-        return res
+        return self.getStatus(ids:[id])[id]
     }
     
+    public func getStatus(ids:[IdValue]) -> [IdValue:StatusValue] {
+        var resDict = [IdValue:StatusValue]()
+        statusChangingLock.lock()
+        for id in ids {
+            let res = self.status[id]
+            resDict[id] = res
+        }
+        statusChangingLock.unlock()
+        return resDict
+    }
     @discardableResult
     public func setChanging(id:IdValue,changing:Bool) -> Bool {
+        return self.setChanging(changings: [id:changing])[id] ?? false
+    }
+    
+    //返回是否成功开始改变的dict
+    @discardableResult
+    public func setChanging(changings:[IdValue:Bool]) -> [IdValue:Bool] {
+        var retDict = [IdValue:Bool]()
         statusChangingLock.lock()
-        var ret = false
-        if changing == true {
-            let oldChanging = statusChanging[id]
-            if oldChanging != true {
-                statusChanging[id] = true
+        for (id,changing) in changings {
+            var ret = false
+            if changing == true {
+                let oldChanging = statusChanging[id]
+                if oldChanging != true {
+                    statusChanging[id] = true
+                    ret = true
+                }
+            }else{
+                statusChanging[id] = false
                 ret = true
             }
-        }else{
-            statusChanging[id] = false
-            ret = true
+            retDict[id] = ret
         }
         statusChangingLock.unlock()
         
-        if ret == true {
-            changingObser.onNext(id)
+        let changingIds:[IdValue] = retDict.compactMap { id,success in
+            if success == true {
+                return id
+            }else{
+                return nil
+            }
         }
-        return ret
+        if changingIds.count > 0 {
+            changingObser.onNext(changingIds)
+        }
+        return retDict
     }
     
     public func getChanging(id:IdValue) -> Bool {
+        return self.getChanging(ids: [id])[id] ?? false
+    }
+    
+    public func getChanging(ids:[IdValue]) -> [IdValue:Bool] {
+        var changingDict = [IdValue:Bool]()
         statusChangingLock.lock()
-        let oldChanging = statusChanging[id]
+        for id in ids {
+            changingDict[id] = statusChanging[id] ?? false
+        }
+        
         statusChangingLock.unlock()
-        return oldChanging ?? false
+        return changingDict
     }
     
     //MARK: <>内部View
