@@ -118,6 +118,10 @@ import Cartography
         self.adjustBtnWidth()
         backView.layer.cornerRadius = self.bounds.height / 2.0
     }
+    @objc public func clear() {
+        self.timer?.cancel()
+        self.timer = nil;
+    }
     
     @objc func touchedDown(_ sender:UIButton?) {
         self.curOneStep = 1
