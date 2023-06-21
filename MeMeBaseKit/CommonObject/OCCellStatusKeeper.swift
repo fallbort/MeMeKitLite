@@ -42,18 +42,44 @@ import RxSwift
     //MARK: <>功能性方法
     @objc public func clean() {
         keeper.clean()
+        equalKeeper.clean()
     }
 
     @objc public func resetAll(status: [String : AnyObject], skipObser: Bool = false) {
         keeper.resetAll(status: status,skipObser: skipObser)
+        var newStatus:[String:String] = [:]
+        for (key,value) in status {
+            if let desc = value as? CustomStringConvertible {
+                newStatus[key] = "\(value)"
+            }
+        }
+        if newStatus.count > 0 {
+            equalKeeper.resetAll(status: newStatus,skipObser: true)
+        }
     }
 
     @objc public func setStatus(id: String, value: AnyObject) {
         keeper.setStatus(id: id, value: value)
+        if let desc = value as? CustomStringConvertible {
+            equalKeeper.setStatus(id: id, value: "\(desc)")
+        }
     }
     
     @objc public func setStatus(status: [String : AnyObject]) {
         keeper.setStatus(status: status)
+        var newStatus:[String:String] = [:]
+        for (key,value) in status {
+            if let desc = value as? CustomStringConvertible {
+                newStatus[key] = "\(value)"
+            }
+        }
+        if newStatus.count > 0 {
+            equalKeeper.setStatus(status: newStatus)
+        }
+    }
+    
+    @objc public func getFirstStatus() -> AnyObject? {
+        return keeper.getFirstStatus()
     }
 
     @objc public func getStatus(id: String) -> AnyObject? {
@@ -62,6 +88,18 @@ import RxSwift
     
     @objc public func getStatus(ids: [String]) -> [String:AnyObject] {
         return keeper.getStatus(ids: ids)
+    }
+    
+    @objc public func getAllStatus() -> [String:AnyObject] {
+        return keeper.getAllStatus()
+    }
+    
+    //所有值都相等
+    @objc public func isValuesEqualed () -> NSNumber? {
+        if equalKeeper.getAllStatus().count == keeper.getAllStatus().count {
+            return NSNumber.init(value: equalKeeper.isValuesEqualed())
+        }
+        return nil
     }
 
     @discardableResult
@@ -86,6 +124,7 @@ import RxSwift
     //MARK: <>内部UI变量
     //MARK: <>内部数据变量
     fileprivate var keeper = CellStatusKeeper<String,AnyObject>()
+    fileprivate var equalKeeper = CellEqualStatusKeeper<String,String>()
     //MARK: <>内部block
     
 }

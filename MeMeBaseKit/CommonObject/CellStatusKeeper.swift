@@ -62,6 +62,12 @@ public class CellStatusKeeper<IdValue:Hashable&Comparable,StatusValue> {
         }
     }
     
+    
+    
+    public func getFirstStatus() -> StatusValue? {
+        return self.getAllStatus().first?.value
+    }
+    
     public func getStatus(id:IdValue) -> StatusValue? {
         return self.getStatus(ids:[id])[id]
     }
@@ -76,6 +82,15 @@ public class CellStatusKeeper<IdValue:Hashable&Comparable,StatusValue> {
         statusChangingLock.unlock()
         return resDict
     }
+    
+    public func getAllStatus() -> [IdValue:StatusValue] {
+        var resDict = [IdValue:StatusValue]()
+        statusChangingLock.lock()
+        resDict = self.status
+        statusChangingLock.unlock()
+        return resDict
+    }
+    
     @discardableResult
     public func setChanging(id:IdValue,changing:Bool) -> Bool {
         return self.setChanging(changings: [id:changing])[id] ?? false
@@ -139,5 +154,29 @@ public class CellStatusKeeper<IdValue:Hashable&Comparable,StatusValue> {
     fileprivate lazy var statusChangingLock = NSLock()
     
     //MARK: <>内部block
+}
+
+
+public class CellEqualStatusKeeper<IDValue2:Hashable&Comparable,StatusValue2:Equatable> :CellStatusKeeper<IDValue2, StatusValue2>  {
+
+    //返回是否都相等
+    public func isValuesEqualed () -> Bool {
+        var isEqualed = true;
+        statusChangingLock.lock()
+        var oldEqualedValue:StatusValue2?
+        for (_,value) in self.status {
+            if oldEqualedValue != nil {
+                if value == oldEqualedValue {
+                    
+                }else{
+                    isEqualed = false;
+                    break;
+                }
+            }
+            oldEqualedValue = value;
+        }
+        statusChangingLock.unlock()
+        return isEqualed;
+    }
     
 }
