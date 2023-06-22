@@ -27,6 +27,7 @@ import Cartography
         didSet {
             self.textLabel.text = "\(value)"
             checkBtnEnable()
+            adjustTextContainerWidth()
         }
     }
     @objc public var minValue:NSInteger = 0 {
@@ -34,7 +35,7 @@ import Cartography
             checkBtnEnable()
         }
     }
-    @objc public var maxValue:NSInteger = 999 {
+    @objc public var maxValue:NSInteger = 999999 {
         didSet{
             checkBtnEnable()
             adjustTextContainerWidth()
@@ -151,6 +152,14 @@ import Cartography
                 if lastFisrtLeftTime == self.lastFisrtLeftTime,self.curOneStep < 10 {
                     self.curOneStep += 1
                 }
+                self.checkBtnEnable()
+                if sender == self.leftBtn, self.value == self.minValue {
+                    self.timer?.cancel()
+                    self.timer = nil;
+                }else if sender == self.rightBtn, self.value == self.maxValue {
+                    self.timer?.cancel()
+                    self.timer = nil;
+                }
             }
             self.timePassed += 0.1
             self.nextLeftTime -= 0.1
@@ -211,7 +220,9 @@ import Cartography
     func adjustTextContainerWidth() {
         let label = UILabel()
         label.font = textLabel.font
-        label.text = "\(maxValue)"
+        var maxNow = maxValue > 999 ? 999 : maxValue;
+        maxNow = max(maxNow,value)
+        label.text = "\(maxNow)"
         let labelSize = label.sizeThatFits(CGSize())
         textContainerWidth?.constant = labelSize.width + 4.0
     }
