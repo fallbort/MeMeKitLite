@@ -42,6 +42,12 @@ import Cartography
         }
     }
     
+    @objc public var minShowBitCountForWidth:NSInteger = 0 { //最小显示位数
+        didSet{
+            adjustTextContainerWidth()
+        }
+    }
+    
     //MARK: <>外部block
     @objc public var didChangedBlock:((NSInteger)->())?
     
@@ -220,8 +226,13 @@ import Cartography
     func adjustTextContainerWidth() {
         let label = UILabel()
         label.font = textLabel.font
-        var maxNow = maxValue > 999 ? 999 : maxValue;
+        var maxNow = maxValue > 999 ? 999 : maxValue
+        var minShowValue = 0
+        for _ in 0..<minShowBitCountForWidth {
+            minShowValue = minShowValue * 10 + 9
+        }
         maxNow = max(maxNow,value)
+        maxNow = max(maxNow,minShowValue)
         label.text = "\(maxNow)"
         let labelSize = label.sizeThatFits(CGSize())
         textContainerWidth?.constant = labelSize.width + 4.0
