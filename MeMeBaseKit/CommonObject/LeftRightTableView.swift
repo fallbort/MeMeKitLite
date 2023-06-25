@@ -106,8 +106,12 @@ class LeftRightTableLCell : UITableViewCell {
     //MARK: <>功能性方法
     @objc public func reloadLeftData(section:NSInteger) {
         if let num = self.rightDataSource?.numberOfSections?(in: self.rightTableView),num > section {
+            let oldSectedPath = self.leftTableView.indexPathForSelectedRow;
             let indexPath = IndexPath(row: 0, section: section)
             self.leftTableView.reloadRows(at: [indexPath], with: .none)
+            if (oldSectedPath == indexPath) {
+                self.leftTableView.selectRow(at: indexPath, animated: false, scrollPosition: .none);
+            }
         }
     }
     
