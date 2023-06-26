@@ -42,40 +42,18 @@ import RxSwift
     //MARK: <>功能性方法
     @objc public func clean() {
         keeper.clean()
-        equalKeeper.clean()
     }
 
     @objc public func resetAll(status: [String : AnyObject], skipObser: Bool = false) {
         keeper.resetAll(status: status,skipObser: skipObser)
-        var newStatus:[String:String] = [:]
-        for (key,value) in status {
-            if let desc = value as? CustomStringConvertible {
-                newStatus[key] = "\(value)"
-            }
-        }
-        if newStatus.count > 0 {
-            equalKeeper.resetAll(status: newStatus,skipObser: true)
-        }
     }
 
     @objc public func setStatus(id: String, value: AnyObject) {
         keeper.setStatus(id: id, value: value)
-        if let desc = value as? CustomStringConvertible {
-            equalKeeper.setStatus(id: id, value: "\(desc)")
-        }
     }
     
     @objc public func setStatus(status: [String : AnyObject]) {
         keeper.setStatus(status: status)
-        var newStatus:[String:String] = [:]
-        for (key,value) in status {
-            if let desc = value as? CustomStringConvertible {
-                newStatus[key] = "\(value)"
-            }
-        }
-        if newStatus.count > 0 {
-            equalKeeper.setStatus(status: newStatus)
-        }
     }
     
     @objc public func getFirstStatus() -> AnyObject? {
@@ -96,20 +74,41 @@ import RxSwift
     
     //所有值都相等
     @objc public func isValuesEqualed () -> NSNumber? {
-        if equalKeeper.getAllStatus().count == keeper.getAllStatus().count {
-            return NSNumber.init(value: equalKeeper.isValuesEqualed())
+        if let isEqual = keeper.isValuesEqualed() {
+            return NSNumber.init(value: isEqual)
         }
         return nil
     }
 
     @discardableResult
-    @objc public func setChanging(id: String, changing: Bool) -> Bool {
-        return keeper.setChanging(id: id, changing: changing)
+    @objc public func setStartChanging(id:String) -> Bool {
+        return keeper.setStartChanging(id: id,completeBlock: nil)
+    }
+    
+    @discardableResult
+    @objc public func setStartChanging(id:String,completeBlock:@escaping VoidBlock) -> Bool {
+        return keeper.setStartChanging(id: id,completeBlock: completeBlock)
+    }
+    
+    @objc public func setEndChanging(id:String) {
+        keeper.setEndChanging(id: id)
     }
     
     @discardableResult
     @objc public func setChanging(changings: [String: Bool]) -> [String: Bool] {
         return keeper.setChanging(changings: changings)
+    }
+    
+    @objc public func setChanging(changings: [String: Bool],completeBlock:@escaping VoidBlock) -> [String: Bool] {
+        var blocks = [String:VoidBlock]()
+        for key in changings.keys {
+            if (changings[key] == true) {
+                blocks[key] = completeBlock
+                break
+            }
+        }
+        
+        return keeper.setChanging(changings: changings,completeBlocks: blocks)
     }
 
     @objc public func getChanging(id: String) -> Bool {
@@ -124,7 +123,6 @@ import RxSwift
     //MARK: <>内部UI变量
     //MARK: <>内部数据变量
     fileprivate var keeper = CellStatusKeeper<String,AnyObject>()
-    fileprivate var equalKeeper = CellEqualStatusKeeper<String,String>()
     //MARK: <>内部block
     
 }

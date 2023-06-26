@@ -92,14 +92,25 @@ public class CellStatusKeeper<IdValue:Hashable&Comparable,StatusValue> {
     }
     
     @discardableResult
-    public func setChanging(id:IdValue,changing:Bool) -> Bool {
-        return self.setChanging(changings: [id:changing])[id] ?? false
+    public func setStartChanging(id:IdValue,completeBlock:VoidBlock? = nil) -> Bool {
+        var completeBlocks = [IdValue:VoidBlock]()
+        if let block = completeBlock {
+            completeBlocks[id] = block
+        }
+        let ret = self.setChanging(changings: [id:true],completeBlocks: completeBlocks)[id] ?? false
+        
+        return ret
+    }
+    
+    public func setEndChanging(id:IdValue) {
+        self.setChanging(changings: [id:false])
     }
     
     //返回是否成功开始改变的dict
     @discardableResult
-    public func setChanging(changings:[IdValue:Bool]) -> [IdValue:Bool] {
-        var retDict = [IdValue:Bool]()
+    public func setChanging(changings:[IdValue:Bool],completeBlocks:[IdValue:VoidBlock] = [:]) -> [IdValue:Bool] {
+        var retDict = [IdValue:Bool]()  //返回设定changing成功的数组
+        var emitCompletes:[VoidBlock]?  //需要触发的完成block
         statusChangingLock.lock()
         for (id,changing) in changings {
             var ret = false
@@ -114,6 +125,17 @@ public class CellStatusKeeper<IdValue:Hashable&Comparable,StatusValue> {
                 ret = true
             }
             retDict[id] = ret
+            
+            if changing == true, let completeBlock = completeBlocks[id] {
+                var oldBlocks:[VoidBlock] = changeCompleteBlocks[id] ?? []
+                oldBlocks.append(completeBlock)
+                changeCompleteBlocks[id] = oldBlocks
+            }else if changing == false {
+                let blocks = changeCompleteBlocks[id]
+                emitCompletes = blocks
+                changeCompleteBlocks.removeValue(forKey: id)
+            }
+            
         }
         statusChangingLock.unlock()
         
@@ -127,6 +149,12 @@ public class CellStatusKeeper<IdValue:Hashable&Comparable,StatusValue> {
         if changingIds.count > 0 {
             changingObser.onNext(changingIds)
         }
+        if let emitCompletes = emitCompletes,emitCompletes.count > 0 {
+            for complete in emitCompletes {
+                complete()
+            }
+        }
+        
         return retDict
     }
     
@@ -145,38 +173,64 @@ public class CellStatusKeeper<IdValue:Hashable&Comparable,StatusValue> {
         return changingDict
     }
     
+    //返回是否都相等
+    public func isValuesEqualed () -> Bool? {
+        var isEqualed:Bool? = true;
+        statusChangingLock.lock()
+        var oldEqualedValue:AnyHashable?
+        for (_,value) in self.status {
+            if let value = value as? AnyHashable {
+                if oldEqualedValue != nil {
+                    if value == oldEqualedValue {
+                        
+                    }else{
+                        isEqualed = false;
+                        break;
+                    }
+                }
+                oldEqualedValue = value;
+            }else{
+                isEqualed = nil;
+                break
+            }
+        }
+        statusChangingLock.unlock()
+        return isEqualed;
+    }
+    
     //MARK: <>内部View
     
     //MARK: <>内部UI变量
     //MARK: <>内部数据变量
     fileprivate var status:[IdValue:StatusValue] = [:]
     fileprivate var statusChanging:[IdValue:Bool] = [:]
+    fileprivate var changeCompleteBlocks:[IdValue:[VoidBlock]] = [:]
     fileprivate lazy var statusChangingLock = NSLock()
     
     //MARK: <>内部block
 }
 
-
-public class CellEqualStatusKeeper<IDValue2:Hashable&Comparable,StatusValue2:Equatable> :CellStatusKeeper<IDValue2, StatusValue2>  {
-
-    //返回是否都相等
-    public func isValuesEqualed () -> Bool {
-        var isEqualed = true;
-        statusChangingLock.lock()
-        var oldEqualedValue:StatusValue2?
-        for (_,value) in self.status {
-            if oldEqualedValue != nil {
-                if value == oldEqualedValue {
-                    
-                }else{
-                    isEqualed = false;
-                    break;
-                }
-            }
-            oldEqualedValue = value;
-        }
-        statusChangingLock.unlock()
-        return isEqualed;
-    }
-    
-}
+//
+//public class CellEqualStatusKeeper<IDValue2:Hashable&Comparable,StatusValue2:Equatable> :CellStatusKeeper<IDValue2, StatusValue2>  {
+//
+//    //返回是否都相等
+//    public func isValuesEqualed () -> Bool {
+//        var isEqualed = true;
+//        statusChangingLock.lock()
+//        var oldEqualedValue:StatusValue2?
+//        for (_,value) in self.status {
+//            if oldEqualedValue != nil {
+//                if value == oldEqualedValue {
+//                    
+//                }else{
+//                    isEqualed = false;
+//                    break;
+//                }
+//            }
+//            oldEqualedValue = value;
+//        }
+//        statusChangingLock.unlock()
+//        return isEqualed;
+//    }
+//    
+//}
