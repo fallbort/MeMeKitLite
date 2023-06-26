@@ -8,8 +8,10 @@
 import Foundation
 import RxSwift
 
+
+
 public class CellStatusKeeper<IdValue:Hashable&Comparable,StatusValue> {
-    
+    public typealias KeeperCompleteBlock = ((_ statusValue:StatusValue?)->())
     //MARK: <>外部变量
     
     //MARK: <>外部block
@@ -92,8 +94,8 @@ public class CellStatusKeeper<IdValue:Hashable&Comparable,StatusValue> {
     }
     
     @discardableResult
-    public func setStartChanging(id:IdValue,completeBlock:VoidBlock? = nil) -> Bool {
-        var completeBlocks = [IdValue:VoidBlock]()
+    public func setStartChanging(id:IdValue,completeBlock:KeeperCompleteBlock? = nil) -> Bool {
+        var completeBlocks = [IdValue:KeeperCompleteBlock]()
         if let block = completeBlock {
             completeBlocks[id] = block
         }
@@ -108,9 +110,10 @@ public class CellStatusKeeper<IdValue:Hashable&Comparable,StatusValue> {
     
     //返回是否成功开始改变的dict
     @discardableResult
-    public func setChanging(changings:[IdValue:Bool],completeBlocks:[IdValue:VoidBlock] = [:]) -> [IdValue:Bool] {
+    public func setChanging(changings:[IdValue:Bool],completeBlocks:[IdValue:KeeperCompleteBlock] = [:]) -> [IdValue:Bool] {
         var retDict = [IdValue:Bool]()  //返回设定changing成功的数组
-        var emitCompletes:[VoidBlock]?  //需要触发的完成block
+        var emitCompletes:[KeeperCompleteBlock]?  //需要触发的完成block
+        var emitCompleteValue:StatusValue?
         statusChangingLock.lock()
         for (id,changing) in changings {
             var ret = false
@@ -127,13 +130,14 @@ public class CellStatusKeeper<IdValue:Hashable&Comparable,StatusValue> {
             retDict[id] = ret
             
             if changing == true, let completeBlock = completeBlocks[id] {
-                var oldBlocks:[VoidBlock] = changeCompleteBlocks[id] ?? []
+                var oldBlocks:[KeeperCompleteBlock] = changeCompleteBlocks[id] ?? []
                 oldBlocks.append(completeBlock)
                 changeCompleteBlocks[id] = oldBlocks
             }else if changing == false {
                 let blocks = changeCompleteBlocks[id]
                 emitCompletes = blocks
                 changeCompleteBlocks.removeValue(forKey: id)
+                emitCompleteValue = status[id]
             }
             
         }
@@ -151,7 +155,7 @@ public class CellStatusKeeper<IdValue:Hashable&Comparable,StatusValue> {
         }
         if let emitCompletes = emitCompletes,emitCompletes.count > 0 {
             for complete in emitCompletes {
-                complete()
+                complete(emitCompleteValue)
             }
         }
         
@@ -204,7 +208,7 @@ public class CellStatusKeeper<IdValue:Hashable&Comparable,StatusValue> {
     //MARK: <>内部数据变量
     fileprivate var status:[IdValue:StatusValue] = [:]
     fileprivate var statusChanging:[IdValue:Bool] = [:]
-    fileprivate var changeCompleteBlocks:[IdValue:[VoidBlock]] = [:]
+    fileprivate var changeCompleteBlocks:[IdValue:[KeeperCompleteBlock]] = [:]
     fileprivate lazy var statusChangingLock = NSLock()
     
     //MARK: <>内部block

@@ -86,7 +86,7 @@ import RxSwift
     }
     
     @discardableResult
-    @objc public func setStartChanging(id:String,completeBlock:@escaping VoidBlock) -> Bool {
+    @objc public func setStartChanging(id:String,completeBlock:@escaping ((AnyObject?)->())) -> Bool {
         return keeper.setStartChanging(id: id,completeBlock: completeBlock)
     }
     
@@ -99,8 +99,8 @@ import RxSwift
         return keeper.setChanging(changings: changings)
     }
     
-    @objc public func setChanging(changings: [String: Bool],completeBlock:@escaping VoidBlock) -> [String: Bool] {
-        var blocks = [String:VoidBlock]()
+    @objc public func setChanging(changings: [String: Bool],completeBlock:@escaping ((AnyObject?)->())) -> [String: Bool] {
+        var blocks = [String:((AnyObject?)->())]()
         for key in changings.keys {
             if (changings[key] == true) {
                 blocks[key] = completeBlock
