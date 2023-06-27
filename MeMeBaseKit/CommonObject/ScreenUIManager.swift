@@ -20,8 +20,7 @@ import Foundation
         
     }
     //MARK: <>功能性方法
-    /// 获取顶部控制器 无要求
-    @objc public static func topViewController() -> UIViewController? {
+    @objc public static func topWindow() -> UIWindow? {
         var window = UIApplication.shared.keyWindow
         // 是否为当前显示的window
         if ((window?.windowLevel.rawValue) != 0) {
@@ -34,7 +33,12 @@ import Foundation
             }
         }
  
-        let vc = window?.rootViewController
+        return window
+    }
+    
+    /// 获取顶部控制器 无要求
+    @objc public static func topViewController() -> UIViewController? {
+        let vc  = self.topWindow()?.rootViewController
         return getTopVC(withCurrentVC: vc)
     }
     
