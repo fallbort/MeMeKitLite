@@ -11,9 +11,9 @@
 #include <CoreTelephony/CTTelephonyNetworkInfo.h> //添加获取客户端运营商 支持
 #include <CoreTelephony/CTCarrier.h>
 #ifdef SWIFT_INSTALL_OBJC_HEADER
-#import <MeMeKit-Swift.h>
-#else
 #import <MeMeKit/MeMeKit-Swift.h>
+#else
+#import <MeMeKit-Swift.h>
 #endif
 
 @implementation SystemUtil (countrycode)
