@@ -10,7 +10,7 @@ import RxSwift
 
 
 
-public class CellStatusKeeper<IdValue:Hashable&Comparable,StatusValue> {
+public class CellStatusKeeper<IdValue:Hashable,StatusValue> {
     public typealias KeeperCompleteBlock = ((_ statusValue:StatusValue?)->())
     //MARK: <>外部变量
     
@@ -108,10 +108,84 @@ public class CellStatusKeeper<IdValue:Hashable&Comparable,StatusValue> {
         self.setChanging(changings: [id:false])
     }
     
+    //获取多个并加锁
+    public func getStatusAndSetStartChanging(ids:[IdValue],completeBlock:KeeperCompleteBlock?) -> (status:[IdValue:StatusValue],changingResult:[IdValue:Bool]) {
+        if let idValue = ids.first {
+            var completeBlocks:[IdValue:KeeperCompleteBlock] = [:]
+            if let completeBlock = completeBlock {
+                completeBlocks[idValue] = completeBlock
+            }
+            return self.getStatusAndSetStartChanging(ids: ids,completeBlocks: completeBlocks)
+        }else{
+            return ([:],[:])
+        }
+    }
+    
+    public func getStatusAndSetStartChanging(ids:[IdValue],completeBlocks:[IdValue:KeeperCompleteBlock] = [:]) -> (status:[IdValue:StatusValue],changingResult:[IdValue:Bool]) {
+        var valueDict = [IdValue:StatusValue]()
+        var retDict = [IdValue:Bool]()  //返回设定changing结果的数组
+        var emitCompletes:[KeeperCompleteBlock]?  //需要触发的完成block
+        var emitCompleteValue:StatusValue?
+        var changings:[IdValue:Bool] = [:] //需要开始changing的dict
+        statusChangingLock.lock()
+        for id in ids {
+            if let res = self.status[id] {
+                valueDict[id] = res
+            }else{
+                changings[id] = true;
+            }
+        }
+        for (id,changing) in changings {
+            var ret = false
+            if changing == true {
+                let oldChanging = statusChanging[id]
+                if oldChanging != true {
+                    statusChanging[id] = true
+                    ret = true
+                }
+            }else{
+                statusChanging[id] = false
+                ret = true
+            }
+            retDict[id] = ret
+            
+            if changing == true, let completeBlock = completeBlocks[id] {
+                var oldBlocks:[KeeperCompleteBlock] = changeCompleteBlocks[id] ?? []
+                oldBlocks.append(completeBlock)
+                changeCompleteBlocks[id] = oldBlocks
+            }else if changing == false {
+                let blocks = changeCompleteBlocks[id]
+                emitCompletes = blocks
+                changeCompleteBlocks.removeValue(forKey: id)
+                emitCompleteValue = status[id]
+            }
+            
+        }
+        statusChangingLock.unlock()
+        
+        let changingIds:[IdValue] = retDict.compactMap { id,success in
+            if success == true {
+                return id
+            }else{
+                return nil
+            }
+        }
+        if changingIds.count > 0 {
+            changingObser.onNext(changingIds)
+        }
+        if let emitCompletes = emitCompletes,emitCompletes.count > 0 {
+            for complete in emitCompletes {
+                complete(emitCompleteValue)
+            }
+        }
+        
+        return (valueDict,retDict)
+    }
+    
     //返回是否成功开始改变的dict
     @discardableResult
     public func setChanging(changings:[IdValue:Bool],completeBlocks:[IdValue:KeeperCompleteBlock] = [:]) -> [IdValue:Bool] {
-        var retDict = [IdValue:Bool]()  //返回设定changing成功的数组
+        var retDict = [IdValue:Bool]()  //返回设定changing结果的数组
         var emitCompletes:[KeeperCompleteBlock]?  //需要触发的完成block
         var emitCompleteValue:StatusValue?
         statusChangingLock.lock()
