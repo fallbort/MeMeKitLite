@@ -43,3 +43,10 @@
 }
 
 @end
+
+@implementation NSString (number)
+-(NSString*)subStringWithContent:(NSString*)content {
+    return [[self componentsSeparatedByCharactersInSet:[[NSCharacterSet characterSetWithCharactersInString:content] invertedSet]] componentsJoinedByString:@""];
+}
+
+@end

@@ -89,6 +89,24 @@ extension UIImage {
         }
 		UIGraphicsEndImageContext()
 	}
+    
+    public convenience init?(gradientColors:[UIColor],start:CGPoint,end:CGPoint, size:CGSize = CGSizeMake(10, 10) )
+    {
+        UIGraphicsBeginImageContextWithOptions(size, true, 0)
+        let context = UIGraphicsGetCurrentContext()
+        let colorSpace = CGColorSpaceCreateDeviceRGB()
+        let colors = gradientColors.map {(color: UIColor) -> AnyObject? in return color.cgColor } as NSArray
+        let gradient = CGGradient(colorsSpace: colorSpace, colors: colors, locations: nil)
+        // 第二个参数是起始位置，第三个参数是终止位置
+        let newStart = CGPoint.init(x: size.width * start.x, y: size.height * start.y)
+        let newEnd = CGPoint.init(x: size.width * end.x, y: size.height * end.y)
+        if let context = context,let gradient = gradient {
+            context.drawLinearGradient(gradient, start: newStart, end: newEnd, options: CGGradientDrawingOptions(arrayLiteral: .drawsBeforeStartLocation,.drawsAfterEndLocation))
+        }
+        
+        self.init(cgImage:(UIGraphicsGetImageFromCurrentImageContext()?.cgImage!)!)
+        UIGraphicsEndImageContext()
+    }
 
 	public func fun_resizeTo(_ size: CGSize) -> UIImage {
 		let hasAlpha = false

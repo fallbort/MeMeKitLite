@@ -25,3 +25,8 @@
 -(NSString*)urlEncode;
 
 @end
+
+@interface NSString (number)
+-(NSString*)subStringWithContent:(NSString*)content;
+
+@end
