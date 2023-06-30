@@ -8,10 +8,10 @@
 import Foundation
 import Cartography
 
-class CommonDatePickerVC : UIViewController, BottomCardProtocol {
+public class CommonDatePickerVC : UIViewController, BottomCardProtocol {
     
     //MARK: <>外部变量
-    var time:TimeInterval? {
+    public var time:TimeInterval? {
         didSet {
             guard let time = time else {return}
             let maxTime = datePicker.date.timeIntervalSince1970
@@ -20,22 +20,22 @@ class CommonDatePickerVC : UIViewController, BottomCardProtocol {
         }
     }
     
-    var minTime:TimeInterval = 0 {  //最小时间
+    public var minTime:TimeInterval = 0 {  //最小时间
         didSet {
             self.datePicker.minimumDate = Date(timeIntervalSince1970: minTime)
         }
     }
     
-    var maxTime:TimeInterval = 0 { //最大时间
+    public var maxTime:TimeInterval = 0 { //最大时间
         didSet {
             self.datePicker.maximumDate = Date(timeIntervalSince1970: maxTime)
         }
     }
     //MARK: <>外部block
-    var didcomfirmBlock:((_ oldTime:TimeInterval?,_ newTime:TimeInterval)->())?
+    public var didcomfirmBlock:((_ oldTime:TimeInterval?,_ newTime:TimeInterval)->())?
     
     //MARK: <>生命周期开始
-    required init() {
+    public required init() {
         super.init(nibName: nil, bundle: nil)
         self.contentSizeInPopup = CGSize.init(width: UIScreen.main.bounds.width, height: 320)
     }
@@ -43,7 +43,7 @@ class CommonDatePickerVC : UIViewController, BottomCardProtocol {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func viewDidLoad() {
+    public override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
     }
@@ -92,6 +92,7 @@ class CommonDatePickerVC : UIViewController, BottomCardProtocol {
         }
 
         picker.datePickerMode = .date
+        picker.locale = Locale.init(identifier: "zh_CN")
         return picker
     }()
     //MARK: <>内部UI变量
