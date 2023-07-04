@@ -9,6 +9,7 @@
 import Foundation
 import Cartography
 import MeMeKit
+import YYWebImage
 
 public enum CommonSettingCellComponent : String {
     case block    //从block获取view

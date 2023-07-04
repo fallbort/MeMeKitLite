@@ -94,6 +94,7 @@ Pod::Spec.new do |spec|
       base.source_files = 'MeMeBaseKit/ExView/**/*.swift'
       base.dependency 'MeMeKit/MeMeBaseKit'
       base.dependency 'Cartography'
+      base.dependency 'MBProgressHUD'
       base.framework    = "UIKit"
   end
 
