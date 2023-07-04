@@ -139,7 +139,7 @@ import MeMeKit
     
     @objc public static var barHeight:CGFloat {
         let extraBottom:CGFloat = UIWindow.keyWindowSafeAreaInsets().bottom > 0 ? UIWindow.keyWindowSafeAreaInsets().bottom : 0
-        let barBottom:CGFloat = extraBottom + 54.0
+        let barBottom:CGFloat = extraBottom + 58.0
         return barBottom
     }
     //MARK: <>内部block
