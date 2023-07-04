@@ -103,5 +103,13 @@ Pod::Spec.new do |spec|
       base.dependency 'MeMeKit/MeMeBaseKit'
       base.frameworks    = "Foundation", "Photos"
   end
+  
+  spec.subspec 'Location' do |base|
+      base.source_files = 'MeMeBaseKit/Access/Location/**/*.swift'
+      base.dependency 'MeMeKit/MeMeBaseKit'
+      base.dependency 'RxSwift'
+      base.dependency 'Result'
+      base.frameworks    = "Foundation", "CoreLocation"
+  end
 
 end
