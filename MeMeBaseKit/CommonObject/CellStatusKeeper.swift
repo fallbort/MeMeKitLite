@@ -9,7 +9,7 @@ import Foundation
 import RxSwift
 
 
-
+//同时执行一份任务的锁，线程安全
 public class CellStatusKeeper<IdValue:Hashable,StatusValue> {
     public typealias KeeperCompleteBlock = ((_ statusValue:StatusValue?)->())
     //MARK: <>外部变量

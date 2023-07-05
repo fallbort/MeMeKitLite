@@ -111,5 +111,11 @@ Pod::Spec.new do |spec|
       base.dependency 'Result'
       base.frameworks    = "Foundation", "CoreLocation"
   end
+  
+  spec.subspec 'Network' do |base|
+      base.source_files = 'MeMeBaseKit/Access/Network/**/*.swift'
+      base.dependency 'MeMeKit/MeMeBaseKit'
+      base.frameworks    = "Foundation", "CoreTelephony"
+  end
 
 end
