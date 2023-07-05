@@ -34,6 +34,14 @@ public class ThemeLite {
             }
         }
         
+        public class func pingfang(size: CGFloat,weight:UIFont.Weight = .regular) -> UIFont {
+            if let font = UIFont(name: "PingFang SC", size: size) {
+                return font
+            } else {
+                return self.regular(size: size)
+            }
+        }
+        
         public class func bebasNeueRegular(size: CGFloat) -> UIFont {
             if let font = UIFont(name: "BebasNeue-Regular", size: size) {
                 return font

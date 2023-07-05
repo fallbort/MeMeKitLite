@@ -625,7 +625,7 @@ extension UIView {
 private var isSelectedFakeKey = "isSelectedFakeKey"
 private var isSelectedFakeBlockKey = "isSelectedFakeBlockKey"
 extension UIView {
-    public var isSelectedFake: Bool {
+    @objc public var isSelectedFake: Bool {
         get {
             let timer = objc_getAssociatedObject(self, &isSelectedFakeKey) as? Bool
             return timer ?? false
@@ -637,7 +637,7 @@ extension UIView {
         }
     }
     
-    public var isSelectedFakeBlock: ((Bool)->())? {
+    @objc public var isSelectedFakeBlock: ((Bool)->())? {
         get {
             let timer = objc_getAssociatedObject(self, &isSelectedFakeBlockKey) as? ((Bool)->())
             return timer
