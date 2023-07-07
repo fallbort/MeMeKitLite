@@ -18,7 +18,7 @@ enum CircleScrollDirection {
 }
 
 @objc
-protocol CircleScrollViewDelegate: AnyObject {
+public protocol CircleScrollViewDelegate: AnyObject {
     func prefixImageUrl() -> URL?
     func currentImageUrl() -> URL?
     func nextImageUrl() -> URL?
@@ -30,7 +30,7 @@ protocol CircleScrollViewDelegate: AnyObject {
     @objc optional func clicked()
 }
 
-class CircleScrollView: UIScrollView {
+public class CircleScrollView: UIScrollView {
     var scrollPreviousNext: Int = 0  {  //拖动： -1显示出上一个区域  1下一个区域  0没有拖动
         didSet {
             if scrollPreviousNext != oldValue {
@@ -55,19 +55,19 @@ class CircleScrollView: UIScrollView {
     
     var sysPagingEnabled = true //是否用系统的翻页效果
     
-    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+    public override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         if let keyPath = keyPath, keyPath ==  "statusBarHidden" {
             contentOffset = CGPoint(x: 0, y: size.height)
         }
     }
 
-    weak var circleDelegate: CircleScrollViewDelegate? {
+    public weak var circleDelegate: CircleScrollViewDelegate? {
         didSet {
             reloadData()
         }
     }
 
-    override var bounds: CGRect {
+    public override var bounds: CGRect {
         didSet {
             if oldValue.size != bounds.size{
                 resetupViews()
@@ -124,7 +124,7 @@ class CircleScrollView: UIScrollView {
         super.init(coder: aDecoder)
     }
 
-    override func awakeFromNib() {
+    public override func awakeFromNib() {
         super.awakeFromNib()
         setupViews()
     }
@@ -139,7 +139,7 @@ class CircleScrollView: UIScrollView {
 }
 
 extension CircleScrollView {
-    func reloadData() {
+    public func reloadData() {
         for (i, childView) in childViews.enumerated() {
             let imageURL: URL?
             switch i {
@@ -169,7 +169,7 @@ extension CircleScrollView {
         circleDelegate?.endChangedToNext?(false)
     }
 
-    func scrollNext() {
+    public func scrollNext() {
         circleDelegate?.willChangToNext?(true)
         switch direction {
         case .horizontal:
@@ -329,7 +329,7 @@ extension CircleScrollView {
 }
 
 extension CircleScrollView: UIScrollViewDelegate {
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+    public func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if !isDragging {
             return
         }
@@ -341,7 +341,7 @@ extension CircleScrollView: UIScrollViewDelegate {
         }
     }
     
-    func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+    public func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
         if sysPagingEnabled {return}
         let pointeeY = targetOffset(moveY: scrollView.contentOffset.y - bounds.size.height, velocity: velocity.y)
         self.isUserInteractionEnabled = false
@@ -358,18 +358,18 @@ extension CircleScrollView: UIScrollViewDelegate {
         }
     }
     
-    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+    public func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         if !decelerate {
             endScrollView(scrollView)
         }
     }
 
-    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+    public func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         endScrollView(scrollView)
         scrollPreviousNext = 0
     }
 
-    func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
+    public func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
         endScrollView(scrollView)
     }
 }

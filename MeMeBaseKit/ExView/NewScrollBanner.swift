@@ -14,10 +14,31 @@ public protocol NewScrollBannerContent {
     var coverUrl:String {get}
 }
 
+public struct NewScrollBannerObject : NewScrollBannerContent {
+    public var coverUrl:String
+    public init(coverUrl: String) {
+        self.coverUrl = coverUrl
+    }
+}
+
 private let LoopInterval = TimeInterval(4)
 private let LoadDataInterval = TimeInterval(30 * 60)
 
 public class NewScrollBanner: UIView {
+    public var hasTimer:Bool = true {
+        didSet {
+            if hasTimer {
+                startScrollAnimation()
+            }else{
+                stopScrollAnimation()
+            }
+        }
+    }
+    public var hasPageControl = true {
+        didSet {
+            pageControl.setMultiValueMixTrue(uniqueKey: "out", keyPath: \UIView.isHidden, value: !hasPageControl)
+        }
+    }
     fileprivate var circleScrollView:CircleScrollView
     
     fileprivate lazy var pageControl: UIPageControl = {
@@ -34,11 +55,13 @@ public class NewScrollBanner: UIView {
             guard bannerInfoList.count > 0 else {
                 return
             }
-            pageControl.isHidden = bannerInfoList.count < 2
+            pageControl.setMultiValueMixTrue(uniqueKey: "in", keyPath: \UIView.isHidden, value: bannerInfoList.count < 2)
             pageControl.numberOfPages = bannerInfoList.count
             
             currentIndex = 0
-            
+            if currentIndex < self.bannerInfoList.count {
+                self.didChangedIndex?(self.bannerInfoList[currentIndex],currentIndex)
+            }
            
             startScrollAnimation()
         }
@@ -54,6 +77,7 @@ public class NewScrollBanner: UIView {
     fileprivate var loopTask: CancelableTimeoutBlock?
     
     public var didSelectBanner: ((NewScrollBannerContent, Int) -> Void)?
+    public var didChangedIndex: ((NewScrollBannerContent, Int) -> Void)?
     
     public init(frame: CGRect,placeHolder:UIImage? = nil) {
         self.circleScrollView = CircleScrollView(frame: CGRect.zero, direction: .horizontal, blurred: false, itemImg: placeHolder, pagingEnabled: true)
@@ -73,9 +97,10 @@ extension NewScrollBanner {
         guard bannerInfoList.count > 1 else {
             return
         }
-        
-        loopTask = timeout(LoopInterval) { [weak self] in
-            self?.scrollNext()
+        if self.hasTimer {
+            loopTask = timeout(LoopInterval) { [weak self] in
+                self?.scrollNext()
+            }
         }
     }
     
@@ -108,7 +133,7 @@ extension NewScrollBanner {
 }
 
 extension NewScrollBanner: CircleScrollViewDelegate {
-    func clicked() {
+    public func clicked() {
         guard bannerInfoList.count > 0 else {
             return
         }
@@ -120,7 +145,7 @@ extension NewScrollBanner: CircleScrollViewDelegate {
         didSelectBanner?(bannerInfoList[index], index)
     }
     
-    func changedToNext(_ next: Bool) {
+    public func changedToNext(_ next: Bool) {
         guard bannerInfoList.count > 0 else {
             return
         }
@@ -135,11 +160,14 @@ extension NewScrollBanner: CircleScrollViewDelegate {
         } else {
             currentIndex = index
         }
+        if currentIndex < self.bannerInfoList.count {
+            self.didChangedIndex?(self.bannerInfoList[currentIndex],currentIndex)
+        }
         pageControl.currentPage = currentIndex
         startScrollAnimation()
     }
     
-    func prefixImageUrl() -> URL? {
+    public func prefixImageUrl() -> URL? {
         guard bannerInfoList.count > 1 else {
             return nil
         }
@@ -154,7 +182,7 @@ extension NewScrollBanner: CircleScrollViewDelegate {
         return nil
     }
     
-    func currentImageUrl() -> URL? {
+    public func currentImageUrl() -> URL? {
         let index = currentIndex
         guard bannerInfoList.count > 0 && index >= 0 && index < bannerInfoList.count else {
             return nil
@@ -162,7 +190,7 @@ extension NewScrollBanner: CircleScrollViewDelegate {
         return URL(stringByImg: bannerInfoList[index].coverUrl)
     }
     
-    func nextImageUrl() -> URL? {
+    public func nextImageUrl() -> URL? {
         guard bannerInfoList.count > 1 else {
             return nil
         }
