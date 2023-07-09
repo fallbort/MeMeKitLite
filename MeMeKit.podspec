@@ -97,6 +97,14 @@ Pod::Spec.new do |spec|
       base.dependency 'MBProgressHUD'
       base.framework    = "UIKit"
   end
+  
+  spec.subspec 'Swizzle' do |base|
+      base.source_files = 'MeMeBaseKit/Swizzle/**/*.{h,m}'
+      base.dependency 'MeMeKit/MeMeBaseKit'
+      base.dependency 'Cartography'
+      base.framework    = "UIKit"
+      base.requires_arc = false
+  end
 
   spec.subspec 'Photo' do |base|
       base.source_files = 'MeMeBaseKit/Access/Photo/**/*.swift'

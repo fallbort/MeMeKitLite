@@ -8,6 +8,7 @@
 
 #import "UIViewController+ContentSize.h"
 #import <objc/runtime.h>
+#import <MeMeKit-Swift.h>
 
 @implementation UIViewController (ContentSize)
 
@@ -109,6 +110,35 @@
 - (CloseViewBlock)meme_closeBlock
 {
     return objc_getAssociatedObject(self, @selector(meme_closeBlock));
+}
+
+@end
+
+@implementation UIViewController (navbar)
++ (void)load
+{
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        [self swizzleSelector:@selector(viewDidLayoutSubviews) toSelector:@selector(st_viewDidLayoutSubviews)];
+    });
+}
+
+- (void)st_viewDidLayoutSubviews
+{
+    __block UIView* foundView = nil;
+    
+    [self.view.subviews enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        UIView* oneView = obj;
+        if ([oneView isKindOfClass:[MeMeNavigationBar class]] == YES) {
+            foundView = oneView;
+            // stop the enumeration
+            *stop = YES;
+        }
+    }];
+    if (foundView != nil) {
+        [self.view bringSubviewToFront:foundView];
+    }
+    [self st_viewDidLayoutSubviews];
 }
 
 @end

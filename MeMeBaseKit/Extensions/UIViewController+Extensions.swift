@@ -8,7 +8,7 @@
 
 import UIKit
 import Photos
-
+import Cartography
 
 extension UIViewController {
     @objc public func addTo(_ parent:UIViewController,view:UIView? = nil,rect:CGRect) {
@@ -58,4 +58,32 @@ extension UIViewController {
         self.present(alert, animated: true, completion: nil)
         return alert
     }
+}
+
+private var UIViewControllerNavBar = "navbar"
+
+extension UIViewController {
+    @objc public var memeNavBar: MeMeNavigationBar {
+        get {
+            let nav = objc_getAssociatedObject(self, &UIViewControllerNavBar) as? MeMeNavigationBar
+            if let nav = nav {
+                return nav
+            }else {
+                let bar = MeMeNavigationBar()
+                self.view.addSubview(bar)
+                constrain(bar) {
+                    $0.left == $0.superview!.left
+                    $0.right == $0.superview!.right
+                    $0.top == $0.superview!.top
+                }
+                self.memeNavBar = bar
+                return bar
+            }
+        }
+        
+        set {
+            objc_setAssociatedObject(self, &UIViewControllerNavBar, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        }
+    }
+
 }

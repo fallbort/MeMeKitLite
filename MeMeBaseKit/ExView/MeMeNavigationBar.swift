@@ -9,12 +9,11 @@ import Foundation
 
 import Foundation
 import Cartography
-import MeMeKit
 
-public class MeMeNavigationBar : UIView {
+@objc public class MeMeNavigationBar : UIView {
     
     //MARK: <>外部变量
-    public var tilte:String = "" {
+    @objc public var tilte:String = "" {
         didSet {
             self.titleLabel.text = tilte
         }
@@ -22,7 +21,7 @@ public class MeMeNavigationBar : UIView {
     //MARK: <>外部block
     
     //MARK: <>生命周期开始
-    public init() {
+    @objc public init() {
         super.init(frame: CGRect())
         setupViews()
     }
@@ -94,7 +93,7 @@ public class MeMeNavigationBar : UIView {
     }
     
     //MARK: <>功能性方法
-    public func addLeftBtns(btns:[UIView]) {
+    @objc public func addLeftBtns(btns:[UIView]) {
         for oneView in self.navLeftViews {
             oneView.removeFromSuperview()
         }
@@ -102,7 +101,7 @@ public class MeMeNavigationBar : UIView {
         self.layoutBtns(btns: btns, backView: self.navLeftView)
     }
     
-    public func addRightBtns(btns:[UIView]) {
+    @objc public func addRightBtns(btns:[UIView]) {
         for oneView in self.navRightViews {
             oneView.removeFromSuperview()
         }
@@ -110,7 +109,7 @@ public class MeMeNavigationBar : UIView {
         self.layoutBtns(btns: btns, backView: self.navRightView)
     }
     
-    public func addTitleView(view:UIView?) {
+    @objc public func addTitleView(view:UIView?) {
         for oneView in self.titleBackView.subviews {
             oneView.removeFromSuperview()
         }
@@ -181,7 +180,7 @@ public class MeMeNavigationBar : UIView {
     }
     
     //MARK: <>内部View
-    public var titleLabel: UILabel = {
+    @objc public var titleLabel: UILabel = {
         let view = UILabel()
         view.font = ThemeLite.Font.regular(size: 18)
         view.textColor =  UIColor.hexString(toColor: "#222222")!

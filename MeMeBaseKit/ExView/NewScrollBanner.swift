@@ -39,6 +39,11 @@ public class NewScrollBanner: UIView {
             pageControl.setMultiValueMixTrue(uniqueKey: "out", keyPath: \UIView.isHidden, value: !hasPageControl)
         }
     }
+    public var subContentMode:UIView.ContentMode? {
+        didSet {
+            self.circleScrollView.subContentMode = self.subContentMode
+        }
+    }
     fileprivate var circleScrollView:CircleScrollView
     
     fileprivate lazy var pageControl: UIPageControl = {

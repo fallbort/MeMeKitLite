@@ -31,6 +31,15 @@ public protocol CircleScrollViewDelegate: AnyObject {
 }
 
 public class CircleScrollView: UIScrollView {
+    public var subContentMode:UIView.ContentMode? {
+        didSet {
+            self.childViews.forEach { [weak self] item in
+                if let mode = self?.subContentMode {
+                    item.imageView.contentMode = mode
+                }
+            }
+        }
+    }
     var scrollPreviousNext: Int = 0  {  //拖动： -1显示出上一个区域  1下一个区域  0没有拖动
         didSet {
             if scrollPreviousNext != oldValue {
