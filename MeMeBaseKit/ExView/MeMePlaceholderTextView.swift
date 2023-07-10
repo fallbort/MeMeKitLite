@@ -28,6 +28,12 @@ import Cartography
         }
     }
     
+    @objc public weak var delegate: UITextViewDelegate? {
+        didSet {
+            
+        }
+    }
+    
     //MARK: <>外部block
     
     //MARK: <>生命周期开始
@@ -130,5 +136,6 @@ extension MeMePlaceholderTextView : UITextViewDelegate {
         }else{
             self.placeholderLabel.isHidden = false
         }
+        self.delegate?.textViewDidChange?(textView)
     }
 }
