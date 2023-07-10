@@ -87,3 +87,18 @@ extension UIViewController {
     }
 
 }
+
+extension UIViewController {
+    @objc public func addContentUpWhenKeyboardShow(offset:CGFloat,scrollView:UIScrollView) {
+        NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillShowNotification, object: nil, queue: nil) { [weak self] _ in
+            let offset = CGPoint(x: 0, y: offset)
+            scrollView.setContentOffset(offset, animated: true)
+        }
+        NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillHideNotification, object: nil, queue: nil) { [weak self] _ in
+            let offset = CGPoint(x: 0, y: 0)
+            scrollView.setContentOffset(offset, animated: true)
+        }
+    }
+    
+    
+}
