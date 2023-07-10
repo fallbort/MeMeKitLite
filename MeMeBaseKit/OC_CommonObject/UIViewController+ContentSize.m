@@ -126,16 +126,18 @@
 - (void)st_viewDidLayoutSubviews
 {
     __block UIView* foundView = nil;
+    __block NSInteger foundIndex = NSNotFound;
     
     [self.view.subviews enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         UIView* oneView = obj;
         if ([oneView isKindOfClass:[MeMeNavigationBar class]] == YES) {
             foundView = oneView;
+            foundIndex = idx;
             // stop the enumeration
             *stop = YES;
         }
     }];
-    if (foundView != nil) {
+    if (foundView != nil && foundIndex != self.view.subviews.count - 1) {
         [self.view bringSubviewToFront:foundView];
     }
     [self st_viewDidLayoutSubviews];

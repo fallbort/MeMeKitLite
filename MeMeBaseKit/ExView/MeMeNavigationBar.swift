@@ -93,6 +93,39 @@ import Cartography
     }
     
     //MARK: <>功能性方法
+    public func addLeftRightBtns(btnInfos:[(image:UIImage?,text:String?,block:VoidBlock?)],isLeft:Bool) {
+        for oneView in self.navLeftViews {
+            oneView.removeFromSuperview()
+        }
+        var btns:[UIButton] = [];
+        for info in btnInfos {
+            let button = UIButton()
+            if let image = info.image {
+                button.setImage(info.image, for: .normal)
+            }
+            if let text = info.text {
+                button.setTitle(info.text, for: .normal)
+            }
+            constrain(button) {
+                $0.width == 24
+                $0.height == 24
+            }
+            button.setEnlargeEdge(15)
+            button.handleControlEvent(.touchUpInside) { [weak self] in
+                info.block?()
+            }
+            btns.append(button)
+        }
+        if isLeft == true {
+            self.navLeftViews = btns;
+            self.layoutBtns(btns: btns, backView: self.navLeftView)
+        }else{
+            self.navRightViews = btns;
+            self.layoutBtns(btns: btns, backView: self.navRightView)
+        }
+        
+    }
+    
     @objc public func addLeftBtns(btns:[UIView]) {
         for oneView in self.navLeftViews {
             oneView.removeFromSuperview()
@@ -152,9 +185,7 @@ import Cartography
                         $0.top == $0.superview!.top
                         $0.bottom == $0.superview!.bottom
                     }
-                    if systemSize.width == 0 {
-                        $0.width == 24
-                    }
+                    $0.width >= 24
                 }
             }else{
                 constrain(btn) {
