@@ -226,7 +226,15 @@ extension LeftRightTableView : UITableViewDataSource, UITableViewDelegate {
                     $0.bottom == $0.superview!.bottom
                     $0.height == 44
                 }
+                
             }
+//            if let newView = cell.viewWithTag(111) {
+//                newView.handleTapGesture { [weak self] in
+//                    self?.leftTableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
+//                    self?.rightTableView.selectRow(at: indexPath, animated: true, scrollPosition: .top)
+//                }
+//            }
+            
             return cell
         }else{
             return self.rightDataSource?.tableView(tableView, cellForRowAt: indexPath) ?? tableView.dequeueReusableCell(withIdentifier: "UITableViewCell", for: indexPath)
