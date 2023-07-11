@@ -154,10 +154,6 @@ class LeftRightTableLCell : UITableViewCell {
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "UITableViewCell")
         tableView.registerClass(LeftRightTableLCell.self)
         tableView.keyboardDismissMode = .onDrag
-        tableView.handleTapGesture { [weak self,weak tableView] in
-            tableView?.endEditing(true)
-            self?.tableviewDidClickedBlock?()
-        }
         return tableView
     }()
     
@@ -211,12 +207,13 @@ extension LeftRightTableView : UITableViewDataSource, UITableViewDelegate {
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if self.leftTableView == tableView {
             let cell:LeftRightTableLCell = tableView.dequeueReusableCell(LeftRightTableLCell.self, forIndexPath: indexPath)
-            var view = cell.viewWithTag(111)
+            var view = cell.contentView.viewWithTag(111)
             view?.removeFromSuperview()
             view = nil
             if view == nil {
                 let newView:UIView = self.otherDelegate?.getLeftTableHeaderView(section: indexPath.section) ?? UIView()
-                cell.addSubview(newView)
+                newView.isUserInteractionEnabled = false
+                cell.contentView.addSubview(newView)
                 newView.tag = 111
                 view = newView
                 constrain(newView) {
@@ -228,12 +225,6 @@ extension LeftRightTableView : UITableViewDataSource, UITableViewDelegate {
                 }
                 
             }
-//            if let newView = cell.viewWithTag(111) {
-//                newView.handleTapGesture { [weak self] in
-//                    self?.leftTableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
-//                    self?.rightTableView.selectRow(at: indexPath, animated: true, scrollPosition: .top)
-//                }
-//            }
             
             return cell
         }else{
@@ -261,7 +252,12 @@ extension LeftRightTableView : UITableViewDataSource, UITableViewDelegate {
     
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if self.leftTableView == tableView {
-            self.rightTableView.selectRow(at: indexPath, animated: true, scrollPosition: .top)
+            if self.tableView(self.rightTableView, numberOfRowsInSection: indexPath.section) > 0 {
+                self.rightTableView.scrollToRow(at: indexPath, at: .top, animated: true)
+            }else{
+                let rect = self.rightTableView.rect(forSection: indexPath.section)
+                self.rightTableView.scrollRectToVisible(rect, animated: true)
+            }
         }else{
             self.rightDelegate?.tableView?(tableView, didSelectRowAt: indexPath)
         }
