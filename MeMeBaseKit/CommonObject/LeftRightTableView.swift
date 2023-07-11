@@ -71,6 +71,7 @@ class LeftRightTableLCell : UITableViewCell {
     @objc public var otherDelegate:LeftRightTableViewDelegate?
     
     //MARK: <>外部block
+    @objc public var tableviewDidClickedBlock:VoidBlock?
     
     //MARK: <>生命周期开始
     public convenience init() {
@@ -152,7 +153,11 @@ class LeftRightTableLCell : UITableViewCell {
         }
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "UITableViewCell")
         tableView.registerClass(LeftRightTableLCell.self)
-        
+        tableView.keyboardDismissMode = .onDrag
+        tableView.handleTapGesture { [weak self,weak tableView] in
+            tableView?.endEditing(true)
+            self?.tableviewDidClickedBlock?()
+        }
         return tableView
     }()
     
@@ -176,6 +181,11 @@ class LeftRightTableLCell : UITableViewCell {
         }
         tableView.contentInset = UIEdgeInsets.init(top: 0, left: 0, bottom: 10, right: 0)
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "UITableViewCell")
+        tableView.keyboardDismissMode = .onDrag
+        tableView.handleTapGesture { [weak self,weak tableView] in
+            tableView?.endEditing(true)
+            self?.tableviewDidClickedBlock?()
+        }
         return tableView
     }()
     //MARK: <>内部UI变量
