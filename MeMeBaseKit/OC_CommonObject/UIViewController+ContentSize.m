@@ -8,7 +8,11 @@
 
 #import "UIViewController+ContentSize.h"
 #import <objc/runtime.h>
+#if __has_include(<MeMeKit-Swift.h>)
 #import <MeMeKit-Swift.h>
+#else
+#import <MeMeKit/MeMeKit-Swift.h>
+#endif
 
 @implementation UIViewController (ContentSize)
 
