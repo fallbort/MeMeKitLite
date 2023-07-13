@@ -244,7 +244,7 @@ import Cartography
     var navLeftViews:[UIView] = []
     var navRightViews:[UIView] = []
     
-    @objc public static var height:CGFloat = {
+    @objc public static var fixHeight:CGFloat = {
         return StatusBarHeight + 44.0
     }()
     //MARK: <>内部block

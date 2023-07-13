@@ -137,7 +137,7 @@ import MeMeKit
         }
     }
     
-    @objc public static var barHeight:CGFloat {
+    @objc public static var fixHeight:CGFloat {
         let extraBottom:CGFloat = UIWindow.keyWindowSafeAreaInsets().bottom > 0 ? UIWindow.keyWindowSafeAreaInsets().bottom : 0
         let barBottom:CGFloat = extraBottom + 58.0
         return barBottom

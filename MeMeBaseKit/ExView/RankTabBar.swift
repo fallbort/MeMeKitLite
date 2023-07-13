@@ -68,7 +68,7 @@ public class RankTabBar: UIView {
           return UIColor.hexString(toColor: "eeE8E8E8")!
         }
     }
-    var _lineColor: UIColor?
+    public var _lineColor: UIColor?
     fileprivate var lineColor: UIColor {
         get {
             if let _lineColor = _lineColor {
@@ -78,7 +78,7 @@ public class RankTabBar: UIView {
         }
     }
         
-    var _btnNormalColor: UIColor?
+    public var _btnNormalColor: UIColor?
     fileprivate var btnNormalColor: UIColor {
         get {
             if let _btnNormalColor = _btnNormalColor {
@@ -97,7 +97,7 @@ public class RankTabBar: UIView {
         }
     }
     
-    var _btnSelectedColor: UIColor?
+    public var _btnSelectedColor: UIColor?
     fileprivate var btnSelectedColor: UIColor {
         get {
             if let _btnSelectedColor = _btnSelectedColor {
@@ -116,9 +116,9 @@ public class RankTabBar: UIView {
         }
     }
     
-    var btnHighColor: UIColor?
+    public var btnHighColor: UIColor?
     
-    var _btnTitleFont: UIFont?
+    public var _btnTitleFont: UIFont?
     fileprivate var btnTitleFont: UIFont {
         get {
             if let _btnTitleFont = _btnTitleFont {
@@ -158,7 +158,7 @@ public class RankTabBar: UIView {
         }
     }
     
-    var _btnSelectedTitleFont: UIFont? {
+    public var _btnSelectedTitleFont: UIFont? {
         didSet{
             if buttons.count > selectedIndex {
                 buttons[selectedIndex].titleLabel?.font = _btnSelectedTitleFont
@@ -170,7 +170,7 @@ public class RankTabBar: UIView {
     lazy var minorTitleNormalColor: UIColor = UIColor.hexString(toColor: "0x3c3c3c")!
     lazy var minorTitleSelectedColor: UIColor = UIColor.hexString(toColor: "0xff1e76")!
     
-    var buttonTitles: [String]? {
+    public var buttonTitles: [String]? {
         didSet {
             if let buttonTitles = buttonTitles, buttonTitles.count > 0 {
                 for button in buttons {

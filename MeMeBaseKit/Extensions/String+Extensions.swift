@@ -604,6 +604,7 @@ extension String {
         case communityMomentTime  //显示社区动态时间
         case videoTime //视频显示的时间格式，122:33
         case k_And_M  //k,m,    1,000K 显示K,1,000M 显示M
+        case historyTime(seprator:String) //当天：10:01,昨天：昨天10：01，前天：01/02.是否换行
     }
     
     //params: reserve,用于保留小数长度等
@@ -798,6 +799,38 @@ extension String {
                         }
                         
                         dest = String.comfortShowString(dest, type: .dotPerThreeBit_force)
+                    }
+                case let .historyTime(seprator):
+                    var timestamp:Double = 0
+                    if let source = source as? Double {
+                        timestamp = source
+                    }else if let time = str.isPureDouble() {
+                        timestamp = time
+                    }
+                    var prefixStr: String = ""
+                    
+                    let dateNow = Date()
+                    let dateSelf = Date(timeIntervalSince1970: timestamp)
+                    
+                    let calendar = Calendar.current
+                    
+                    if calendar.isDateInToday(dateSelf) {
+                        // 是今天
+                        prefixStr = ""
+                        let dateFormatter = DateFormatter()
+                        dateFormatter.dateFormat = "HH:mm"
+                        dest = dateFormatter.string(from: dateSelf)
+                    } else if calendar.isDateInYesterday(dateSelf) {
+                        // 是昨天
+                        prefixStr = NELocalize.localizedString("昨天", comment: "totest")
+                        let dateFormatter = DateFormatter()
+                        dateFormatter.dateFormat = "HH:mm"
+                        dest = prefixStr + seprator + dateFormatter.string(from: dateSelf)
+                    }else{
+                        prefixStr = ""
+                        let dateFormatter = DateFormatter()
+                        dateFormatter.dateFormat = "MM/dd"
+                        dest = dateFormatter.string(from: dateSelf)
                     }
                     
                 }
