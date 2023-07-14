@@ -673,3 +673,41 @@ extension UIView {
         self.layer.addSublayer(borderLayer)
     }
 }
+
+extension UIView {
+    //margin离边框距离
+    @objc public func addLeftRightLayout(views:[UIView],seperator:CGFloat,leftMargin:CGFloat,rightMargin:CGFloat) {
+        for oneView in views {
+            oneView.removeFromSuperview()
+        }
+        for oneView in self.subviews {
+            oneView.removeFromSuperview()
+        }
+        var preView:UIView?
+        for (index,view) in views.enumerated() {
+            let priority = UILayoutPriority.init(Float(99 + index))
+            self.addSubview(view)
+            if let preView = preView {
+                constrain(view,preView) {
+                    $0.left == $1.right + seperator
+                    $0.centerY == $0.superview!.centerY
+                    $0.width == 0 ~ priority
+                    $0.height == 0 ~ 99
+                }
+            }else{
+                constrain(view) {
+                    $0.left == $0.superview!.left + leftMargin
+                    $0.centerY == $0.superview!.centerY
+                    $0.width == 0 ~ priority
+                    $0.height == 0 ~ 99
+                }
+            }
+            preView = view
+        }
+        if let preView = preView {
+            constrain(preView) {
+                $0.right == $0.superview!.right - rightMargin
+            }
+        }
+    }
+}
