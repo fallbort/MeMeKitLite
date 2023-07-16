@@ -114,6 +114,12 @@ Pod::Spec.new do |spec|
       base.frameworks    = "Foundation", "CoreLocation"
   end
   
+  spec.subspec 'Photo' do |base|
+        base.source_files = 'MeMeBaseKit/Access/Photo/**/*.swift'
+        base.dependency 'MeMeKit/MeMeBaseKit'
+        base.frameworks    = "Foundation", "Photos"
+    end
+  
   spec.subspec 'Network' do |base|
       base.source_files = 'MeMeBaseKit/Access/Network/**/*.swift'
       base.dependency 'MeMeKit/MeMeBaseKit'
