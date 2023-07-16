@@ -75,6 +75,7 @@ import MeMeKit
     //MARK: <>内部View
     var backView: TranslateHitView = {
         let view = TranslateHitView()
+        view.isUserInteractionEnabled = false
         return view
     }()
     //MARK: <>内部UI变量

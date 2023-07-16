@@ -97,11 +97,13 @@ Pod::Spec.new do |spec|
       base.dependency 'MBProgressHUD'
       base.framework    = "UIKit"
   end
-
-  spec.subspec 'Photo' do |base|
-      base.source_files = 'MeMeBaseKit/Access/Photo/**/*.swift'
+  
+  spec.subspec 'Swizzle' do |base|
+      base.source_files = 'MeMeBaseKit/Swizzle/**/*.{h,m}'
       base.dependency 'MeMeKit/MeMeBaseKit'
-      base.frameworks    = "Foundation", "Photos"
+      base.dependency 'Cartography'
+      base.framework    = "UIKit"
+      base.requires_arc = false
   end
   
   spec.subspec 'Location' do |base|
@@ -110,6 +112,12 @@ Pod::Spec.new do |spec|
       base.dependency 'RxSwift'
       base.dependency 'Result'
       base.frameworks    = "Foundation", "CoreLocation"
+  end
+  
+  spec.subspec 'Network' do |base|
+      base.source_files = 'MeMeBaseKit/Access/Network/**/*.swift'
+      base.dependency 'MeMeKit/MeMeBaseKit'
+      base.frameworks    = "Foundation", "CoreTelephony"
   end
 
 end

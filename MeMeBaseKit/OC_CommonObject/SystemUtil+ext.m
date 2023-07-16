@@ -11,10 +11,10 @@
 #include <CoreTelephony/CTTelephonyNetworkInfo.h> //添加获取客户端运营商 支持
 #include <CoreTelephony/CTCarrier.h>
 
-#if __has_feature(modules)
-    #import <MeMeKit/MeMeKit-Swift.h>
+#if __has_include(<MeMeKit-Swift.h>)
+#import <MeMeKit-Swift.h>
 #else
-    #import <MeMeKit-Swift.h>
+#import <MeMeKit/MeMeKit-Swift.h>
 #endif
 
 @implementation SystemUtil (countrycode)
