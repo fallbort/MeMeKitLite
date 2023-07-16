@@ -310,3 +310,15 @@ extension UIScrollView {
         }
     }
 }
+
+extension UIScrollView {
+    @objc public func moveToCenterX(pointX:CGFloat,animate:Bool) {
+        let centerX = pointX
+        var targetOffsetX = centerX - self.bounds.width / 2.0
+        let minOffsetX = 0 - self.contentInset.left
+        let maxOffsestX = self.contentSize.width + self.contentInset.right - self.bounds.width
+        targetOffsetX = max(minOffsetX,targetOffsetX)
+        targetOffsetX = min(maxOffsestX,targetOffsetX)
+        self.setContentOffset(CGPoint(x: targetOffsetX, y: 0), animated: animate)
+    }
+}
