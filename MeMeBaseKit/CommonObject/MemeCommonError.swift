@@ -29,7 +29,7 @@ public enum MemeCommonError: CustomNSError ,Equatable {
 	case nonetwork
     case network
     case other(NSError?)  //一般不使用
-    case normal(code: Int, msg: String,isCustom:Bool)
+    case normal(code: Int, msg: String,isCustom:Bool) //是否是自己构建错误
     
     public static var errorDomain: String { return MemeErrorDomain }
 
