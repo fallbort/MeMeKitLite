@@ -796,3 +796,15 @@ extension UIView {
         }
     }
 }
+
+
+extension UIView {
+    @objc public static func getGridentView(layer:CAGradientLayer) -> UIView {
+        let view = FrameObserView()
+        view.layer.addSublayer(layer)
+        view.didBoundsChangedBlock = { bounds in
+            layer.frame = bounds
+        }
+        return view
+    }
+}
