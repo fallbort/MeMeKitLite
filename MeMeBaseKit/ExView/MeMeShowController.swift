@@ -49,7 +49,7 @@ extension MeMeShowProtocol {
         }
     }
     
-    var closeClickedBlock:((_ animate:Bool)->())? {
+    public var closeClickedBlock:((_ animate:Bool)->())? {
         get {
             if let function = objc_getAssociatedObject(self, &MeMeShowAssociatedKeys.associatedNameAction) as? ((Bool)->()) {
                 return  function
@@ -94,7 +94,7 @@ extension MeMeShowProtocol {
         }
     }
     
-    func close(_ animate:Bool) {
+    public func close(_ animate:Bool) {
         closeClickedBlock?(animate)
     }
 }
