@@ -18,6 +18,7 @@ public class CellStatusKeeper<IdValue:Hashable,StatusValue> {
     public var changedObser = PublishSubject<[IdValue]>()
     public var changedBehaviorObser = BehaviorSubject<[IdValue]>(value: [])
     public var changingObser = PublishSubject<[IdValue]>()
+    public var changingBehaviorObser = BehaviorSubject<[IdValue]>(value: [])
     
     
     //MARK: <>生命周期开始
@@ -172,6 +173,7 @@ public class CellStatusKeeper<IdValue:Hashable,StatusValue> {
         }
         if changingIds.count > 0 {
             changingObser.onNext(changingIds)
+            changingBehaviorObser.onNext(changingIds)
         }
         if let emitCompletes = emitCompletes,emitCompletes.count > 0 {
             for complete in emitCompletes {
@@ -226,6 +228,7 @@ public class CellStatusKeeper<IdValue:Hashable,StatusValue> {
         }
         if changingIds.count > 0 {
             changingObser.onNext(changingIds)
+            changingBehaviorObser.onNext(changingIds)
         }
         if let emitCompletes = emitCompletes,emitCompletes.count > 0 {
             for complete in emitCompletes {

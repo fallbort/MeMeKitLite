@@ -759,10 +759,22 @@ extension UIView {
     }
 }
 
+private var commonLayoutKey:String? = nil
 private var leftRightLayoutKey:String? = nil
 private var leftRightCloseLayoutKey:String? = nil
 
 extension UIView {
+    public var commonLayout: ConstraintGroup? {
+        get {
+            let timer = objc_getAssociatedObject(self, &commonLayoutKey) as? ConstraintGroup
+            return timer
+        }
+        
+        set {
+            objc_setAssociatedObject(self, &commonLayoutKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        }
+    }
+    
     var leftRightLayout: ConstraintGroup? {
         get {
             let timer = objc_getAssociatedObject(self, &leftRightLayoutKey) as? ConstraintGroup
