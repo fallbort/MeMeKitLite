@@ -605,6 +605,7 @@ extension String {
         case videoTime //视频显示的时间格式，122:33
         case k_And_M  //k,m,    1,000K 显示K,1,000M 显示M
         case historyTime(seprator:String) //当天：10:01,昨天：昨天10：01，前天：01/02.是否换行
+        case tinyLocalizeTime //3分钟,6秒
     }
     
     //params: reserve,用于保留小数长度等
@@ -832,7 +833,8 @@ extension String {
                         dateFormatter.dateFormat = "MM/dd"
                         dest = dateFormatter.string(from: dateSelf)
                     }
-                    
+                case .tinyLocalizeTime:
+                    dest = String.comfortShowString(str, type: .videoTime)
                 }
             }
             return dest
