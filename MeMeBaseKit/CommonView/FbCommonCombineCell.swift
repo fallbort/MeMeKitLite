@@ -306,16 +306,29 @@ public class FbCommonSettingCell : UITableViewCell {
         }
     }
     
-    internal func updateBackground(edges:UIEdgeInsets = UIEdgeInsets(),color:UIColor) {
+    internal func updateBackground(edges:UIEdgeInsets = UIEdgeInsets(),color:UIColor,topCornerRadius:CGFloat = 0,bottomCornerRadius:CGFloat = 0) {
+        let backView = UIView()
+        backView.clipsToBounds = true
         backFrameView.backgroundColor = color
+        backFrameView.layer.cornerRadius = topCornerRadius > 0 ? topCornerRadius : bottomCornerRadius
         backFrameView.removeFromSuperview()
-        self.contentView.addSubview(backFrameView)
-        self.contentView.sendSubviewToBack(backFrameView)
-        constrain(backFrameView) {
+        self.contentView.addSubview(backView)
+        backView.addSubview(backFrameView)
+        self.contentView.sendSubviewToBack(backView)
+        constrain(backView) {
             $0.leading == $0.superview!.leading + edges.left
             $0.trailing == $0.superview!.trailing - edges.right
             $0.top == $0.superview!.top + edges.top
             $0.bottom == $0.superview!.bottom - edges.bottom
+        }
+        let radius:CGFloat = backFrameView.layer.cornerRadius
+        let topExtra:CGFloat = topCornerRadius == 0 ? radius : 0
+        let bottomExtra:CGFloat = bottomCornerRadius == 0 ? radius : 0
+        constrain(backFrameView) {
+            $0.left == $0.superview!.left
+            $0.right == $0.superview!.right
+            $0.top == $0.superview!.top - topExtra
+            $0.bottom == $0.superview!.bottom + bottomExtra
         }
     }
     
@@ -420,7 +433,12 @@ public class FbCommonSettingCell : UITableViewCell {
     }
     
     //MARK:<>内部View
-    fileprivate var backFrameView:UIView = UIView()
+    fileprivate var backFrameView:UIView = {
+        let view = UIView()
+        view.clipsToBounds = true
+        return view
+    }()
+    
     public lazy var actionBtn:UIButton = {
         let view = UIButton()
         view.handleControlEvent(.touchUpInside) { [weak self] in
@@ -441,8 +459,8 @@ public class FbCommonSettingCell : UITableViewCell {
 
 extension FbCommonSettingCell {
     //换背景 edges为背景距四周位置，color为背景色
-    public func addOrUpdateBackground(edges:UIEdgeInsets = UIEdgeInsets(),color:UIColor) {
-        updateBackground(edges: edges, color: color)
+    public func addOrUpdateBackground(edges:UIEdgeInsets = UIEdgeInsets(),color:UIColor, topCornerRadius:CGFloat = 0,bottomCornerRadius:CGFloat = 0) {
+        updateBackground(edges: edges, color: color,topCornerRadius: topCornerRadius,bottomCornerRadius:bottomCornerRadius)
     }
     
     //增加label，title文案，font,textColor,spacer布局

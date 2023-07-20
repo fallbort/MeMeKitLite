@@ -705,7 +705,7 @@ extension UIView {
 
 extension UIView {
     //margin离边框距离
-    @objc public func addLeftRightLayout(views:[UIView],seperator:CGFloat,leftMargin:CGFloat,rightMargin:CGFloat) {
+    @objc public func addLeftRightLayout(views:[UIView],seperator:CGFloat,leftMargin:CGFloat,rightMargin:CGFloat,toTopBottom:Bool = false) {
         for oneView in views {
             if let closeLayout = oneView.leftRightCloseLayout {
                 oneView.removeConstraint(closeLayout)
@@ -728,11 +728,19 @@ extension UIView {
                     view.leftRightLayout = constrain(view,preView,replace: layout) {
                         $0.left == $1.right + seperator
                         $0.centerY == $0.superview!.centerY
+                        if toTopBottom {
+                            $0.top == $0.superview!.top ~ 888
+                            $0.bottom == $0.superview!.bottom ~ 889
+                        }
                     }
                 }else{
                     view.leftRightLayout = constrain(view,preView) {
                         $0.left == $1.right + seperator
                         $0.centerY == $0.superview!.centerY
+                        if toTopBottom {
+                            $0.top == $0.superview!.top ~ 888
+                            $0.bottom == $0.superview!.bottom ~ 889
+                        }
                     }
                 }
             }else{
@@ -740,11 +748,19 @@ extension UIView {
                     view.leftRightLayout = constrain(view,replace: layout) {
                         $0.left == $0.superview!.left + leftMargin
                         $0.centerY == $0.superview!.centerY
+                        if toTopBottom {
+                            $0.top == $0.superview!.top ~ 888
+                            $0.bottom == $0.superview!.bottom ~ 889
+                        }
                     }
                 }else{
                     view.leftRightLayout = constrain(view) {
                         $0.left == $0.superview!.left + leftMargin
                         $0.centerY == $0.superview!.centerY
+                        if toTopBottom {
+                            $0.top == $0.superview!.top ~ 888
+                            $0.bottom == $0.superview!.bottom ~ 889
+                        }
                     }
                 }
                 
