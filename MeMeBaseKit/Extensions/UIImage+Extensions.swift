@@ -42,6 +42,18 @@ extension UIImage {
         UIGraphicsEndImageContext()
         return image
     }
+    
+    //cornerMode:1 [.UIRectCorner.bottomLeft,UIRectCorner.topRight],2 [.UIRectCorner.bottomRight,UIRectCorner.topLeft]
+    @objc public class func imageWithColor(color: UIColor, width: CGFloat, height: CGFloat,cornerMode:NSInteger,cornerRadius:CGSize = CGSize()) -> UIImage? {
+        var corners:UIRectCorner?
+        if cornerMode == 1 {
+            corners = [UIRectCorner.bottomLeft,UIRectCorner.topRight]
+        }else if cornerMode == 2 {
+            corners = [UIRectCorner.bottomRight,UIRectCorner.topLeft]
+        }
+        let image = UIImage.init(color: color, size: CGSize.init(width: width, height: height),roundingCorners: corners,cornerRadius:cornerRadius)
+        return image
+    }
 
     public convenience init(color: UIColor, size: CGSize, roundingCorners: UIRectCorner? = nil, cornerRadius: CGSize? = nil, shadowColor: UIColor? = nil,borderWidth:CGFloat? = nil,borderColor:UIColor? = nil) {
 		
