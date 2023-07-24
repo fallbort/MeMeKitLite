@@ -116,7 +116,8 @@ open class LineBreakBaseView: TranslateHitView,LineBreakViewable {
     
     @discardableResult
     func beginLayoutSubviews() -> CGSize {
-        return self.relayout(width:self.bounds.size.width,begin: {[weak self] in
+        let minWidth = min(self.bounds.size.width,self.breakMaxWidth ?? self.bounds.size.width)
+        return self.relayout(width:minWidth,begin: {[weak self] in
             guard let strongSelf = self else {return}
             for view in strongSelf.inuseView {
                 if view != nil {
