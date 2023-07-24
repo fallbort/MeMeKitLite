@@ -138,4 +138,19 @@ extension MeMePlaceholderTextView : UITextViewDelegate {
         }
         self.delegate?.textViewDidChange?(textView)
     }
+    public func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
+        return self.delegate?.textViewShouldBeginEditing?(textView) ?? true
+    }
+
+    public func textViewShouldEndEditing(_ textView: UITextView) -> Bool {
+        return self.delegate?.textViewShouldEndEditing?(textView) ?? true
+    }
+    
+    public func textViewDidEndEditing(_ textView: UITextView) {
+        self.delegate?.textViewDidEndEditing?(textView)
+    }
+    
+    public func textViewDidBeginEditing(_ textView: UITextView) {
+        self.delegate?.textViewDidBeginEditing?(textView)
+    }
 }

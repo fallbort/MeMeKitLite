@@ -53,7 +53,7 @@ Pod::Spec.new do |spec|
   end
 
   spec.subspec 'MeMeBaseKit' do |base|
-      base.source_files  = "MeMeBaseKit/MeMeBaseKit/*.{h,m,swift}", "MeMeBaseKit/CommonView/*.swift","MeMeBaseKit/CommonObject/*.swift","MeMeBaseKit/OC_CommonObject/**/*.{h,m,c}","MeMeBaseKit/Extensions/*.{h,m,swift}","MeMeBaseKit/NELocalize/*.{h,m,swift}"
+      base.source_files  = "MeMeBaseKit/MeMeBaseKit/*.{h,m,swift}", "MeMeBaseKit/CommonView/*.swift","MeMeBaseKit/CommonObject/**/*.swift","MeMeBaseKit/OC_CommonObject/**/*.{h,m,c}","MeMeBaseKit/Extensions/*.{h,m,swift}","MeMeBaseKit/NELocalize/*.{h,m,swift}"
       base.exclude_files = "MeMeBaseKit/MeMeBaseKit/MeMeBaseKit.h"
 
       base.public_header_files = "MeMeBaseKit/MeMeBaseKit/**/*.h", "MeMeBaseKit/OC_CommonObject/**/*.h","MeMeBaseKit/Extensions/**/*.h","MeMeBaseKit/NELocalize/**/*.h"

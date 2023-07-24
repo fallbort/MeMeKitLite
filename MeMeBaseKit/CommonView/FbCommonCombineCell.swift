@@ -26,10 +26,10 @@ public enum CommonSettingCellPositionX {
 
 public enum CommonSettingCellSpacer {
     case toSpacer(CGFloat)   //距离上一个同方向component的长度
-    case toSpacerLeft(CGFloat)  //距离左边方向component的长度
-    case toSpacerRight(CGFloat) //距离右边方向component的长度
-    case fixLeft(CGFloat)   //固定距离父cell左边的长度
-    case fixRight(CGFloat)  //固定距离父cell右边的长度
+    case toSpacerLeft(CGFloat)  //距离左边方向component的长度,CommonSettingCellPositionX支持同时左右布局
+    case toSpacerRight(CGFloat) //距离右边方向component的长度,CommonSettingCellPositionX支持同时左右布局
+    case fixLeft(CGFloat)   //固定距离父cell左边的长度,CommonSettingCellPositionX支持同时左右布局
+    case fixRight(CGFloat)  //固定距离父cell右边的长度,CommonSettingCellPositionX支持同时左右布局
     case width(CGFloat)     //设置固定宽度
 }
 
@@ -92,7 +92,7 @@ public class FbCommonSettingCell : UITableViewCell {
         }
     }
     //MARK:<>功能性方法
-    public func combineUI() {
+    public func combineUI(lowCenterPriority:Float? = 220) {
         let subviews = self.backView.subviews
         for oneView in subviews {
             oneView.removeFromSuperview()
@@ -117,6 +117,10 @@ public class FbCommonSettingCell : UITableViewCell {
         }
         
         if let centerViewObject = centerView {
+            if let lowCenterPriority = lowCenterPriority {
+                centerViewObject.view.setContentHuggingPriority(UILayoutPriority(lowCenterPriority), for: .horizontal)
+                centerViewObject.view.setContentCompressionResistancePriority(UILayoutPriority(lowCenterPriority), for: .horizontal)
+            }
             for oneSpacer in centerViewObject.spacer {
                 layoutViewX(view: centerViewObject.view, leftPreView: leftPreView, rightPreView: nil, useLeft: true, spacer: oneSpacer)
                 layoutViewX(view: centerViewObject.view, leftPreView: nil, rightPreView: rightPreView, useLeft: false, spacer: oneSpacer)

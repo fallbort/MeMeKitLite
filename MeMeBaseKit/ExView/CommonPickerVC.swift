@@ -39,6 +39,12 @@ class CommonPickerVC<T : CustomStringConvertible> : UIViewController,BottomCardP
         }
     }
     
+    override var title: String? {
+        didSet {
+            self.topLabel.text = title
+        }
+    }
+    
     //MARK: <>外部block
     var didcomfirmBlock:((_ curSelections:[Int])->())?
     
@@ -119,7 +125,7 @@ class CommonPickerVC<T : CustomStringConvertible> : UIViewController,BottomCardP
         return view
     }()
     
-    var topLabel: UILabel = {
+    public var topLabel: UILabel = {
         let view = UILabel()
         view.font = ThemeLite.Font.medium(size: 16)
         view.textColor =  UIColor.hexString(toColor: "#aa000000")!

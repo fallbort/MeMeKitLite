@@ -13,6 +13,11 @@ import Cartography
     //MARK: <>外部变量
     @objc public var lists:[[String]] = []  //显示数据
     @objc public var selections:[Int] = []  //当前已选中数据
+    @objc public override var title: String? {
+        didSet {
+            pickerVc.title = self.title
+        }
+    }
     //MARK: <>外部block
     @objc public var didcomfirmBlock:((_ curSelections:[Int])->())?
     
