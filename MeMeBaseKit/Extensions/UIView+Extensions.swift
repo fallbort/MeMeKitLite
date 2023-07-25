@@ -776,6 +776,7 @@ extension UIView {
 }
 
 private var commonLayoutKey:String? = nil
+private var commonCloseKey:String? = nil
 private var leftRightLayoutKey:String? = nil
 private var leftRightCloseLayoutKey:String? = nil
 
@@ -788,6 +789,17 @@ extension UIView {
         
         set {
             objc_setAssociatedObject(self, &commonLayoutKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        }
+    }
+    
+    public var commonCloseLayout: NSLayoutConstraint? {
+        get {
+            let timer = objc_getAssociatedObject(self, &commonCloseKey) as? NSLayoutConstraint
+            return timer
+        }
+        
+        set {
+            objc_setAssociatedObject(self, &commonCloseKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         }
     }
     
