@@ -16,8 +16,8 @@ public protocol MMRankControllerDelegete {
 }
 
 extension MMRankControllerDelegete {
-    func tabDidChanged(from:UIViewController?,to:UIViewController) {}
-    func tabIsMoving() {}
+    public func tabDidChanged(from:UIViewController?,to:UIViewController) {}
+    public func tabIsMoving() {}
 }
 
 @objc open class MMRankController : UIViewController {
@@ -46,8 +46,11 @@ extension MMRankControllerDelegete {
         
         if let initSkipIndex = initSkipIndex, initSkipIndex < controllers.count {
             self._selectedIndex = initSkipIndex
+            indexHadShowedList.append(_selectedIndex)
             self.scrollToIndex(initSkipIndex)
             self.initSkipIndex = nil
+        }else{
+            indexHadShowedList.append(self.selectedIndex)
         }
         
         setupViews()
@@ -213,8 +216,18 @@ extension MMRankControllerDelegete {
                 updateSelectedIndex(_selectedIndex)
                 segmentOnSelected(_selectedIndex)
                 if let newController = selectedViewController {
-                    newController.viewWillAppear(true)
-                    for controller in controllers {
+                    for (index,controller) in controllers.enumerated() {
+                        if indexHadShowedList.contains(where: {$0 == index}) {
+                            if newController == controller {
+                                controller.viewWillAppear(true)
+                                controller.viewDidAppear(true)
+                            }else if oldController == controller{
+                                controller.viewWillDisappear(true)
+                                controller.viewDidDisappear(true)
+                            }
+                        }else{
+                            indexHadShowedList.append(index)
+                        }
                         if let controller = controller as? MMRankControllerDelegete {
                             controller.tabDidChanged(from: oldController, to: newController)
                         }
@@ -223,6 +236,8 @@ extension MMRankControllerDelegete {
             }
         }
     }
+    
+    fileprivate var indexHadShowedList:[Int] = []  //index对应的页面曾经出现过
     //MARK: <>内部block
     
 }
@@ -255,13 +270,6 @@ extension MMRankController: UIScrollViewDelegate {
         }
         let oldController = selectedViewController
         selectedIndex = index
-        if let newController = selectedViewController {
-            for controller in controllers {
-                if let controller = controller as? MMRankControllerDelegete {
-                    controller.tabDidChanged(from: oldController, to: newController)
-                }
-            }
-        }
     }
     
     public func scrollViewDidScroll(_ scrollView: UIScrollView) {

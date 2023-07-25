@@ -8,6 +8,9 @@
 import Foundation
 import RxSwift
 
+public enum KeeperCommonKey : Hashable {
+    case main
+}
 
 //同时执行一份任务的锁，线程安全
 public class CellStatusKeeper<IdValue:Hashable,StatusValue> {
@@ -110,19 +113,20 @@ public class CellStatusKeeper<IdValue:Hashable,StatusValue> {
     }
     
     //获取多个并加锁
-    public func getStatusAndSetStartChanging(ids:[IdValue],completeBlock:KeeperCompleteBlock?) -> (status:[IdValue:StatusValue],changingResult:[IdValue:Bool]) {
+    public func getStatusAndSetStartChanging(ids:[IdValue],forceChanging:Bool = false,completeBlock:KeeperCompleteBlock?) -> (status:[IdValue:StatusValue],changingResult:[IdValue:Bool]) {
         if let idValue = ids.first {
             var completeBlocks:[IdValue:KeeperCompleteBlock] = [:]
             if let completeBlock = completeBlock {
                 completeBlocks[idValue] = completeBlock
             }
-            return self.getStatusAndSetStartChanging(ids: ids,completeBlocks: completeBlocks)
+            return self.getStatusAndSetStartChanging(ids: ids,forceChanging: forceChanging,completeBlocks: completeBlocks)
         }else{
             return ([:],[:])
         }
     }
     
-    public func getStatusAndSetStartChanging(ids:[IdValue],completeBlocks:[IdValue:KeeperCompleteBlock] = [:]) -> (status:[IdValue:StatusValue],changingResult:[IdValue:Bool]) {
+    //forceChanging是否在有值的情况下强制做changing加锁,正在changing的话忽略
+    public func getStatusAndSetStartChanging(ids:[IdValue],forceChanging:Bool = false,completeBlocks:[IdValue:KeeperCompleteBlock] = [:]) -> (status:[IdValue:StatusValue],changingResult:[IdValue:Bool]) {
         var valueDict = [IdValue:StatusValue]()
         var retDict = [IdValue:Bool]()  //返回设定changing结果的数组
         var emitCompletes:[KeeperCompleteBlock]?  //需要触发的完成block
@@ -133,6 +137,9 @@ public class CellStatusKeeper<IdValue:Hashable,StatusValue> {
             if let res = self.status[id] {
                 valueDict[id] = res
             }else{
+                changings[id] = true;
+            }
+            if forceChanging == true {
                 changings[id] = true;
             }
         }
