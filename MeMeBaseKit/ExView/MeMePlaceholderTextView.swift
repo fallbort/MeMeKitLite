@@ -11,7 +11,10 @@ import Foundation
 import Cartography
 
 @objc public class MeMePlaceholderTextView : UIView {
-    
+    public override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+        let view = super.hitTest(point, with: event)
+        return view
+    }
     //MARK: <>外部变量
     @objc public var text:String {
         get {
@@ -19,6 +22,8 @@ import Cartography
         }
         set {
             self.textView.text = newValue
+            self.curNum = newValue.count
+            refreshNum()
         }
     }
     
@@ -114,7 +119,7 @@ import Cartography
         return view
     }()
     
-    fileprivate var numLabel: UILabel = {
+    @objc public var numLabel: UILabel = {
         let view = UILabel()
         view.font = ThemeLite.Font.pingfang(size: 14)
         view.textColor =  UIColor.hexString(toColor: "#999999")!
@@ -152,5 +157,9 @@ extension MeMePlaceholderTextView : UITextViewDelegate {
     
     public func textViewDidBeginEditing(_ textView: UITextView) {
         self.delegate?.textViewDidBeginEditing?(textView)
+    }
+    
+    public func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        return self.delegate?.textView?(textView, shouldChangeTextIn: range, replacementText: text) ?? true
     }
 }
