@@ -50,7 +50,11 @@ public class FbCommonSettingCell : UITableViewCell {
     //MARK:<>外部变量
     
     //MARK:<>外部block
-    public var didClickedBlock:(()->())?
+    public var didClickedBlock:(()->())? {
+        didSet {
+            self.actionBtn.isUserInteractionEnabled = didClickedBlock != nil ? true : false
+        }
+    }
     
     //MARK:<>生命周期开始
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -304,7 +308,7 @@ public class FbCommonSettingCell : UITableViewCell {
     }
     //reuseKey区分不同的block样式，同一reuseKey会重用
     public func addOrUpdateBlockView(reuseKey:String,posX:CommonSettingCellPositionX,spacer:[CommonSettingCellSpacer],posY:[CommonSettingCellPositionY] = [.center],reuseable:Bool = true,viewBlock:((_ oldView:UIView?,_ posX:CommonSettingCellPositionX)->UIView?)) {
-        var oldView = getComponent(component: .block)
+        var oldView = reuseable == true ? getComponent(component: .block) : nil
         if let newView = viewBlock(oldView,posX) {
             addOrUpdateComponet(component: .block, reuseKey: reuseKey, view: newView, posX: posX,spacer: spacer,posY:posY, reuseable: reuseable)
         }
@@ -445,6 +449,7 @@ public class FbCommonSettingCell : UITableViewCell {
     
     public lazy var actionBtn:UIButton = {
         let view = UIButton()
+        view.isUserInteractionEnabled = false
         view.handleControlEvent(.touchUpInside) { [weak self] in
             self?.didClickedBlock?()
         }
@@ -469,7 +474,7 @@ extension FbCommonSettingCell {
     
     //增加label，title文案，font,textColor,spacer布局
     public func addOrUpdateTitleLabelView(title:String?,font:UIFont,textColor:UIColor,reuseKey:String = "",posX:CommonSettingCellPositionX,spacer:[CommonSettingCellSpacer],posY:[CommonSettingCellPositionY] = [.center],reuseable:Bool = true) {
-        var oldView = getComponent(component: .titleLabel) as? UILabel
+        var oldView = reuseable == true ? (getComponent(component: .titleLabel) as? UILabel) : nil
         if oldView == nil {
             let textLabel = UILabel()
             textLabel.font = font
@@ -491,7 +496,7 @@ extension FbCommonSettingCell {
     }
     //增加本地图片样式，title文案，font,textColor,spacer布局
     public func addOrUpdateLocalImageView(image:UIImage?,imageSize:CGSize,reuseKey:String = "",posX:CommonSettingCellPositionX,spacer:[CommonSettingCellSpacer],posY:[CommonSettingCellPositionY] = [.center],reuseable:Bool = true) {
-        var oldView = getComponent(component: .localImage) as? UIImageView
+        var oldView = reuseable == true ? (getComponent(component: .localImage) as? UIImageView) : nil
         if oldView == nil {
             let imageView = UIImageView()
             constrain(imageView) {
@@ -507,7 +512,7 @@ extension FbCommonSettingCell {
     }
     //增加网络图片套本地图片样式
     public func addOrUpdateNetImageCoverImage(imageUrl:URL?,placeHolder:UIImage?,image:UIImage?,netCorner:CGFloat,netSize:CGSize,localCorner:CGFloat,localSize:CGSize,reuseKey:String = "",posX:CommonSettingCellPositionX,spacer:[CommonSettingCellSpacer],posY:[CommonSettingCellPositionY] = [.center],reuseable:Bool = true) {
-        var oldView = getComponent(component: .netImageCoverImage)
+        var oldView = reuseable == true ? (getComponent(component: .netImageCoverImage)) : nil
         if oldView == nil {
             let view = UIView()
             view.isUserInteractionEnabled = false
@@ -565,3 +570,28 @@ extension FbCommonSettingCell {
     }
 }
 
+
+private var settingLayoutsKey:String? = nil
+
+extension UIView {
+    fileprivate func addSettingLayout(layout:NSLayoutConstraint) {
+        var oldLayouts = self.settingLayoutList
+        oldLayouts.append(layout)
+        self.settingLayoutList = oldLayouts
+    }
+    
+    fileprivate func clearAllSettingLayout() {
+        
+    }
+    
+    var settingLayoutList: [NSLayoutConstraint] {
+        get {
+            let timer = objc_getAssociatedObject(self, &settingLayoutsKey) as? [NSLayoutConstraint]
+            return timer ?? []
+        }
+        
+        set {
+            objc_setAssociatedObject(self, &settingLayoutsKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        }
+    }
+}
