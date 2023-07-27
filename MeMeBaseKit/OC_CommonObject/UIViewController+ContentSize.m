@@ -142,7 +142,25 @@
         }
     }];
     if (foundView != nil && foundIndex != self.view.subviews.count - 1) {
-        [self.view bringSubviewToFront:foundView];
+        int i = 0;
+        UIView* foundBackView = nil;
+        for (UIView* oneView in self.view.subviews.reverseObjectEnumerator) {
+            NSInteger index = self.view.subviews.count - 1 - i;
+            UIViewController* superController = oneView.superController;
+            if (superController != self && superController.contentSizeInPopup.height > 0) {
+                continue;
+            }else{
+                foundBackView = oneView;
+            }
+            
+            i++;
+        }
+        if (foundBackView != nil) {
+            [self.view insertSubview:foundView aboveSubview:foundBackView];
+        }else{
+            [self.view bringSubviewToFront:foundView];
+        }
+        
     }
     [self st_viewDidLayoutSubviews];
 }
