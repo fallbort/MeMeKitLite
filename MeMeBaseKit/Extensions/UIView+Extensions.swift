@@ -836,3 +836,18 @@ extension UIView {
         return view
     }
 }
+
+private var isCoverNavAndTabBarKey = "key"
+
+extension UIView {
+    @objc public var isCoverMeMeNavAndTabBar: Bool {
+        get {
+            let timer = objc_getAssociatedObject(self, &isCoverNavAndTabBarKey) as? Bool
+            return timer ?? false
+        }
+        
+        set {
+            objc_setAssociatedObject(self, &isCoverNavAndTabBarKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        }
+    }
+}

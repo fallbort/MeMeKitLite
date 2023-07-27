@@ -147,7 +147,7 @@
         for (UIView* oneView in self.view.subviews.reverseObjectEnumerator) {
             NSInteger index = self.view.subviews.count - 1 - i;
             UIViewController* superController = oneView.superController;
-            if (superController != self && superController.contentSizeInPopup.height > 0) {
+            if ((superController != self && superController.contentSizeInPopup.height > 0) || oneView.isCoverMeMeNavAndTabBar == YES) {
                 continue;
             }else{
                 foundBackView = oneView;
