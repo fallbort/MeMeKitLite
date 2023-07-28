@@ -95,6 +95,10 @@ public class BottomCardController : BaseCardController {
     //MARK:<>外部block
     
     //MARK:<>生命周期开始
+    deinit {
+        self.animateShowDelay?.cancel()
+        self.animateShowDelay = nil
+    }
     public required init() {
         super.init(nibName: nil, bundle: nil)
         autoAdjustSize()
@@ -109,11 +113,7 @@ public class BottomCardController : BaseCardController {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    deinit {
-        
-    }
-    
+
     public override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -124,28 +124,42 @@ public class BottomCardController : BaseCardController {
         self.sheetCenter?.constant = self.view.bounds.size.height + self.cardHeight/2
         
         resetData()
+        
+        self.animateShowDelay?.cancel()
+        self.animateShowDelay = nil
+        self.animateShowDelay = delay(0.1) { [weak self] in
+            if self?.needDidAppear == true {
+                self?.needDidAppear = false
+                self?.animateShow()
+            }
+        }
     }
     
     public override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
-        UIView.animate(withDuration: 0.25) { [weak self] in
-            self?.fadeView.alpha = 1
-            
-            guard let wself = self else {
-                return
+        self.animateShow()
+    }
+    
+    func animateShow() {
+        if self.fadeView.alpha == 0.0 {
+            UIView.animate(withDuration: 0.25) { [weak self] in
+                self?.fadeView.alpha = 1
+                
+                guard let wself = self else {
+                    return
+                }
+                if self?.isCornerLandscape == false {
+                    let centerYPos: CGFloat = wself.view.bounds.size.height/2 - wself.cardHeight/2
+                    self?.sheetCenter?.constant = centerYPos
+                }else{
+                    self?.sheetRight?.constant = 0
+                }
+                
+                self?.view.layoutIfNeeded()
             }
-            if self?.isCornerLandscape == false {
-                let centerYPos: CGFloat = wself.view.bounds.size.height/2 - wself.cardHeight/2
-                self?.sheetCenter?.constant = centerYPos
-            }else{
-                self?.sheetRight?.constant = 0
-            }
             
-            self?.view.layoutIfNeeded()
+            sheetLayout.clipsToBounds = needClipView
         }
-        
-        sheetLayout.clipsToBounds = needClipView
     }
     
     func setupViews() {
@@ -208,6 +222,9 @@ public class BottomCardController : BaseCardController {
     
     override func hide(_ complete: (() -> Void)? = nil) {
         self.hiding = true
+        self.needDidAppear = false
+        self.animateShowDelay?.cancel()
+        self.animateShowDelay = nil
         UIView.animate(withDuration: 0.25, animations: { [weak self] in
             guard let wself = self else {
                 return
@@ -270,6 +287,8 @@ public class BottomCardController : BaseCardController {
     //MARK:<>内部数据变量
     fileprivate var extraHeight:CGFloat = 0
     var hiding = false //隐藏中
+    
+    var animateShowDelay:DispatchWorkItem?
     
     //MARK:<>内部block
     fileprivate var beforeWillCloseInternal:((_ animate:Bool)->())?

@@ -119,5 +119,29 @@ Pod::Spec.new do |spec|
       base.dependency 'MeMeKit/MeMeBaseKit'
       base.frameworks    = "Foundation", "CoreTelephony"
   end
+  
+  spec.subspec 'Video' do |base|
+      base.source_files = 'MeMeBaseKit/Access/Video/**/*.swift'
+      base.dependency 'MeMeKit/MeMeBaseKit'
+      base.frameworks    = "Foundation","AVFoundation"
+      
+      base.dependency 'SwiftyUserDefaults'
+  end
+  
+  spec.subspec 'Audio' do |base|
+      base.source_files = 'MeMeBaseKit/Access/Audio/**/*.swift'
+      base.dependency 'MeMeKit/MeMeBaseKit'
+      base.frameworks    = "Foundation","AVFoundation"
+      
+      base.dependency 'SwiftyUserDefaults'
+  end
+  
+  spec.subspec 'Photo' do |base|
+      base.source_files = 'MeMeBaseKit/Access/Photo/**/*.swift'
+      base.dependency 'MeMeKit/MeMeBaseKit'
+      base.frameworks    = "Foundation","Photos"
+      
+      base.dependency 'SwiftyUserDefaults'
+  end
 
 end

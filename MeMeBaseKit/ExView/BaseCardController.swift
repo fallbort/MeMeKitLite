@@ -188,6 +188,7 @@ extension BaseCardProtocol {
             thisController.view.frame = superController.view.bounds
             superController.view.addSubview(thisController.view)
             thisController.didMove(toParent: superController)
+            thisController.needDidAppear = true
             return thisController
         }
         return nil
@@ -210,5 +211,20 @@ extension BaseCardProtocol {
             return thisController
         }
         return nil
+    }
+}
+
+private var needDidAppearKey = "appear"
+
+extension BaseCardProtocol {
+    internal var needDidAppear: Bool {
+        get {
+            let timer = objc_getAssociatedObject(self, &needDidAppearKey) as? Bool
+            return timer ?? false
+        }
+        
+        set {
+            objc_setAssociatedObject(self, &needDidAppearKey, newValue, .OBJC_ASSOCIATION_ASSIGN)
+        }
     }
 }
