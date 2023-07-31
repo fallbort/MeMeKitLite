@@ -102,3 +102,18 @@ extension UIViewController {
     
     
 }
+
+private var interactivePopGestureKey = "key"
+//是否可以手势返回
+extension UIViewController {
+    @objc public var canGestureBack: Bool {
+        get {
+            let timer = objc_getAssociatedObject(self, &interactivePopGestureKey) as? Bool
+            return timer ?? true
+        }
+        
+        set {
+            objc_setAssociatedObject(self, &interactivePopGestureKey, newValue, .OBJC_ASSOCIATION_ASSIGN)
+        }
+    }
+}
