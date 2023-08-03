@@ -86,9 +86,9 @@ public class WeakReferenceArray<T> {
         })
     }
     
-    public func allObjects() -> [Any] {
+    public func allObjects() -> [T?] {
         pthread_rwlock_rdlock(&rwLock)
-        let objects = weakArray.allObjects
+        let objects = weakArray.allObjects as! [T?]
         pthread_rwlock_unlock(&rwLock)
         return objects
     }
