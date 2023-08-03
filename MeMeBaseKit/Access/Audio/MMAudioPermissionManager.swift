@@ -90,4 +90,29 @@ public class MMAudioPermissionManager {
         let vc = ScreenUIManager.topViewController()
         vc?.present(alert, animated: true, completion: nil)
     }
+    
+    
+    public class func setAllowHaptics(key:String,_ enable:Bool) {
+        if enable == true {
+            allowHapticsList[key] = enable
+        }else {
+            allowHapticsList.removeValue(forKey: key)
+        }
+        refreshHaptics()
+    }
+    
+    public class func refreshHaptics() {
+        let realEnable = Array(allowHapticsList.values).contains(where: {$0 == true}) == true
+        do {
+            if #available(iOS 13.0, *) {
+                try AVAudioSession.sharedInstance().setAllowHapticsAndSystemSoundsDuringRecording(realEnable)
+            } else {
+                // Fallback on earlier versions
+            }
+        }catch {
+            
+        }
+    }
+    
+    fileprivate static var allowHapticsList:[String:Bool] = [:]
 }
