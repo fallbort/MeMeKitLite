@@ -374,8 +374,8 @@ public class RankTabBar: UIView {
             didSelectChanged?(selectedIndex)
         }
     }
-    var onSelected: ((Int) -> Void)?
-    var didSelectChanged: ((Int) -> Void)?
+    public var onSelected: ((Int) -> Void)?
+    public var didSelectChanged: ((Int) -> Void)?
     
     public override var clipsToBounds: Bool {
         didSet {

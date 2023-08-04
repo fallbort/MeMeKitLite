@@ -28,3 +28,18 @@ import Foundation
     //MARK: <>内部block
     
 }
+
+private var useFakeSelectModeKey = "key"
+
+extension UIButton {
+    @objc public var useFakeSelectMode: Bool {
+        get {
+            let timer = objc_getAssociatedObject(self, &useFakeSelectModeKey) as? Bool
+            return timer ?? false
+        }
+        
+        set {
+            objc_setAssociatedObject(self, &useFakeSelectModeKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        }
+    }
+}
