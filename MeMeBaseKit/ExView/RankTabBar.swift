@@ -35,6 +35,7 @@ public class RankTabBar: UIView {
     public var selectionIndicatorWidth: CGFloat = 16
     public var autoFitBtnWidth: Bool = false //自适应button宽度
     public var autoFitBtnMinWidth: CGFloat = 0
+    public var adjustSelectedBorderColor = true; //是否调整选中边框
     fileprivate var ItemBarDifference: CGFloat = 5
     
     fileprivate var style: StyleType
@@ -329,7 +330,7 @@ public class RankTabBar: UIView {
         }
     }
 
-    var selectedIndex: Int {
+    public var selectedIndex: Int {
         didSet {
             if selectedIndex == oldValue || selectedIndex < 0 || selectedIndex > buttons.count - 1 {
                 return
@@ -359,7 +360,7 @@ public class RankTabBar: UIView {
                 if changeBgColor {
                     buttons[selectedIndex].backgroundColor = btnSelectedBgColor
                 }
-                if buttons[selectedIndex].layer.borderWidth > 0 {
+                if buttons[selectedIndex].layer.borderWidth > 0 && adjustSelectedBorderColor == true {
                     buttons[selectedIndex].layer.borderColor = buttons[selectedIndex].layer.borderColor?.copy(alpha: 0)
                 }
                 if _btnSelectedTitleFont != nil {
@@ -474,7 +475,7 @@ extension RankTabBar {
             if changeBgColor {
                 buttons[selectedIndex].backgroundColor = btnSelectedBgColor
             }
-            if buttons[selectedIndex].layer.borderWidth > 0 {
+            if buttons[selectedIndex].layer.borderWidth > 0 && adjustSelectedBorderColor == true {
                 buttons[selectedIndex].layer.borderColor = buttons[selectedIndex].layer.borderColor?.copy(alpha: 0)
             }
             if selectedIndex < minorLabels.count {
@@ -487,7 +488,7 @@ extension RankTabBar {
             if changeBgColor {
                 buttons[index].backgroundColor = btnSelectedBgColor
             }
-            if buttons[index].layer.borderWidth > 0 {
+            if buttons[index].layer.borderWidth > 0 && adjustSelectedBorderColor == true {
                 buttons[index].layer.borderColor = buttons[selectedIndex].layer.borderColor?.copy(alpha: 0)
             }
             selectedIndex = index
