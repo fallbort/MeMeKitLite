@@ -26,6 +26,8 @@ import Foundation
     @objc public static var converH5Block:((String)->URL?) =  {url in return URL(string: url)} //h5转换后的url
     @objc public static var showHUDBlock:((_ message:String)->()) = {_ in return} //显示toast
     
+    @objc public static var userIdBlock:(()->Int) = {return 0} //userId
+    
     
     //MARK:<>生命周期开始
     private override init() {super.init()}

@@ -14,10 +14,11 @@ public let MemeErrorDomain = "meme"
 
 public func defaultError() -> NSError {
 	let errorMessage = NELocalize.localizedString("Oops, there's an error!", comment: "")
-	return NSError(domain: MemeErrorDomain, code: -18888898, userInfo: [NSLocalizedDescriptionKey: errorMessage])
+	return NSError(domain: MemeErrorDomain, code: -19998898, userInfo: [NSLocalizedDescriptionKey: errorMessage])
 }
 
 public enum MemeCommonErrorCode: Int {
+    case auth = -18888898
     case cancel = -18888897
 	case nonetwork = -18888896
     case network = -18888895
@@ -25,6 +26,7 @@ public enum MemeCommonErrorCode: Int {
 }
 
 public enum MemeCommonError: CustomNSError ,Equatable {
+    case auth
     case cancel
 	case nonetwork
     case network
@@ -36,6 +38,8 @@ public enum MemeCommonError: CustomNSError ,Equatable {
 	/// The error code within the given domain.
     public var errorCode: Int {
 		switch self {
+        case .auth:
+            return MemeCommonErrorCode.auth.rawValue
 		case .cancel:
 			return MemeCommonErrorCode.cancel.rawValue
         case .nonetwork:
@@ -58,6 +62,8 @@ public enum MemeCommonError: CustomNSError ,Equatable {
 		var userInfo = [String : Any]()
 
 		switch self {
+        case .auth:
+            userInfo[NSLocalizedDescriptionKey] = NELocalize.localizedString("auth failed", comment: "")
         case .cancel:
             userInfo[NSLocalizedDescriptionKey] = NELocalize.localizedString("user cancelled", comment: "")
         case .nonetwork:
