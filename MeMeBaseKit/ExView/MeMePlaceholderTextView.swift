@@ -11,10 +11,6 @@ import Foundation
 import Cartography
 
 @objc public class MeMePlaceholderTextView : UIView {
-    public override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
-        let view = super.hitTest(point, with: event)
-        return view
-    }
     //MARK: <>外部变量
     @objc public var text:String {
         get {
