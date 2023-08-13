@@ -43,13 +43,15 @@ extension UIImage {
         return image
     }
     
-    //cornerMode:1 [.UIRectCorner.bottomLeft,UIRectCorner.topRight],2 [.UIRectCorner.bottomRight,UIRectCorner.topLeft]
+    //cornerMode:1 [.UIRectCorner.bottomLeft,UIRectCorner.topRight],2 [.UIRectCorner.bottomRight,UIRectCorner.topLeft] 3 [.UIRectCorner.allCorners]
     @objc public class func imageWithColor(color: UIColor, width: CGFloat, height: CGFloat,cornerMode:NSInteger,cornerRadius:CGSize = CGSize()) -> UIImage? {
         var corners:UIRectCorner?
         if cornerMode == 1 {
             corners = [UIRectCorner.bottomLeft,UIRectCorner.topRight]
         }else if cornerMode == 2 {
             corners = [UIRectCorner.bottomRight,UIRectCorner.topLeft]
+        }else if cornerMode == 3 {
+            corners = [UIRectCorner.allCorners]
         }
         let image = UIImage.init(color: color, size: CGSize.init(width: width, height: height),roundingCorners: corners,cornerRadius:cornerRadius)
         return image
