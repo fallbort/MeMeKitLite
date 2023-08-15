@@ -29,7 +29,7 @@ private struct MeMeShowAssociatedKeys {
 
 extension MeMeShowProtocol {
     @discardableResult
-    static func commonShow(superController:UIViewController,size:CGSize? = nil,offset:CGPoint? = nil,cornerRadius:CGFloat? = nil, clips:Bool = true,isTranslateView:Bool = false,tapDismiss:Bool = true,getParams: ((_ controller:Self)->())? = nil) -> Self {
+    public static func commonShow(superController:UIViewController,size:CGSize? = nil,offset:CGPoint? = nil,cornerRadius:CGFloat? = nil, clips:Bool = true,isTranslateView:Bool = false,tapDismiss:Bool = true,getParams: ((_ controller:Self)->())? = nil) -> Self {
         let roleVc = self.init()
         getParams?(roleVc)
         if let size = size {
@@ -41,7 +41,7 @@ extension MeMeShowProtocol {
         return roleVc
     }
     
-    func getShowController() -> MeMeShowController? {
+    public func getShowController() -> MeMeShowController? {
         if let container = objc_getAssociatedObject(self as Any, &AssociatedKeys.AssociatedName) as? AssociatedContainer,let pController = container.showController {
             return pController
         }else{
@@ -99,7 +99,7 @@ extension MeMeShowProtocol {
     }
 }
 
-class MeMeShowController : UIViewController {
+public class MeMeShowController : UIViewController {
     var theRootViewController: (UIViewController&MeMeShowProtocol)?
     
     fileprivate var backTapDismissView:UIView = {
@@ -116,7 +116,7 @@ class MeMeShowController : UIViewController {
         }
     }
     
-    override func loadView() {
+    public override func loadView() {
         if isTranslateView == true {
             let view = TranslateHitView()
             self.view = view
@@ -147,7 +147,7 @@ class MeMeShowController : UIViewController {
         objc_setAssociatedObject(theRootViewController as Any, &AssociatedKeys.AssociatedName, container, .OBJC_ASSOCIATION_RETAIN)
     }
     
-    override func viewDidLoad() {
+    public override func viewDidLoad() {
         super.viewDidLoad()
         if let backgroundColor = backgroundColor {
             self.view.backgroundColor = backgroundColor
@@ -161,7 +161,7 @@ class MeMeShowController : UIViewController {
         self.view.addSubview(containerView)
     }
     
-    override func viewDidLayoutSubviews() {
+    public override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
         if let controller = theRootViewController {
