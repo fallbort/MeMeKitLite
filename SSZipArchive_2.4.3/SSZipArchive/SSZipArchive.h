@@ -35,7 +35,7 @@ typedef NS_ENUM(NSInteger, SSZipArchiveErrorCode) {
 // Total payload size
 + (NSNumber *)payloadSizeForArchiveAtPath:(NSString *)path error:(NSError **)error;
 
-+ (BOOL)sourceUnzipFileAtPath:(NSString *)path
++ (BOOL)unzipFileAtPath:(NSString *)path
           toDestination:(NSString *)destination
         progressHandler:(void (^_Nullable)(NSString *entry, unz_file_info zipInfo, long entryNumber, long total))progressHandler
             completionHandler:(void (^_Nullable)(NSString *path, BOOL succeeded, NSError * _Nullable error))completionHandler;
@@ -65,19 +65,19 @@ typedef NS_ENUM(NSInteger, SSZipArchiveErrorCode) {
                   error:(NSError * *)error
                delegate:(nullable id<SSZipArchiveDelegate>)delegate;
 
-+ (BOOL)unzipFileAtPath:(NSString *)path
++ (BOOL)extraUnzipFileAtPath:(NSString *)path
           toDestination:(NSString *)destination
         progressHandler:(void (^_Nullable)(NSString *entry, unz_file_info zipInfo, long entryNumber, long total,long long size))progressHandler
       completionHandler:(void (^_Nullable)(NSString *path, BOOL succeeded, NSError * _Nullable error))completionHandler;
 
-+ (BOOL)unzipFileAtPath:(NSString *)path
++ (BOOL)extraUnzipFileAtPath:(NSString *)path
           toDestination:(NSString *)destination
               overwrite:(BOOL)overwrite
                password:(nullable NSString *)password
         progressHandler:(void (^_Nullable)(NSString *entry, unz_file_info zipInfo, long entryNumber, long total,long long size))progressHandler
       completionHandler:(void (^_Nullable)(NSString *path, BOOL succeeded, NSError * _Nullable error))completionHandler;
 
-+ (BOOL)unzipFileAtPath:(NSString *)path
++ (BOOL)extraUnzipFileAtPath:(NSString *)path
           toDestination:(NSString *)destination
      preserveAttributes:(BOOL)preserveAttributes
               overwrite:(BOOL)overwrite

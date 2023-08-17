@@ -158,7 +158,7 @@ public class FileUtils {
 	}
 
     public class func unzip(_ filepath: String, toDestination destination: String,delegate:SSZipArchiveDelegate? = nil,progress:((_ progress:Double?,_ success:Bool?)->())? = nil) -> Bool {
-        SSZipArchive.unzipFile(atPath: filepath, toDestination: destination, preserveAttributes: true, overwrite: true, nestedZipLevel: 0, password: nil, error: nil, delegate: delegate) { _, zipInfo, num, total,size in
+        SSZipArchive.extraUnzipFile(atPath: filepath, toDestination: destination, preserveAttributes: true, overwrite: true, nestedZipLevel: 0, password: nil, error: nil, delegate: delegate) { _, zipInfo, num, total,size in
             if total > 0 {
                 let totalSize = zipInfo.uncompressed_size
                 let oneFileProgress:Double = 1.0 / (Double)(total)
