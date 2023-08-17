@@ -6,6 +6,7 @@
 //
 
 #import "UIImage+Extenstions.h"
+#import "NSBundle+Extensions.h"
 
 @implementation UIImage (scale)
 //等比例缩放
@@ -87,5 +88,10 @@
     }
     
     return resultImage;
+}
+
++(UIImage *)imageNamed:(NSString *)name inBundlePath:(NSString*)path {
+    NSBundle* bundle = [NSBundle bundleWithPathBundle:path];
+    return [self imageNamed:name inBundle:bundle withConfiguration:nil];
 }
 @end

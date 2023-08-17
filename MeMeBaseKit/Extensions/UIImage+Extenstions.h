@@ -14,6 +14,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (UIImage*)scaleToSize:(CGSize)size;
 //图片压缩到指定大小
 +(UIImage *)compressImageSize:(UIImage *)image toByte:(NSUInteger)maxLength;
+
++(UIImage *)imageNamed:(NSString *)name inBundlePath:(NSString*)path;
 @end
 
 NS_ASSUME_NONNULL_END

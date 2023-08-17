@@ -256,6 +256,18 @@ BOOL _fileIsSymbolicLink(const unz_file_info *fileInfo);
     return [self unzipFileAtPath:path toDestination:destination preserveAttributes:YES overwrite:YES password:nil error:nil delegate:nil progressHandler:progressHandler completionHandler:completionHandler];
 }
 
++ (BOOL)sourceUnzipFileAtPath:(NSString *)path
+          toDestination:(NSString *)destination
+        progressHandler:(void (^_Nullable)(NSString *entry, unz_file_info zipInfo, long entryNumber, long total))progressHandler
+      completionHandler:(void (^_Nullable)(NSString *path, BOOL succeeded, NSError * _Nullable error))completionHandler
+{
+    return [self unzipFileAtPath:path toDestination:destination preserveAttributes:YES overwrite:YES password:nil error:nil delegate:nil progressHandler:^(NSString *entry, unz_file_info zipInfo, long entryNumber, long total, long long size) {
+        if (progressHandler != nil) {
+            progressHandler(entry,zipInfo,entryNumber,total);
+        }
+    } completionHandler:completionHandler];
+}
+
 + (BOOL)unzipFileAtPath:(NSString *)path
           toDestination:(NSString *)destination
      preserveAttributes:(BOOL)preserveAttributes
