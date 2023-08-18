@@ -7,8 +7,8 @@
 
 import Foundation
 
-public class ThemeLite {
-    public class Font {
+@objc public class ThemeLite : NSObject {
+    @objc public class Font : NSObject {
         public class func medium(size: CGFloat) -> UIFont {
             return self.medium(size: size, overrideWeight: .medium)
         }
@@ -34,7 +34,7 @@ public class ThemeLite {
             }
         }
         
-        public class func pingfang(size: CGFloat,weight:UIFont.Weight = .regular) -> UIFont {
+        @objc public class func pingfang(size: CGFloat,weight:UIFont.Weight = .regular) -> UIFont {
             if let font = UIFont(name: "PingFang SC", size: size) {
                 return font
             } else {
@@ -42,7 +42,7 @@ public class ThemeLite {
             }
         }
         
-        public class func bebasNeueRegular(size: CGFloat) -> UIFont {
+        @objc public class func bebasNeueRegular(size: CGFloat) -> UIFont {
             if let font = UIFont(name: "BebasNeue-Regular", size: size) {
                 return font
             } else {

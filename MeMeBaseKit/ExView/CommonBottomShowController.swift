@@ -8,7 +8,7 @@
 import Foundation
 import Cartography
 
-class CommonBottomShowController : UIViewController,BottomCardProtocol {
+@objc class CommonBottomShowController : UIViewController,BottomCardProtocol {
     
     //MARK: <>外部变量
     var outVC:UIViewController? {

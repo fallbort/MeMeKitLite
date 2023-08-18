@@ -38,7 +38,7 @@ extension BottomCardProtocol {
 
 extension BottomCardProtocol {
     @discardableResult
-    public static func commonShowCard(controller:BottomCardController? = nil,superController: UIViewController,isCornerLandscape:Bool = false,topRadius:CGFloat = 8,needClip:Bool = true,getParams:((Self?)->())? = nil) -> Self? {
+    public static func commonShowCard(controller:BottomCardController? = nil,superController: UIViewController,isCornerLandscape:Bool = false,fadeColor:UIColor? = nil,topRadius:CGFloat = 8,needClip:Bool = true,tapDismiss:Bool = true,getParams:((Self?)->())? = nil) -> Self? {
         var thisController:Self? = controller?.attachViewController as? Self
         if thisController == nil {
             let controller = self.init()
@@ -49,6 +49,10 @@ extension BottomCardProtocol {
             controller?.attachViewController = thisController
             controller?.topRadius = topRadius
             controller?.needClipView = needClip
+            controller?.tapDismiss = tapDismiss
+            if let fadeColor = fadeColor {
+                controller?.fadeView.backgroundColor = fadeColor
+            }
             getParams?(thisController)
             _ = thisController?.view  //载入viewdidload
             controller?.baseHeight = thisController?.contentSizeInPopup.height ?? 0.0

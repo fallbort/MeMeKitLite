@@ -151,6 +151,7 @@
                 continue;
             }else{
                 foundBackView = oneView;
+                break;
             }
             
             i++;

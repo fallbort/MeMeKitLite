@@ -26,10 +26,12 @@ public class BaseCardController: UIViewController,BaseCardProtocol {
     public var isCornerLandscape = false
     public var cornerWidth:CGFloat = 320
     
+    public var tapDismiss = true
+    
     internal var cardWidth: CGFloat = 0
     internal var cardHeight: CGFloat = 0
     
-    internal lazy var fadeView: UIView = {
+    @objc public lazy var fadeView: UIView = {
         let view = UIView()
         view.alpha = 0
         view.backgroundColor = UIColor.init(hexStr: "000000", alpha: 0.4)
@@ -159,7 +161,9 @@ public class BaseCardController: UIViewController,BaseCardProtocol {
     }
     
     @objc func fadeViewClick() {
-        hideAndClose()
+        if self.tapDismiss == true {
+            hideAndClose()
+        }
     }
     
     func getLayoutView() ->UIView? {

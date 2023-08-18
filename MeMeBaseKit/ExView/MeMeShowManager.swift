@@ -35,9 +35,9 @@ import Cartography
         }
     }
     
-    @objc public static func commonBottomShow(superController:UIViewController,rootVC:UIViewController,isCornerLandscape:Bool = false,topRadius:CGFloat = -1,needClip:Bool = true) {
+    @objc public static func commonBottomShow(superController:UIViewController,rootVC:UIViewController,isCornerLandscape:Bool = false,fadeColor:UIColor? = nil,topRadius:CGFloat = -1,needClip:Bool = true,tapDismiss:Bool = true) {
         let topRadius:CGFloat = topRadius >= 0 ? topRadius : 8
-        CommonBottomShowController.commonShowCard(superController: superController,isCornerLandscape:isCornerLandscape,topRadius: topRadius,needClip: needClip) { controller in
+        CommonBottomShowController.commonShowCard(superController: superController,isCornerLandscape:isCornerLandscape,fadeColor:fadeColor,topRadius: topRadius,needClip: needClip,tapDismiss: tapDismiss) { controller in
             controller?.outVC = rootVC
             controller?.contentSizeInPopup = rootVC.contentSizeInPopup
             rootVC.meme_closeBlock = { [weak controller] animate in

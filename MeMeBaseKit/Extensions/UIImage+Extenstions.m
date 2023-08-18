@@ -90,6 +90,27 @@
     return resultImage;
 }
 
+- (UIImage *)mmImageByResizeToSize:(CGSize)size {
+    if (size.width <= 0 || size.height <= 0) return nil;
+    UIGraphicsBeginImageContextWithOptions(size, NO, self.scale);
+    [self drawInRect:CGRectMake(0, 0, size.width, size.height)];
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return image;
+}
+
+- (UIImage *)mmImageByCropToRect:(CGRect)rect {
+    rect.origin.x *= self.scale;
+    rect.origin.y *= self.scale;
+    rect.size.width *= self.scale;
+    rect.size.height *= self.scale;
+    if (rect.size.width <= 0 || rect.size.height <= 0) return nil;
+    CGImageRef imageRef = CGImageCreateWithImageInRect(self.CGImage, rect);
+    UIImage *image = [UIImage imageWithCGImage:imageRef scale:self.scale orientation:self.imageOrientation];
+    CGImageRelease(imageRef);
+    return image;
+}
+
 +(UIImage *)imageNamed:(NSString *)name inBundlePath:(NSString*)path {
     NSBundle* bundle = [NSBundle bundleWithPathBundle:path];
     return [self imageNamed:name inBundle:bundle withConfiguration:nil];
