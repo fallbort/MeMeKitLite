@@ -75,7 +75,7 @@ public class BaseCardController: UIViewController,BaseCardProtocol {
     
     public override func viewDidLoad() {
         super.viewDidLoad()
-        
+        self.view.isCoverMeMeNavAndTabBar = true;
         view.addSubview(fadeView)
         constrain(fadeView) {
             $0.edges == $0.superview!.edges

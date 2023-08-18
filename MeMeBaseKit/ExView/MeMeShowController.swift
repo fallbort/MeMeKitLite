@@ -149,6 +149,7 @@ public class MeMeShowController : UIViewController {
     
     public override func viewDidLoad() {
         super.viewDidLoad()
+        self.view.isCoverMeMeNavAndTabBar = true;
         if let backgroundColor = backgroundColor {
             self.view.backgroundColor = backgroundColor
         }else{
