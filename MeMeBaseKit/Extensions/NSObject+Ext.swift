@@ -96,3 +96,9 @@ extension NSObject {
         return dict
     }
 }
+
+extension NSObject {
+    @objc public func comfortVideoString(time:TimeInterval)->String {
+        return String.comfortShowString(time, type: .videoTime)
+    }
+}
