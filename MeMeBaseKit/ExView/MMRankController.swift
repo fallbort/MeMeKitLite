@@ -37,6 +37,7 @@ extension MMRankControllerDelegete {
     
     open override func viewDidLoad() {
         super.viewDidLoad()
+        self.scrollView.hasTranslate = true
 
         segment.onSelected = { [weak self] index in
             self?.scrollToIndex(index)
@@ -167,8 +168,8 @@ extension MMRankControllerDelegete {
     
     //MARK: <>功能性方法
     //MARK: <>内部View
-    public lazy var scrollView: UIScrollView = {
-        let scrollView = UIScrollView(frame: CGRect(x: 0, y: 0, width: self.view.bounds.size.width, height: self.view.bounds.size.height))
+    public lazy var scrollView: TraslatePanScrollVIew = {
+        let scrollView = TraslatePanScrollVIew(frame: CGRect(x: 0, y: 0, width: self.view.bounds.size.width, height: self.view.bounds.size.height))
         scrollView.isPagingEnabled = true
         scrollView.bounces = false
         scrollView.showsHorizontalScrollIndicator = false
