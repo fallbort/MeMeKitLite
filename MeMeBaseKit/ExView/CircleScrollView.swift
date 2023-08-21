@@ -199,7 +199,9 @@ extension CircleScrollView {
         for i in 0 ... 2 {
             let view = ItemControl(frame: CGRect.zero, blurred: blurred, bgColor: imgBgColor)
             if i == 1 {
-                view.addTarget(self, action: #selector(CircleScrollView.clickItem(_:)), for: .touchUpInside)
+                view.handleTapGesture { [weak self,weak view] in
+                    self?.clickItem(view)
+                }
             }
             childViews.append(view)
             addSubview(view)
