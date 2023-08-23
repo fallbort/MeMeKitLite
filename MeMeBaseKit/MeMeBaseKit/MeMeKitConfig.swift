@@ -21,7 +21,6 @@ import Foundation
         case IM = 2 //imtable的多语言
     }
     @objc public static var imageIconBlock:((String,MeMeKitImageType)->UIImage?) = {_,_ in return nil} //显示图片
-    @objc public static var localizeStringBlock:((String,MeMeKitLocalizeType)->String) = {str,_ in return str} //显示多语言
     @objc public static var converCDNBlock:((String)->String) = {url in return url} //cdn转换后的url
     @objc public static var converH5Block:((String)->URL?) =  {url in return URL(string: url)} //h5转换后的url
     @objc public static var showHUDBlock:((_ message:String)->()) = {_ in return} //显示toast
