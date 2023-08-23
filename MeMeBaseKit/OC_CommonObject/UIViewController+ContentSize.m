@@ -14,6 +14,25 @@
 #import <MeMeKit/MeMeKit-Swift.h>
 #endif
 
+@interface UIViewController (contentSize_internal)
+@property (nonatomic, assign) BOOL isViewAppearLoaded;
+@end
+
+@implementation UIViewController (contentSize_internal)
+- (void)setIsViewAppearLoaded:(BOOL)isViewAppearLoaded
+{
+    objc_setAssociatedObject(self, @selector(isViewAppearLoaded), @(isViewAppearLoaded), OBJC_ASSOCIATION_ASSIGN);
+}
+
+- (BOOL)isViewAppearLoaded
+{
+    NSNumber* num = objc_getAssociatedObject(self, @selector(isViewAppearLoaded));
+    return num != nil ? [num boolValue] : NO;
+}
+
+
+@end
+
 @implementation UIViewController (ContentSize)
 
 @dynamic contentSizeInPopup;
@@ -24,6 +43,7 @@
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         [self swizzleSelector:@selector(viewDidLoad) toSelector:@selector(st_viewDidLoad)];
+        [self swizzleSelector:@selector(viewDidAppear:) toSelector:@selector(st_viewDidAppear:)];
     });
 }
 
@@ -58,6 +78,18 @@
         self.view.frame = CGRectMake(0, 0, contentSize.width, contentSize.height);
     }
     [self st_viewDidLoad];
+}
+
+-(void)st_viewDidAppear:(BOOL)animated {
+    if (self.isViewAppearLoaded == false) {
+        self.isViewFirstAppeared = true;
+    }else{
+        self.isViewFirstAppeared = false;
+    }
+    if (self.isViewAppearLoaded == false) {
+        self.isViewAppearLoaded == true;
+    }
+    [self st_viewDidAppear:animated];
 }
 
 - (void)setContentSizeInPopup:(CGSize)contentSizeInPopup
@@ -115,6 +147,18 @@
 {
     return objc_getAssociatedObject(self, @selector(meme_closeBlock));
 }
+
+- (void)setIsViewFirstAppeared:(BOOL)isViewFirstAppeared
+{
+    objc_setAssociatedObject(self, @selector(isViewFirstAppeared), @(isViewFirstAppeared), OBJC_ASSOCIATION_ASSIGN);
+}
+
+- (BOOL)isViewFirstAppeared
+{
+    NSNumber* num = objc_getAssociatedObject(self, @selector(isViewFirstAppeared));
+    return num != nil ? [num boolValue] : NO;
+}
+
 
 @end
 
