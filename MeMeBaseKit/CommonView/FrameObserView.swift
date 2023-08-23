@@ -14,10 +14,17 @@ import MeMeKit
 public class FrameObserView : TranslateHitView {
     public var didBoundsChangedBlock:((_ bounds:CGRect)->())?
     
+    public var didMovedToSuperViewBlock:VoidBlock?
+    
     public override var bounds: CGRect{
         didSet{
             guard bounds != oldValue else {return}
             didBoundsChangedBlock?(bounds)
         }
+    }
+    
+    public override func didMoveToSuperview() {
+        super.didMoveToSuperview()
+        self.didMovedToSuperViewBlock?()
     }
 }
