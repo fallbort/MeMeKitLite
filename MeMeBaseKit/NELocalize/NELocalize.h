@@ -44,6 +44,13 @@ static NSString * _Nonnull const NELanguageChangeNotification = @"NELanguageChan
                                comment:(NSString * _Nullable)comment;
 
 + (NSString * _Nonnull)localizedString:(NSString * _Nonnull)string
+                            bundlePath:(NSString * _Nonnull)bundlePath;
+
++ (NSString * _Nonnull)localizedString:(NSString * _Nonnull)string
+                            bundlePath:(NSString * _Nonnull)bundlePath
+                               comment:(NSString * _Nullable)comment;
+
++ (NSString * _Nonnull)localizedString:(NSString * _Nonnull)string
                                  value:(NSString * _Nullable)value
                                  table:(NSString * _Nullable)table
                                  comment:(NSString * _Nullable)comment;
@@ -57,4 +64,9 @@ static NSString * _Nonnull const NELanguageChangeNotification = @"NELanguageChan
                                  table:(NSString * _Nullable)table
                                comment:(NSString * _Nullable)comment;
 
++ (NSString * _Nonnull)localizedString:(NSString * _Nonnull)string
+                                bundle:(NSBundle * _Nullable)bundle
+                                 table:(NSString * _Nullable)table
+                               comment:(NSString * _Nullable)comment
+                                 value:(NSString * _Nullable)value;
 @end

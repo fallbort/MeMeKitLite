@@ -8,6 +8,7 @@
 
 #import "NELocalize.h"
 #import "NSString+Localize.h"
+#import "NSBundle+Extensions.h"
 
 @implementation NELocalize
 
@@ -123,6 +124,19 @@
                                comment:(NSString * _Nullable)comment {
     
     return [self localizedString:string bundle:nil comment:comment ];
+}
+
++ (NSString * _Nonnull)localizedString:(NSString * _Nonnull)string
+                            bundlePath:(NSString * _Nonnull)bundlePath {
+    NSBundle* inBundle = [NSBundle bundleWithPathBundle:bundlePath];
+    return [self localizedString:string bundle:inBundle comment:@"" ];
+}
+
++ (NSString * _Nonnull)localizedString:(NSString * _Nonnull)string
+                            bundlePath:(NSString * _Nonnull)bundlePath
+                               comment:(NSString * _Nullable)comment {
+    NSBundle* inBundle = [NSBundle bundleWithPathBundle:bundlePath];
+    return [self localizedString:string bundle:inBundle comment:comment ];
 }
 
 + (NSString * _Nonnull)localizedString:(NSString * _Nonnull)string

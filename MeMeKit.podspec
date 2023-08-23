@@ -59,7 +59,7 @@ Pod::Spec.new do |spec|
       base.public_header_files = "MeMeBaseKit/MeMeBaseKit/**/*.h", "MeMeBaseKit/OC_CommonObject/**/*.h","MeMeBaseKit/Extensions/**/*.h","MeMeBaseKit/NELocalize/**/*.h"
 
       # base.resource  = "icon.png"
-      base.resources = "MeMeBaseKit/OC_CommonObject/**/*.bundle"
+      base.resources = ["MeMeBaseKit/OC_CommonObject/**/*.bundle",'MeMeBaseKit/Resources/*.bundle']
 
       # base.preserve_paths = "FilesToSave", "MoreFilesToSave"
 

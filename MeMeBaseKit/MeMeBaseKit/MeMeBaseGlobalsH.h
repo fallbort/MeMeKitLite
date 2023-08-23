@@ -12,6 +12,7 @@
 #import <YYImage/YYImage.h>
 #import <YYWebImage/YYWebImage.h>
 
+#define MeMeKitBundle "MeMeKit"
 
 // 判断iPhoneX，Xs
 #define IS_IPHONE_X ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(1125, 2436), [[UIScreen mainScreen] currentMode].size) : NO)
