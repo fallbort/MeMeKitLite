@@ -89,7 +89,7 @@ public class CommonConnectPickerVC : UIViewController,BottomCardProtocol {
     func setupViews() {
         self.view.backgroundColor = .white
         let comfirmBtn = UIButton()
-        comfirmBtn.setTitle(NELocalize.localizedString("确定"), for: .normal)
+        comfirmBtn.setTitle(NELocalize.localizedString("确定",bundlePath: MeMeKitBundle), for: .normal)
         comfirmBtn.titleLabel?.font = ThemeLite.Font.regular(size: 16)
         comfirmBtn.setEnlargeEdge(20)
         comfirmBtn.setTitleColor(UIColor.hexString(toColor: "aa000000")!, for: .normal)

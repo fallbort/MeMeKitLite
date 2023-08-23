@@ -26,8 +26,9 @@ public class MMAudioPermissionManager {
     }
     
     public class func noMicrophonePermission(cancelCompletion: VoidBlock? = nil, confirmCompletion: VoidBlock? = nil) {
-        let title = NELocalize.localizedString("System prevents MeMe to access microphone", comment: "")
-        let message = NELocalize.localizedString("To grant the permission: settings -> MeMe -> microphone", comment: "")
+        let appname = DeviceInfo.appDisplayName
+        let title = String(format: NELocalize.localizedString("System prevents %@ to access microphone",bundlePath: MeMeKitBundle, comment: ""), appname)
+        let message = String(format: NELocalize.localizedString("To grant the permission: settings -> %@ -> microphone",bundlePath: MeMeKitBundle, comment: ""), appname)
         showAuthorizeSettings(title, message: message, cancelCompletion: cancelCompletion, confirmCompletion: confirmCompletion)
     }
     
@@ -44,8 +45,9 @@ public class MMAudioPermissionManager {
                             hasCompleted = true
                             complection(enabled)
                         }
-                        let title = NELocalize.localizedString("System prevents MeMe to access microphone", comment: "")
-                        let message = NELocalize.localizedString("To grant the permission: settings -> MeMe -> microphone", comment: "")
+                        let appname = DeviceInfo.appDisplayName
+                        let title = String(format: NELocalize.localizedString("System prevents %@ to access microphone",bundlePath: MeMeKitBundle, comment: ""), appname)
+                        let message = String(format: NELocalize.localizedString("To grant the permission: settings -> %@ -> microphone",bundlePath: MeMeKitBundle, comment: ""), appname)
                         showAuthorizeSettings(title, message: message) {
                             if hasCompleted == false, cancelIsBlock == false {
                                 complection(enabled)
@@ -75,10 +77,10 @@ public class MMAudioPermissionManager {
     
     fileprivate class func showAuthorizeSettings(_ title: String, message: String, cancelCompletion: VoidBlock? = nil, confirmCompletion: VoidBlock? = nil) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        let actionCancel = UIAlertAction(title: NELocalize.localizedString("Cancel", comment: ""), style: .cancel) { action in
+        let actionCancel = UIAlertAction(title: NELocalize.localizedString("Cancel",bundlePath: MeMeKitBundle, comment: ""), style: .cancel) { action in
             cancelCompletion?()
         }
-        let actionSet = UIAlertAction(title: NELocalize.localizedString("Settings", comment: ""), style: .default) { action in
+        let actionSet = UIAlertAction(title: NELocalize.localizedString("Settings",bundlePath: MeMeKitBundle, comment: ""), style: .default) { action in
             if let URL = URL(string: UIApplication.openSettingsURLString) {
                 UIApplication.shared.openURL(URL)
             }

@@ -37,7 +37,7 @@ extension TimeInterval {
         }
         let str  = self.toRemainingString()
         
-        let format = NELocalize.localizedString("forbid_unblock", comment: "")
+        let format = NELocalize.localizedString("forbid_unblock",bundlePath: MeMeKitBundle, comment: "")
         let msg = String(format: format, "\(str)")
         
         return msg
@@ -52,7 +52,7 @@ extension TimeInterval {
         }
         let str  = toRemainingTime.toRemainingString()
         
-        let format = NELocalize.localizedString("%@后解禁。", comment: "")
+        let format = NELocalize.localizedString("%@后解禁。",bundlePath: MeMeKitBundle, comment: "")
         let msg = String(format: format, "\(str)")
         
         return msg
@@ -64,15 +64,15 @@ extension TimeInterval {
         
         var shortString: String = ""
         if days > 0 {
-            shortString = "\(days)" + NELocalize.localizedString("randomgift_lastprize_day", comment: "")
+            shortString = "\(days)" + NELocalize.localizedString("randomgift_lastprize_day",bundlePath: MeMeKitBundle, comment: "")
         }
         let remaininghours = hours - days * 24
         if remaininghours > 0 {
-            shortString += ("\(remaininghours)" + NELocalize.localizedString("randomgift_lastprize_hour", comment: ""))
+            shortString += ("\(remaininghours)" + NELocalize.localizedString("randomgift_lastprize_hour",bundlePath: MeMeKitBundle, comment: ""))
         }
         let remainingmin = min - hours * 60
         if min > 0 {
-            shortString += ("\(remainingmin)" + NELocalize.localizedString("randomgift_lastprize_minute", comment: ""))
+            shortString += ("\(remainingmin)" + NELocalize.localizedString("randomgift_lastprize_minute",bundlePath: MeMeKitBundle, comment: ""))
         }
         return shortString
     }
@@ -108,21 +108,21 @@ extension TimeInterval {
         if subDate <= 3600 {
             let minutes = subDate / 60
             if minutes < 2 {
-                return "1\(NELocalize.localizedString("minute ago", comment: ""))"
+                return "1\(NELocalize.localizedString("minute ago",bundlePath: MeMeKitBundle, comment: ""))"
             }
-            return "\(Int(minutes))\(NELocalize.localizedString("minutes ago", comment: ""))"
+            return "\(Int(minutes))\(NELocalize.localizedString("minutes ago",bundlePath: MeMeKitBundle, comment: ""))"
         } else if (subDate > 3600 && subDate <= 86400) {
             let hours = subDate / 3600
             if hours < 2 {
-                return "1\(NELocalize.localizedString("hour ago", comment: ""))"
+                return "1\(NELocalize.localizedString("hour ago",bundlePath: MeMeKitBundle, comment: ""))"
             }
-            return "\(Int(hours))\(NELocalize.localizedString("hours ago", comment: ""))"
+            return "\(Int(hours))\(NELocalize.localizedString("hours ago",bundlePath: MeMeKitBundle, comment: ""))"
         } else if (subDate > 86400 && subDate <= 2592000) {
             let days = subDate / 86400
             if days < 2 {
-                return "1\(NELocalize.localizedString("day ago", comment: ""))"
+                return "1\(NELocalize.localizedString("day ago",bundlePath: MeMeKitBundle, comment: ""))"
             }
-            return "\(Int(days))\(NELocalize.localizedString("days ago", comment: ""))"
+            return "\(Int(days))\(NELocalize.localizedString("days ago",bundlePath: MeMeKitBundle, comment: ""))"
         }
         let dateFormatter = DateFormatter()
         if let farmat = farmat {
@@ -150,9 +150,9 @@ extension TimeInterval {
         let dateComponents = calendar.dateComponents([.year,.month, .day], from: dateNow, to: dateSelf)
         if dateComponents.year == 0, dateComponents.month == 0 {
             if dateComponents.day == 0 {
-                return isDiffContry ? LocalizedService.eventOperationString("today", "") : String(format: NELocalize.localizedString("today", comment: ""), "")
+                return isDiffContry ? LocalizedService.eventOperationString("today", "") : String(format: NELocalize.localizedString("today",bundlePath: MeMeKitBundle, comment: ""), "")
             } else if dateComponents.day == 1 {
-                return isDiffContry ? LocalizedService.eventOperationString("tommorrow", "") : String(format: NELocalize.localizedString("tommorrow", comment: ""), "")
+                return isDiffContry ? LocalizedService.eventOperationString("tommorrow", "") : String(format: NELocalize.localizedString("tommorrow",bundlePath: MeMeKitBundle, comment: ""), "")
             }
         }
         let formatter = DateFormatter()
@@ -180,9 +180,9 @@ extension TimeInterval {
         let minutes: Int = Int(self/60)
         let seconds: Int = Int(self - TimeInterval(minutes*60))
         if minutes > 0 {
-            return String(format: "%d%@%d%@", minutes, NELocalize.localizedString("randomgift_lastprize_minute"), seconds, NELocalize.localizedString("randomgift_lastprize_second"))
+            return String(format: "%d%@%d%@", minutes, NELocalize.localizedString("randomgift_lastprize_minute",bundlePath: MeMeKitBundle), seconds, NELocalize.localizedString("randomgift_lastprize_second",bundlePath: MeMeKitBundle))
         } else {
-            return String(format: "%d%@", seconds, NELocalize.localizedString("randomgift_lastprize_second"))
+            return String(format: "%d%@", seconds, NELocalize.localizedString("randomgift_lastprize_second",bundlePath: MeMeKitBundle))
         }
     }
     
@@ -208,13 +208,13 @@ extension TimeInterval {
         
         if calendar.isDateInToday(dateSelf) {
             // 是今天
-            prefixStr = NELocalize.localizedString("call_history_time_today", comment: "")
+            prefixStr = NELocalize.localizedString("call_history_time_today",bundlePath: MeMeKitBundle, comment: "")
             if prefixStr == "" {
                 prefixStr = LocalizedService.eventOperationString("call_history_time_today", "")
             }
         } else if calendar.isDateInYesterday(dateSelf) {
             // 是昨天
-            prefixStr = NELocalize.localizedString("call_history_time_yesterday", comment: "")
+            prefixStr = NELocalize.localizedString("call_history_time_yesterday",bundlePath: MeMeKitBundle, comment: "")
             if prefixStr == "" {
                 prefixStr = LocalizedService.eventOperationString("call_history_time_yesterday", "")
             }
@@ -249,33 +249,6 @@ extension TimeInterval {
         let seconds: Int = Int(self - TimeInterval(hours*3600) - TimeInterval(minutes*60))
         
         return String(format: "%02d:%02d:%02d", hours, minutes, seconds)
-    }
-    
-    public func getHomeActivityRemainTimeFormat() -> String {
-        if self == 0 {
-            return ""
-        }
-        
-        let dateFormatter = DateFormatter()
-        dateFormatter.timeZone = TimeZone.init(abbreviation: "UTC")
-        dateFormatter.dateFormat = "HH:mm:ss"
-        
-        let oneDaySec: TimeInterval = 24.0 * 60.0 * 60.0
-        var days: Int = 0
-        var remainSec: TimeInterval = 0
-        if self > oneDaySec {
-            days = Int(self/oneDaySec)
-            remainSec = self - TimeInterval(days) * oneDaySec
-        } else {
-            remainSec = self
-            if remainSec < 0 {
-                remainSec = 0
-            }
-        }
-        
-        let remainString = dateFormatter.string(from: Date.init(timeIntervalSince1970: remainSec))
-        
-        return String(format:NELocalize.localizedString("hot_tab_act_time"), "\(days)", remainString)
     }
     
     //获取当天0点时间戳,是utc时间的0点,self必须是utc的0点之后，不然会获取前一天时间

@@ -127,7 +127,7 @@ extension String {
         let minutes = Int((remainTime - daysTime - hoursTime)/60.0)
         let minutesTime = TimeInterval(minutes)*60.0
         let seconds = Int(remainTime - daysTime - hoursTime - minutesTime)
-        let timeString = String(format: "%02d%@ %02d:%02d:%02d", Int(days), NELocalize.localizedString("forecast_day"), Int(hours), Int(minutes), Int(seconds))
+        let timeString = String(format: "%02d%@ %02d:%02d:%02d", Int(days), NELocalize.localizedString("forecast_day",bundlePath: MeMeKitBundle), Int(hours), Int(minutes), Int(seconds))
         
         return timeString
     }
@@ -655,15 +655,15 @@ extension String {
                     if let sourceInt = str.isPureInt64() {
                         if isZhAndJaLanguage {
                             if sourceInt > 99999999 {
-                                dest = (CGFloat(sourceInt) / 100000000).format(reserve: reserve) + NELocalize.localizedString("number100million", comment: "")
+                                dest = (CGFloat(sourceInt) / 100000000).format(reserve: reserve) + NELocalize.localizedString("number100million",bundlePath: MeMeKitBundle, comment: "")
                             }else if sourceInt > 9999 {
-                                dest = (CGFloat(sourceInt) / 10000).format(reserve: reserve) + NELocalize.localizedString("noble_wan", comment: "")
+                                dest = (CGFloat(sourceInt) / 10000).format(reserve: reserve) + NELocalize.localizedString("noble_wan",bundlePath: MeMeKitBundle, comment: "")
                             }
                         }else{
                             if sourceInt > 999999 {
-                                dest = (CGFloat(sourceInt) / 1000000).format(reserve: reserve) + NELocalize.localizedString("number100million", comment: "")
+                                dest = (CGFloat(sourceInt) / 1000000).format(reserve: reserve) + NELocalize.localizedString("number100million",bundlePath: MeMeKitBundle, comment: "")
                             }else if sourceInt > 999 {
-                                dest = (CGFloat(sourceInt) / 1000).format(reserve: reserve) + NELocalize.localizedString("noble_wan", comment: "")
+                                dest = (CGFloat(sourceInt) / 1000).format(reserve: reserve) + NELocalize.localizedString("noble_wan",bundlePath: MeMeKitBundle, comment: "")
                             }
                         }
                         
@@ -673,7 +673,7 @@ extension String {
                     let reserve = reserve == nil ? 2 : reserve!
                     if let sourceInt = str.isPureInt64() {
                         if sourceInt > 9999 {
-                            dest = (CGFloat(sourceInt) / 10000).format(reserve: reserve) + NELocalize.localizedString("noble_wan", comment: "")
+                            dest = (CGFloat(sourceInt) / 10000).format(reserve: reserve) + NELocalize.localizedString("noble_wan",bundlePath: MeMeKitBundle, comment: "")
                         }
                         dest = String.comfortShowString(dest, type: .dotPerThreeBit_force)
                     }
@@ -681,29 +681,29 @@ extension String {
                     let reserve = reserve == nil ? 2 : reserve!
                     if let sourceInt = str.isPureInt64() {
                         if sourceInt > 99999999 {
-                            dest = (CGFloat(sourceInt) / 100000000).format(reserve: reserve) + NELocalize.localizedString("number100million", comment: "")
+                            dest = (CGFloat(sourceInt) / 100000000).format(reserve: reserve) + NELocalize.localizedString("number100million",bundlePath: MeMeKitBundle, comment: "")
                         }else if sourceInt > 9999 {
-                            dest = (CGFloat(sourceInt) / 10000).format(reserve: reserve) + NELocalize.localizedString("noble_wan", comment: "")
+                            dest = (CGFloat(sourceInt) / 10000).format(reserve: reserve) + NELocalize.localizedString("noble_wan",bundlePath: MeMeKitBundle, comment: "")
                         }
                         dest = String.comfortShowString(dest, type: .dotPerThreeBit_force)
                     }
                 case .justTenThousandLocalizeNoble1:
                     if let sourceInt = str.isPureInt64() {
                         if sourceInt > 9999999 {
-                            dest = String(format: "%.2f", Float(sourceInt)/1000000) + NELocalize.localizedString("noble_wan", comment: "")
+                            dest = String(format: "%.2f", Float(sourceInt)/1000000) + NELocalize.localizedString("noble_wan",bundlePath: MeMeKitBundle, comment: "")
                         }
                         dest = String.comfortShowString(dest, type: .dotPerThreeBit_force)
                     }
                 case .justTenThousandLocalizeNoble2:
                     if let sourceInt = str.isPureInt64() {
                         if sourceInt > 99999 {
-                            dest = String(format: "%.2f", Float(sourceInt)/10000) + NELocalize.localizedString("noble_wan", comment: "")
+                            dest = String(format: "%.2f", Float(sourceInt)/10000) + NELocalize.localizedString("noble_wan",bundlePath: MeMeKitBundle, comment: "")
                         }
                         dest = String.comfortShowString(dest, type: .dotPerThreeBit_force)
                     }
                 case .justTenThousandLocalizeNoble3:
                     if let sourceInt = str.isPureInt64() {
-                        dest = "\(sourceInt / 10000)" + NELocalize.localizedString("noble_wan", comment: "")
+                        dest = "\(sourceInt / 10000)" + NELocalize.localizedString("noble_wan",bundlePath: MeMeKitBundle, comment: "")
                         dest = String.comfortShowString(dest, type: .dotPerThreeBit_force)
                     }
                 case .justTenThousand:
@@ -737,7 +737,7 @@ extension String {
                     
                 case .timeHourMinute:
                     if let sourceDouble = str.isPureInt64() {
-                        dest = String(format: NELocalize.localizedString("list_hour", comment: ""), "\(sourceDouble / 60)") + String(format: NELocalize.localizedString("list_points", comment: ""), "\(sourceDouble % 60)")
+                        dest = String(format: NELocalize.localizedString("list_hour",bundlePath: MeMeKitBundle, comment: ""), "\(sourceDouble / 60)") + String(format: NELocalize.localizedString("list_points",bundlePath: MeMeKitBundle, comment: ""), "\(sourceDouble % 60)")
                     }
                 case let .indeM(region):
                     if let sourceInt = str.isPureInt64() {
@@ -770,11 +770,11 @@ extension String {
                         if passed < 60.0*60.0 {
                             var passed = Int(passed/60.0)
                             passed = passed < 1 ? 1 : passed
-                            dest = String(format: NELocalize.localizedString("me_community_time1"), "\(passed)")
+                            dest = String(format: NELocalize.localizedString("me_community_time1",bundlePath: MeMeKitBundle), "\(passed)")
                         }else if passed < 6.0*60.0*60.0 {
                             var passed = Int(passed/3600.0)
                             passed = passed < 1 ? 1 : passed
-                            dest = String(format: NELocalize.localizedString("me_community_time2"), "\(passed)")
+                            dest = String(format: NELocalize.localizedString("me_community_time2",bundlePath: MeMeKitBundle), "\(passed)")
                         }else{
                             dest = ""
                         }
@@ -823,7 +823,7 @@ extension String {
                         dest = dateFormatter.string(from: dateSelf)
                     } else if calendar.isDateInYesterday(dateSelf) {
                         // 是昨天
-                        prefixStr = NELocalize.localizedString("昨天", comment: "totest")
+                        prefixStr = NELocalize.localizedString("昨天",bundlePath: MeMeKitBundle, comment: "totest")
                         let dateFormatter = DateFormatter()
                         dateFormatter.dateFormat = "HH:mm"
                         dest = prefixStr + seprator + dateFormatter.string(from: dateSelf)

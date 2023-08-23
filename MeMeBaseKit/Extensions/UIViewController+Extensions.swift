@@ -34,14 +34,14 @@ extension UIViewController {
 extension UIViewController {
     @objc public func showErrorMessage(_ message: String) {
         let controller = UIAlertController(title: "", message: message, preferredStyle: .alert)
-        controller.addAction(UIAlertAction(title: NELocalize.localizedString("OK", comment: ""), style: .default, handler: { action in
+        controller.addAction(UIAlertAction(title: NELocalize.localizedString("OK",bundlePath: MeMeKitBundle, comment: ""), style: .default, handler: { action in
             controller.dismiss(animated: true, completion: nil)
         }))
         present(controller, animated: true, completion: nil)
     }
     
     @discardableResult
-    @objc public func showAlertMessage(title:String,message:String? = nil,comfirm:String = NELocalize.localizedString("OK"),cancel:String = NELocalize.localizedString("Cancel"),comfirmBlock:(()->())? = nil, cancelBlock:(()->())? = nil) -> UIViewController? {
+    @objc public func showAlertMessage(title:String,message:String? = nil,comfirm:String = NELocalize.localizedString("OK",bundlePath: MeMeKitBundle),cancel:String = NELocalize.localizedString("Cancel",bundlePath: MeMeKitBundle),comfirmBlock:(()->())? = nil, cancelBlock:(()->())? = nil) -> UIViewController? {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         
         let okAction = UIAlertAction(title: comfirm, style: .default) { _ in

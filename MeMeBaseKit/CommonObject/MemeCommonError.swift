@@ -13,7 +13,7 @@ import MeMeKit
 public let MemeErrorDomain = "meme"
 
 public func defaultError() -> NSError {
-	let errorMessage = NELocalize.localizedString("Oops, there's an error!", comment: "")
+	let errorMessage = NELocalize.localizedString("Oops, there's an error!",bundlePath: MeMeKitBundle, comment: "")
 	return NSError(domain: MemeErrorDomain, code: -19998898, userInfo: [NSLocalizedDescriptionKey: errorMessage])
 }
 
@@ -63,18 +63,18 @@ public enum MemeCommonError: CustomNSError ,Equatable {
 
 		switch self {
         case .auth:
-            userInfo[NSLocalizedDescriptionKey] = NELocalize.localizedString("auth failed", comment: "")
+            userInfo[NSLocalizedDescriptionKey] = NELocalize.localizedString("auth failed",bundlePath: MeMeKitBundle, comment: "")
         case .cancel:
-            userInfo[NSLocalizedDescriptionKey] = NELocalize.localizedString("user cancelled", comment: "")
+            userInfo[NSLocalizedDescriptionKey] = NELocalize.localizedString("user cancelled",bundlePath: MeMeKitBundle, comment: "")
         case .nonetwork:
-            userInfo[NSLocalizedDescriptionKey] = NELocalize.localizedString("no network", comment: "")
+            userInfo[NSLocalizedDescriptionKey] = NELocalize.localizedString("no network",bundlePath: MeMeKitBundle, comment: "")
         case .network:
-            userInfo[NSLocalizedDescriptionKey] = NELocalize.localizedString("network error", comment: "")
+            userInfo[NSLocalizedDescriptionKey] = NELocalize.localizedString("network error",bundlePath: MeMeKitBundle, comment: "")
         case .other(let error):
             if let error = error {
                 userInfo[NSLocalizedDescriptionKey] = error.localizedDescription
             } else {
-                userInfo[NSLocalizedDescriptionKey] = NELocalize.localizedString("other error", comment: "")
+                userInfo[NSLocalizedDescriptionKey] = NELocalize.localizedString("other error",bundlePath: MeMeKitBundle, comment: "")
             }
         case .normal(_,  let msg,_):
             userInfo[NSLocalizedDescriptionKey] = msg
