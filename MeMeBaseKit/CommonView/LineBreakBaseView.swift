@@ -34,6 +34,7 @@ open class LineBreakBaseView: TranslateHitView,LineBreakViewable {
     public var inuseView:[UIView?] = []
     //最大行数
     public var maxLine:Int?
+    public var maxCountOneLine:Int?
     //实体的边距,只实现了top,left部分
     public var borderMargins: UIEdgeInsets = UIEdgeInsets()
     //实体之间的间隔
@@ -189,7 +190,7 @@ open class LineBreakBaseView: TranslateHitView,LineBreakViewable {
             var offsetY = borderMargins.top
 
             var curLine = 1
-            
+            var curLineCount = 0
             if begin != nil {begin!()}
             
             var sizeValid = true
@@ -199,9 +200,9 @@ open class LineBreakBaseView: TranslateHitView,LineBreakViewable {
                 var size = self.itemSizeClosure(i)
                 if size != nil {
                     lineHeight = lineHeight > size!.height ? lineHeight : size!.height
-                    if offsetX + size!.width > width {
+                    if offsetX + size!.width > width || (self.maxCountOneLine != nil && curLineCount >= self.maxCountOneLine!) {
                         offsetX = 0
-                        
+                        curLineCount = 0
                         curLine += 1
                         if self.maxLine != nil && self.maxLine! < curLine {
                             break
@@ -224,6 +225,7 @@ open class LineBreakBaseView: TranslateHitView,LineBreakViewable {
                                 realLayout!(CGRect.init(x: offsetX, y: offsetY, width: size!.width, height: size!.height),i,extra)
                             }
                             offsetX = offsetX + size!.width + marginX
+                            curLineCount += 1
                         }
                     }else {
                         if realLayout != nil {
@@ -240,6 +242,7 @@ open class LineBreakBaseView: TranslateHitView,LineBreakViewable {
                             realLayout!(CGRect.init(x: offsetX, y: offsetY, width: size!.width, height: size!.height),i,extra)
                         }
                         offsetX = offsetX + size!.width + marginX
+                        curLineCount += 1
                     }
                 }else{
                     sizeValid = false
