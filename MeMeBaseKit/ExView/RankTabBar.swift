@@ -450,8 +450,21 @@ public class RankTabBar: UIView {
         }
     }
     
+    public func showBtnBadge(btn:UIButton,count: Int = 0,maxCount:Int = 99, color: UIColor = .red,size:CGSize = CGSize(width: 10, height: 10),font:UIFont) {
+        let badgeCenter = CGPoint(x: (btn.bounds.width),
+                                  y: (7))
+        if count > 0 {
+            btn.badgeCenter = badgeCenter
+            btn.layoutIfNeeded()  //button.width有可能为0
+            btn.showBadge(count,maxCount: maxCount,color: color,frame: CGRect(origin: CGPoint(x: 0, y:0), size: size), font: font)
+            self.rebaseBadgeView(btn: btn,offsetLabel:CGPoint(x: (btn.titleLabel?.width ?? 0.0) - 2,
+                                                                  y: (-4)))
+        } else {
+            btn.hideBadge()
+        }
+    }
     //badge的位置以titlelabel的原始大小为基准
-    func rebaseBadgeView(btn:UIButton,offsetLabel:CGPoint) {
+    public func rebaseBadgeView(btn:UIButton,offsetLabel:CGPoint) {
         if let extensionBadge = btn.extensionBadge {
             btn.layoutIfNeeded()
             var titleFrame = btn.titleLabel?.frame ?? CGRect()
@@ -463,6 +476,8 @@ public class RankTabBar: UIView {
         }
         if let scale = btn.titleLabel?.transform.a {
             buttonTransform(button: btn, scale: scale)
+        }else{
+            buttonTransform(button: btn, scale: 1.0)
         }
     }
     
@@ -811,7 +826,7 @@ extension RankTabBar {
     }
     
     func buttonTransform(button: UIButton, scale: CGFloat = 1) {
-        if shrink < 1 {
+        if shrink <= 1 {
             if scale > (( 1 - shrink) / 2 + shrink) {
                 button.titleLabel?.font = ThemeLite.Font.bold(size: btnTitleFont.pointSize / shrink)
             } else {

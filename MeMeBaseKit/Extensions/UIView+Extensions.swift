@@ -83,10 +83,11 @@ extension UIView {
             badge.font = font
             badge.textAlignment = .center
             badge.text = format + (count > maxCount ? "\(maxCount)+" : "\(count)")
+            let oldHeight = badge.frame.height
             badge.sizeToFit()
             var badgeframe = badge.frame
             badgeframe.size.width += 4
-            badgeframe.size.height += 4
+            badgeframe.size.height = oldHeight;
             if (badgeframe.width < badgeframe.height) {
                 badgeframe.widthEx = badgeframe.height
             }
