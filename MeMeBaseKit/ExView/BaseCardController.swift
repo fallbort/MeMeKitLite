@@ -143,7 +143,7 @@ public class BaseCardController: UIViewController,BaseCardProtocol {
         })
     }
     
-    fileprivate func close() {
+    internal func close() {
         clean()
         if let presentingVC = self.presentingViewController,self.parent == presentingVC || self.parent == nil {
             self.dismiss(animated: false, completion: nil)

@@ -15,6 +15,7 @@ public protocol BottomCardProtocol where Self:UIViewController {
 }
 
 private var BottomCardVarControllerkey = "BottomCardVarControllerkey"
+private var BottomCardDidClosedBlockkey = "BottomCardDidClosedBlockkey"
 extension BottomCardProtocol {
     public var parentController: BottomCardController? {
         get {
@@ -32,6 +33,19 @@ extension BottomCardProtocol {
                 weakArray.addObject(controller)
             }
             objc_setAssociatedObject(self, &BottomCardVarControllerkey, weakArray, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        }
+    }
+    
+    public var didClosedBlock: (()->())? {
+        get {
+            if let function = objc_getAssociatedObject(self, &BottomCardDidClosedBlockkey) as? (()->()) {
+                return  function
+            }else{
+                return nil
+            }
+        }
+        set {
+            objc_setAssociatedObject(self, &BottomCardDidClosedBlockkey, newValue, .OBJC_ASSOCIATION_COPY_NONATOMIC)
         }
     }
 }
@@ -263,6 +277,12 @@ public class BottomCardController : BaseCardController {
     
     override func clean() {
         super.clean()
+    }
+    
+    override func close() {
+        let vc = self.attachViewController
+        super.close()
+        vc?.didClosedBlock?()
     }
     
     fileprivate func extraHeightChange(extraHeight:CGFloat,animate:Bool = false) {
