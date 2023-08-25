@@ -81,3 +81,24 @@ extension NSObject
     }
 
 }
+
+extension NSObject {
+    @objc public func convertToDictionary(string:String)->[String : Any] {
+        let opt:JSONSerialization.ReadingOptions = []
+        var dict:[String:Any] = [:]
+        if string.count > 0,let data = string.data(using: .utf8) {
+            do {
+                dict = (try JSONSerialization.jsonObject(with: data, options: opt) as? [String: Any]) ?? [:]
+            } catch {
+                print(error.localizedDescription)
+            }
+        }
+        return dict
+    }
+}
+
+extension NSObject {
+    @objc public func comfortVideoString(time:TimeInterval)->String {
+        return String.comfortShowString(time, type: .videoTime)
+    }
+}

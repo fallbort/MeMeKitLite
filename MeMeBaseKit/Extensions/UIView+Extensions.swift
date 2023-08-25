@@ -128,7 +128,7 @@ extension UIView {
         }
     }
     
-    public func hideBadge() {
+    @objc public func hideBadge() {
         self.badge?.removeFromSuperview()
         self.badge = nil
     }

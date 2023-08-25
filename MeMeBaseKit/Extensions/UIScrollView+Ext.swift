@@ -316,7 +316,8 @@ extension UIScrollView {
         let centerX = pointX
         var targetOffsetX = centerX - self.bounds.width / 2.0
         let minOffsetX = 0 - self.contentInset.left
-        let maxOffsestX = self.contentSize.width + self.contentInset.right - self.bounds.width
+        var maxOffsestX = self.contentSize.width + self.contentInset.right - self.bounds.width
+        maxOffsestX = max(minOffsetX,maxOffsestX)
         targetOffsetX = max(minOffsetX,targetOffsetX)
         targetOffsetX = min(maxOffsestX,targetOffsetX)
         self.setContentOffset(CGPoint(x: targetOffsetX, y: 0), animated: animate)
