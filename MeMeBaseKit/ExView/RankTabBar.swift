@@ -834,18 +834,22 @@ extension RankTabBar {
             }
             let oldTitleSize = button.titleLabel?.intrinsicContentSize
             button.titleLabel?.transform = CGAffineTransform.init(scaleX: scale , y: scale)
-            button.titleLabel?.sizeToFit()
-            let sourceTitleFrame = button.titleLabel?.frame ?? CGRect()
-            if let labelW = button.titleLabel?.width {
-                if scale < 1, let oldWidth: CGFloat = oldTitleSize?.width, (oldWidth > labelW + itemBetween) {
-                    button.width = oldWidth
-                } else {
-                    button.width = labelW + itemBetween
-                }
+            if self.average == false {
+                button.titleLabel?.sizeToFit()
             }
-            if let lineHeight = button.titleLabel?.font.lineHeight, let titleHeight = button.titleLabel?.height {
-                let topEdge = (lineHeight - titleHeight) / 2
-                button.titleEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: -topEdge, right: 0)
+            let sourceTitleFrame = button.titleLabel?.frame ?? CGRect()
+            if self.average == false {
+                if let labelW = button.titleLabel?.width {
+                    if scale < 1, let oldWidth: CGFloat = oldTitleSize?.width, (oldWidth > labelW + itemBetween) {
+                        button.width = oldWidth
+                    } else {
+                        button.width = labelW + itemBetween
+                    }
+                }
+                if let lineHeight = button.titleLabel?.font.lineHeight, let titleHeight = button.titleLabel?.height {
+                    let topEdge = (lineHeight - titleHeight) / 2
+                    button.titleEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: -topEdge, right: 0)
+                }
             }
             if let extensionBadge = button.extensionBadge {
                 if let titleFrame = (objc_getAssociatedObject(self, &AssociatedKeys.AssociatedTitle) as? NSValue)?.cgRectValue,titleFrame.width > 0,titleFrame.height > 0,let extensionFrame = (objc_getAssociatedObject(self, &AssociatedKeys.AssociatedBadge) as? NSValue)?.cgRectValue {
