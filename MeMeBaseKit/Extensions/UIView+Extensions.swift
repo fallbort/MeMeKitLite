@@ -706,7 +706,21 @@ extension UIView {
 
 extension UIView {
     //margin离边框距离
-    @objc public func addLeftRightLayout(views:[UIView],seperator:CGFloat,leftMargin:CGFloat,rightMargin:CGFloat,toTopBottom:Bool = false) {
+    @objc public func addLeftRightLayout(views:[UIView],width:CGFloat,seperator:CGFloat,leftMargin:CGFloat,rightMargin:CGFloat,closeRight:Bool = true) {
+        for view in views {
+            if let layout = view.leftRightWidthLayout {
+                layout.constant = width
+            }else{
+                if view.leftRightWidthLayout == nil {
+                    constrain(view) { [weak view] in
+                        view?.leftRightWidthLayout = $0.width == width
+                    }
+                }
+            }
+        }
+        self.addLeftRightLayout(views: views, seperator: seperator, leftMargin: leftMargin, rightMargin: rightMargin,toTopBottom: true,closeRight: closeRight)
+    }
+    @objc public func addLeftRightLayout(views:[UIView],seperator:CGFloat,leftMargin:CGFloat,rightMargin:CGFloat,toTopBottom:Bool = false,closeRight:Bool = true) {
         for oneView in views {
             if let closeLayout = oneView.leftRightCloseLayout {
                 oneView.removeConstraint(closeLayout)
@@ -768,7 +782,7 @@ extension UIView {
             }
             preView = view
         }
-        if let preView = preView {
+        if let preView = preView,closeRight == true {
             constrain(preView) {
                 preView.leftRightCloseLayout = $0.right == $0.superview!.right - rightMargin ~ 888
             }
@@ -780,6 +794,7 @@ private var commonLayoutKey:String? = nil
 private var commonCloseKey:String? = nil
 private var leftRightLayoutKey:String? = nil
 private var leftRightCloseLayoutKey:String? = nil
+private var leftRightWidthLayoutKey:String? = nil
 
 extension UIView {
     public var commonLayout: ConstraintGroup? {
@@ -812,6 +827,16 @@ extension UIView {
         
         set {
             objc_setAssociatedObject(self, &leftRightLayoutKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        }
+    }
+    var leftRightWidthLayout: NSLayoutConstraint? {
+        get {
+            let timer = objc_getAssociatedObject(self, &leftRightWidthLayoutKey) as? NSLayoutConstraint
+            return timer
+        }
+        
+        set {
+            objc_setAssociatedObject(self, &leftRightWidthLayoutKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         }
     }
     var leftRightCloseLayout: NSLayoutConstraint? {
