@@ -229,7 +229,7 @@ extension UIView {
         }
     }
     
-    public func handleTapGesture(closure: @escaping TapClosure) {
+    @objc public func handleTapGesture(closure: @escaping TapClosure) {
         removeTapGesture()
         let dealObject: AnyObject = unsafeBitCast(closure, to: AnyObject.self)
         objc_setAssociatedObject(self, &tapClosureKey, dealObject, .OBJC_ASSOCIATION_COPY_NONATOMIC)
@@ -244,14 +244,14 @@ extension UIView {
         closure()
     }
     
-    public func removeTapGesture() {
+    @objc public func removeTapGesture() {
         if let gesture = objc_getAssociatedObject(self, &tapGestureKey) as? UITapGestureRecognizer {
             removeGestureRecognizer(gesture)
             objc_setAssociatedObject(self, &tapGestureKey, nil, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         }
     }
     
-    public func handleLongPressGesture(closure: @escaping TapClosure) {
+    @objc public func handleLongPressGesture(closure: @escaping TapClosure) {
         removeLongPressGesture()
         let dealObject: AnyObject = unsafeBitCast(closure, to: AnyObject.self)
         objc_setAssociatedObject(self, &logPressClosureKey, dealObject, .OBJC_ASSOCIATION_COPY_NONATOMIC)
@@ -271,7 +271,7 @@ extension UIView {
         }
     }
     
-    public func removeLongPressGesture() {
+    @objc public func removeLongPressGesture() {
         if let gesture = objc_getAssociatedObject(self, &logPressGestureKey) as? UILongPressGestureRecognizer {
             removeGestureRecognizer(gesture)
             objc_setAssociatedObject(self, &logPressGestureKey, nil, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
