@@ -31,7 +31,7 @@ public class MMAudioPermissionManager {
         let message = String(format: NELocalize.localizedString("To grant the permission: settings -> %@ -> microphone",bundlePath: MeMeKitBundle, comment: ""), appname)
         showAuthorizeSettings(title, message: message, cancelCompletion: cancelCompletion, confirmCompletion: confirmCompletion)
     }
-    
+    //isblock,cancelIsBlock,阻止回调继续
     public class func requestMicrophonePermission(isBlock:Bool = true,isShow:Bool = true,cancelIsBlock:Bool = true,complection: @escaping ((Bool)->())) {
         AVAudioSession.sharedInstance().requestRecordPermission() { enabled in
             main_async() {

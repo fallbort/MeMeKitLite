@@ -31,7 +31,7 @@ public class MMVideoPermissionManager {
         let message = String(format: NELocalize.localizedString("To grant the permission: settings -> %@ -> camera",bundlePath: MeMeKitBundle, comment: ""), appname)
         showAuthorizeSettings(title, message: message, cancelCompletion: cancelCompletion, confirmCompletion: confirmCompletion)
     }
-    
+    //isblock,cancelIsBlock,阻止回调继续
     public class func requestCapturePermission(isBlock:Bool = true,isShow:Bool = true,cancelIsBlock:Bool = true,complection: @escaping (Bool) -> ()) {
         AVCaptureDevice.requestAccess(for: AVMediaType.video) { enabled in
             main_async() {
