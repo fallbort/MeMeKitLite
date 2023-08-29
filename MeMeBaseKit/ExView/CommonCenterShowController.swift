@@ -11,6 +11,9 @@ import Cartography
 class CommonCenterShowController : UIViewController,MeMeShowProtocol {
     
     //MARK: <>外部变量
+    override func loadView() {
+        self.view = TranslateHitView()
+    }
     var outVC:UIViewController? {
         didSet {
             oldValue?.removeMe()

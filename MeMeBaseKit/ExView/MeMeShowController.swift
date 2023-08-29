@@ -188,11 +188,9 @@ public class MeMeShowController : UIViewController {
     @objc func backClicked(tap: UITapGestureRecognizer) {
         let point = tap.location(in: containerView)
         if tapDismiss == true {
-            if containerView.bounds.contains(point) == false {
-                close()
-                theRootViewController?.didClosedBlock?()
-                theRootViewController?.didCancelBlock?()
-            }
+            close()
+            theRootViewController?.didClosedBlock?()
+            theRootViewController?.didCancelBlock?()
         }
     }
     
@@ -208,13 +206,8 @@ public class MeMeShowController : UIViewController {
     }
     
     lazy var containerView:UIView = {
-        if isTranslateView == true {
-            let view = TranslateHitView()
-            return view
-        }else{
-            let view = UIView()
-            return view
-        }
+        let view = TranslateHitView()
+        return view
     }()
     
     fileprivate var isTranslateView = false

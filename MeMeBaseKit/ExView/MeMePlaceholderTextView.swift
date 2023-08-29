@@ -18,7 +18,6 @@ import Cartography
         }
         set {
             self.textView.text = newValue
-            self.curNum = newValue.count
             refreshNum()
         }
     }
@@ -80,7 +79,8 @@ import Cartography
     }
     
     //MARK: <>功能性方法
-    func refreshNum() {
+    @objc public func refreshNum() {
+        self.curNum = textView.text.count
         self.numLabel.text = "\(self.curNum)/\(self.maxNum)"
         if self.curNum  > self.maxNum {
             self.numLabel.textColor = .red
@@ -130,7 +130,6 @@ import Cartography
 
 extension MeMePlaceholderTextView : UITextViewDelegate {
     public func textViewDidChange(_ textView: UITextView) {
-        self.curNum = textView.text.count
         self.refreshNum()
         if textView.text.count > 0 {
             self.placeholderLabel.isHidden = true
