@@ -65,11 +65,11 @@ import Cartography
             $0.top == $0.superview!.top + 12
         }
         
-        constrain(self.textView) {
+        constrain(self.textView,self.numLabel) {
             $0.left == $0.superview!.left + 4
             $0.right == $0.superview!.right - 4
             $0.top == $0.superview!.top + 4
-            $0.bottom == $0.superview!.bottom - 4
+            $0.bottom == $1.top - 4
         }
         
         constrain(self.numLabel) {
