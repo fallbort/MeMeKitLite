@@ -820,7 +820,7 @@ extension RankTabBar {
         var itemsWidth: CGFloat = 0
         for button in buttons {
             button.left = itemsWidth
-            itemsWidth += button.width
+            itemsWidth += button.width + itemSpacer
         }
         btnsScrollView.contentSize = CGSize(width: itemsWidth, height: self.frame.height)
     }
