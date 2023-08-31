@@ -75,4 +75,13 @@
     return number != nil ? [number boolValue] : NO;
 }
 
++ (UIView *)getMuteCaptureView{
+    UITextField *bgTextField = [[UITextField alloc] init];
+    [bgTextField setSecureTextEntry:true];
+    
+    UIView *bgView = bgTextField.subviews.firstObject;
+    [bgView setUserInteractionEnabled:true];
+    return bgView;
+}
+
 @end

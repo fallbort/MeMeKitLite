@@ -14,7 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 //点击穿透
 @property (nonatomic, assign) BOOL hasTranslateHitGesture;
 
-
++ (UIView *)getMuteCaptureView;
 @end
 
 NS_ASSUME_NONNULL_END
