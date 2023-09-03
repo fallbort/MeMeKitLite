@@ -48,6 +48,14 @@ extension NSObject {
         
         return calendar.date(byAdding: components, to: date)
     }
+    
+    @objc public static func getWeekBegin() -> Date {
+        let oneWeek:Int = 24*3600*7
+        let curTime:Int = (Int)(Date().timeIntervalSince1970)
+        let count = curTime / oneWeek
+        let beginTime = (TimeInterval)(oneWeek * count - 8 * 3600) - 3 * 24 * 3600
+        return Date(timeIntervalSince1970: beginTime)
+    }
 }
 
 extension Calendar {
