@@ -22,6 +22,7 @@ public class RankTabBar: UIView {
     static let Height = CGFloat(52)
     
     public var shrink: CGFloat = 1
+    public var shrinkCenterY: Bool = false
     fileprivate var selfWidth: CGFloat = 0
     public var itemColorChangeFollowContentScroll = true
     public var noscroll = false
@@ -846,7 +847,7 @@ extension RankTabBar {
                         button.width = labelW + itemBetween
                     }
                 }
-                if let lineHeight = button.titleLabel?.font.lineHeight, let titleHeight = button.titleLabel?.height {
+                if shrinkCenterY == false,let lineHeight = button.titleLabel?.font.lineHeight, let titleHeight = button.titleLabel?.height {
                     let topEdge = (lineHeight - titleHeight) / 2
                     button.titleEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: -topEdge, right: 0)
                 }
