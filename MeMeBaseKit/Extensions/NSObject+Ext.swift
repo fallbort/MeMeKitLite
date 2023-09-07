@@ -102,3 +102,36 @@ extension NSObject {
         return String.comfortShowString(time, type: .videoTime)
     }
 }
+
+
+extension NSObject {
+    @objc public func setImageViewWithVideo(localUrl:String,view:UIImageView) {
+        let oldUrl = view.coverVideoUrl
+        if oldUrl != localUrl {
+            let videoURL = URL(fileURLWithPath: localUrl)
+            let asset = AVURLAsset(url: videoURL)
+            let generator = AVAssetImageGenerator(asset: asset)
+            generator.appliesPreferredTrackTransform = true
+             
+            let time = CMTimeMakeWithSeconds(0.0, preferredTimescale: 1)
+            let imageRef = try! generator.copyCGImage(at: time, actualTime: nil)
+            let image = UIImage(cgImage: imageRef)
+            view.image = image
+        }
+    }
+}
+
+private var coverViewUrlKey = "coverViewKey"
+
+extension UIImageView {
+    fileprivate var coverVideoUrl: String? {
+        get {
+            let timer = objc_getAssociatedObject(self, &coverViewUrlKey) as? String
+            return timer
+        }
+        
+        set {
+            objc_setAssociatedObject(self, &coverViewUrlKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        }
+    }
+}
