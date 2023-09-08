@@ -19,6 +19,7 @@
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         [self swizzleSelector:@selector(setSelected:) toSelector:@selector(meme_fakeSetSelected:)];
+        [self swizzleSelector:@selector(isSelected:) toSelector:@selector(meme_fakeIsSelected:)];
     });
 }
 
@@ -39,6 +40,14 @@
         [self setIsSelectedFake:selected];
     }
     
+}
+
+-(BOOL)meme_fakeIsSelected {
+    if (self.useFakeSelectMode == false) {
+        return [self meme_fakeIsSelected];
+    }else{
+        return [self isSelectedFake];
+    }
 }
 
 @end
