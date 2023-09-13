@@ -26,8 +26,9 @@ public class MMPhotoPermissionManager {
     }
     
     fileprivate class func showPhotoAllowSettings(cancelCompletion: VoidBlock? = nil, confirmCompletion: VoidBlock? = nil) {
-        let title = NELocalize.localizedString("System prevents MeMe to access photo gallery", comment: "")
-        let message = NELocalize.localizedString("To grant the permission: settings -> MeMe -> photos", comment: "")
+        let appname = DeviceInfo.appDisplayName
+        let title = String(format: NELocalize.localizedString("System prevents %@ to access photo gallery",bundlePath: MeMeKitBundle, comment: ""), appname)
+        let message = String(format: NELocalize.localizedString("To grant the permission: settings -> %@ -> microphone",bundlePath: MeMeKitBundle, comment: ""), appname)
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         
         let actionCancel = UIAlertAction(title: NELocalize.localizedString("Cancel", comment: ""), style: .cancel) {action in
@@ -44,5 +45,21 @@ public class MMPhotoPermissionManager {
         alert.addAction(actionSet)
         let vc = ScreenUIManager.topViewController()
         vc?.present(alert, animated: true, completion: nil)
+    }
+}
+
+extension MMPhotoPermissionManager {
+    public static func saveImage(image: UIImage) {
+        PHPhotoLibrary.shared().performChanges {
+            PHAssetChangeRequest.creationRequestForAsset(from: image)
+        } completionHandler: { isSuccess, error in
+            DispatchQueue.main.async {
+                if isSuccess {
+                    HUD.flash2(String(format: NELocalize.localizedString("保存成功",bundlePath: MeMeKitBundle, comment: "")))
+                } else {
+                    HUD.flash2(String(format: NELocalize.localizedString("保存失败",bundlePath: MeMeKitBundle, comment: "")))
+                }
+            }
+        }
     }
 }
