@@ -60,3 +60,20 @@ public func create_gcd_dispatch_timer(delay: TimeInterval = 0, interval: TimeInt
 	return timer
 }
 
+@objc public class GCDTimerOC : NSObject {
+    
+    deinit {
+        self.timer?.cancel()
+        self.timer = nil
+    }
+    
+    @objc public init(name: String? = nil, delay: TimeInterval = 0, interval: TimeInterval,skipFirst:Bool = false, queue: DispatchQueue = DispatchQueue.main, block: @escaping VoidBlock) {
+        self.timer = GCDTimer.init(name: name,delay: delay, interval: interval, skipFirst: skipFirst,queue:queue,block: block)
+    }
+    
+    @objc public func cancel() {
+        self.timer?.cancel()
+    }
+    
+    var timer:GCDTimer?
+}
