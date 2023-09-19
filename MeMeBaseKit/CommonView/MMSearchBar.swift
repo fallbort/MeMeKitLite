@@ -15,6 +15,8 @@ var IsFirstResponderContext = 0
 @objc public class MMSearchBar : UIView {
     
     //MARK: <>外部变量
+    //需要点击后才进行搜索
+    @objc public var needClickBtn = false
     @objc public var showCancelBtn:Bool = true {
         didSet {
             self.setMultiValueMixFalse(uniqueKey: "force", keyPath: \MMSearchBar.realHiddenCancelBtn, value: !showCancelBtn)
@@ -217,6 +219,11 @@ extension MMSearchBar : UITextFieldDelegate {
                 self.clearBtn.setMultiValueMixFalse(uniqueKey: "edit", keyPath: \UIView.isHidden, value: false)
             }
             self.setMultiValueMixFalse(uniqueKey: "change", keyPath: \MMSearchBar.realHiddenCancelBtn, value: text.count == 0)
+            
+            if self.needClickBtn == false {
+                let text = self.textField.text ?? ""
+                self.searchBlock?(text)
+            }
         }
     }
 }
