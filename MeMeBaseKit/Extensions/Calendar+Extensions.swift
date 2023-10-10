@@ -53,7 +53,10 @@ extension NSObject {
         let oneWeek:Int = 24*3600*7
         let curTime:Int = (Int)(Date().timeIntervalSince1970)
         let count = curTime / oneWeek
-        let beginTime = (TimeInterval)(oneWeek * count - 8 * 3600) - 3 * 24 * 3600
+        var beginTime = (TimeInterval)(oneWeek * count - 8 * 3600) - 3 * 24 * 3600
+        if curTime - Int(beginTime) > oneWeek {
+            beginTime = beginTime + Double(oneWeek)
+        }
         return Date(timeIntervalSince1970: beginTime)
     }
 }
